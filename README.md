@@ -4,9 +4,9 @@ TextNet for the purpose of training a net to convert img to text. TextNet is sta
 CalcNet will be the merger of TextNet and a Calculator 
 
 Text TODO:
- Conv2D - eval - train
- Dense/Conv2D - save and init
- Training data input
- Net Architecture 
- Multi thread - MAYBE
+ (Training data input)
+ (Conv2D - eval - train)
+ (Dense/Conv2D - save and init)
+ (Net Architecture) 
+ (Multi thread - MAYBE)
 Calc TODO:
