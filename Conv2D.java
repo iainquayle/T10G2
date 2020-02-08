@@ -3,12 +3,13 @@ import engine.Layer;
 
 public class Conv2D extends Layer
 {
-	int kerWid = 0;
-	int kerHei = 0;
-	int kerNum = 0;
+	int kerDim = 0; //individual kernel dimensions
+	int kerNum = 0; //number of kernels/filters/layers
 	int stride = 0;
 	int lenValsWid = 0;
 	int lenValsHei = 0;
+	int lenValsImg = 0;
+	int lenVisValsLayers = 0;
 	int weiLen = 0;
 	
 	public Conv2D()
@@ -17,18 +18,19 @@ public class Conv2D extends Layer
 	
 	public void eval()
 	{
-		i = 0;
-		w = 0;
-		while(i < lenValsHei)
+		for(int i = 0; i < kerNum; i++)
 		{
-			j = 0;
-			while(j < lenValsWid)
+			for(int j = 0; j < lenValsHei; j++)
 			{
-				valsAch[i * lenValsWid + j] = 0;
-				
-				j++;
+				for(int k = 0; k < lenValsWid; k++)
+				{
+					valsAch[i * lenValsWid + j] = 0;
+					for(int l = 0; l < kerDim; k++)
+					{
+						
+					}
+				}
 			}
-			i++;
 		}
 	}
 	public void train()
