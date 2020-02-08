@@ -6,7 +6,7 @@ CalcNet will be the merger of TextNet and a Calculator
 Text TODO:
  (Training data input)
  (Dense/Conv2D - save and init)
- (Conv2D - eval - train)
+ (Conv2D - eval and train)
  (Net Architecture) 
  (Multi thread - MAYBE)
 Calc TODO:
