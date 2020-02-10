@@ -13,6 +13,7 @@ public class TextNet implements Runnable
 	int layersLen = 0;
 	int layerCoun = 0;
 	int neurCoun = 0;
+	volatile int threadPos = 0;
 	
 	public static void main(String[] args) 
 	{

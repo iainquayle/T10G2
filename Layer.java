@@ -9,16 +9,17 @@ public class Layer
 	protected float[] weights;
 	protected int lenWeis;
 	
-	protected float[] valsVisAch;
-	protected float[] valsVisReq;
+	protected float[] visValsAch;
+	protected float[] visValsReq;
 	protected int lenVisVals;
 	
-	protected float temp;
+	protected float hold;
 	
 	protected float learnRate;
 	
 	protected static int i;
 	protected static int j;
+	protected static int k;
 	protected static int w;
 	
 	public Layer()

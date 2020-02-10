@@ -1,15 +1,21 @@
 package engine;
 import engine.Layer;
+import engine.Functions;
 
 public class Conv2D extends Layer
 {
 	int kerDim = 0; //individual kernel dimensions
-	int kerNum = 0; //number of kernels/filters/layers
-	int stride = 0;
-	int lenValsWid = 0;
-	int lenValsHei = 0;
-	int lenValsImg = 0;
-	int lenVisValsLayers = 0;
+	int kerNum = 0; //number of kernels/filters/imgs
+	int stride = 0; //stride length between neurons in vis layer
+	int jumpBack = 0;
+	int lenValsWid = 0; //width of vals
+	int lenValsHei = 0; //height of vals
+	//int lenValsDep = 0; //depth of vals
+	int lenValsLayer = 0; //total length of img, may not use and just go with wid x hei cache hit dependent 
+	int lenVisValsWid = 0;
+	int lenVisValsHei = 0;
+	int lenVisValsDep = 0;
+	int lenVisValsLayer = 0;
 	int weiLen = 0;
 	
 	public Conv2D()
@@ -18,19 +24,39 @@ public class Conv2D extends Layer
 	
 	public void eval()
 	{
-		for(int i = 0; i < kerNum; i++)
+		int valPos = 0;//
+		int kerPos = 0;
+		int weiPos = 0;
+		for(int i = 0; i < kerNum; i++) //iterate through each weight set/kernel/img
 		{
-			for(int j = 0; j < lenValsHei; j++)
+			for(int j = 0; j < lenValsHei; j++) //iterate through each layer
 			{
-				for(int k = 0; k < lenValsWid; k++)
+				for(int k = 0; k < lenValsWid; k++) //iterate through each row
 				{
-					valsAch[i * lenValsWid + j] = 0;
-					for(int l = 0; l < kerDim; k++)
+					valsAch[valPos] = 0;
+					weiPos = 0;
+					for(int l = 0; l < lenVisValsDep; l++) //iterate through each img in the vis layer 
 					{
-						
+						kerPos = valPos - jumpBack;
+						for(int m = 0; m < kerDim; m++) //iterate through kernel dim
+						{
+							for(int n = 0; n < kerDim; n++) //iterate through kernel dim
+							{
+								valsAch[valPos] += visValsAch[kerPos] * weights[weiPos];
+								kerPos++;
+								weiPos++;
+							}
+							kerPos += lenVisValsWid - kerDim;
+							weiPos++;
+						}
+						kerPos += lenVisValsLayer - (kerDim * lenVisValsWid + kerDim);
+						weiPos++;
 					}
+					valPos++;
 				}
+				valPos++;
 			}
+			valPos++;
 		}
 	}
 	public void train()

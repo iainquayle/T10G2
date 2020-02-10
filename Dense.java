@@ -1,30 +1,31 @@
 package engine;
 import engine.Layer;
+import engine.Functions;
 
 public class Dense extends Layer
 {
 	//other than indexing values, this is multi threading safe (not yet implemented if ever)
-	
 	public Dense()
 	{
 	}
 	
 	public void eval()
 	{
-		w = 0;
 		i = 0;
+		int weiPos = 0;
 		while(i < lenVals)
 		{
 			valsAch[i] = 0;
 			j = 0;
 			while(j < lenVisVals)
 			{
-				valsAch[i] += valsVisAch[j] * weights[w];   //summing the activations of the vis layer mulled by weights
+				valsAch[i] += visValsAch[j] * weights[weiPos];   //summing the activations of the vis layer mulled by weights
 				j++;
-				w++;
+				weiPos++;
 			}
-			valsAch[i] = (float)(valsAch[i]/Math.sqrt(1 + valsAch[i] * valsAch[i]));  //sigmoid function on value achieved
+			valsAch[i] = Functions.sigmoid(valsAch[i]);  //sigmoid function on value achieved
 			i++;
+			weiPos++;
 		}
 	}
 	public void train()
@@ -33,19 +34,16 @@ public class Dense extends Layer
 		i = 0;
 		while(i < lenVisVals)
 		{
-			valsVisReq[i] = 0;
+			visValsReq[i] = 0;
 			j = 0;
 			while(j < lenVals)
 			{
-				valsVisReq[i] += valsReq[j] - valsAch[j];  //updating the vis layers requested values
-				weights[w] += valsVisAch[i] * valsReq[j] * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				visValsReq[i] += valsReq[j] - valsAch[j];  //updating the vis layers requested values
+				weights[w] += visValsAch[i] * valsReq[j] * learnRate;   //updating the weights based on requested values and vis layer achieved values
 				j++;
 				w++;
 			}
-			if(valsVisReq[i] >= 0)   //stepping the requested value of the vis layer for the future weight learning
-				valsVisReq[i] = 1;
-			else
-				valsVisReq[i] = -1;
+			visValsReq[i] = Functions.stepNeg(visValsReq[i]);   //stepping the requested value of the vis layer for the future weight learning
 			i++;
 		}
 	}
