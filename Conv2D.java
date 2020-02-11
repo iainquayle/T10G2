@@ -24,7 +24,7 @@ public class Conv2D extends Layer
 	
 	public void eval()
 	{
-		int valPos = 0;//
+		int valPos = 0;
 		int kerPos = 0;
 		int weiPos = 0;
 		for(int i = 0; i < kerNum; i++) //iterate through each weight set/kernel/img
@@ -35,9 +35,9 @@ public class Conv2D extends Layer
 				{
 					valsAch[valPos] = 0;
 					weiPos = 0;
+					kerPos = j * stride * lenVisValsWid + k * stride;
 					for(int l = 0; l < lenVisValsDep; l++) //iterate through each img in the vis layer 
 					{
-						kerPos = valPos - jumpBack;
 						for(int m = 0; m < kerDim; m++) //iterate through kernel dim
 						{
 							for(int n = 0; n < kerDim; n++) //iterate through kernel dim

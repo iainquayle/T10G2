@@ -11,40 +11,34 @@ public class Dense extends Layer
 	
 	public void eval()
 	{
-		i = 0;
 		int weiPos = 0;
-		while(i < lenVals)
+		for(int i = 0; i < lenVals; i++)
 		{
 			valsAch[i] = 0;
-			j = 0;
-			while(j < lenVisVals)
+			for(int j = 0; j < lenVisVals; j++)
 			{
 				valsAch[i] += visValsAch[j] * weights[weiPos];   //summing the activations of the vis layer mulled by weights
-				j++;
 				weiPos++;
 			}
-			valsAch[i] = Functions.sigmoid(valsAch[i]);  //sigmoid function on value achieved
-			i++;
+			valsAch[i] = Functions.sigmoid(valsAch[i]);  //sigmoid function on value achieve
 			weiPos++;
 		}
 	}
 	public void train()
 	{
-		//the roles of each loop have been reversed to allow for the possibility of multi-threading without 
-		i = 0;
-		while(i < lenVisVals)
+		//the roles of each loop have been reversed to allow for the possibility of multi-threading without backfeed steping on each other
+		int weiPos = 0;
+		for(int i = 0; i < lenVisVals; i++)
 		{
 			visValsReq[i] = 0;
-			j = 0;
-			while(j < lenVals)
+			for(int j = 0; j < lenVals; j++)
 			{
-				visValsReq[i] += valsReq[j] * weights[w];  //updating the vis layers requested values
-				weights[w] += valsReq[j] - visValsAch[i] * learnRate;   //updating the weights based on requested values and vis layer achieved values
-				j++;
-				w++;
+				visValsReq[i] += valsReq[j] * weights[weiPos];  //updating the vis layers requested values
+				weights[weiPos] += valsReq[j] - visValsAch[i] * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				weiPos++;
 			}
 			visValsReq[i] = Functions.stepNeg(visValsReq[i]);   //stepping the requested value of the vis layer for the future weight learning
-			i++;
+			weiPos++;
 		}
 	}
 	
