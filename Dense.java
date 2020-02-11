@@ -38,8 +38,8 @@ public class Dense extends Layer
 			j = 0;
 			while(j < lenVals)
 			{
-				visValsReq[i] += valsReq[j] - valsAch[j];  //updating the vis layers requested values
-				weights[w] += visValsAch[i] * valsReq[j] * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				visValsReq[i] += valsReq[j] * weights[w];  //updating the vis layers requested values
+				weights[w] += valsReq[j] - visValsAch[i] * learnRate;   //updating the weights based on requested values and vis layer achieved values
 				j++;
 				w++;
 			}

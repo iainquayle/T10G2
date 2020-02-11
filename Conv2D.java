@@ -52,6 +52,7 @@ public class Conv2D extends Layer
 						kerPos += lenVisValsLayer - (kerDim * lenVisValsWid + kerDim);
 						weiPos++;
 					}
+					valsAch[valPos] = Functions.sigmoid(valsAch[valPos]);
 					valPos++;
 				}
 				valPos++;
