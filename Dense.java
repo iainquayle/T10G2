@@ -5,6 +5,8 @@ import engine.Functions;
 public class Dense extends Layer
 {
 	//other than indexing values, this is multi threading safe (not yet implemented if ever)
+	int lenWeiSet = 0; //number of weights per neuron
+	
 	public Dense()
 	{
 	}
@@ -31,14 +33,14 @@ public class Dense extends Layer
 		for(int i = 0; i < lenVisVals; i++)
 		{
 			visValsReq[i] = 0;
+			weiPos = i;
 			for(int j = 0; j < lenVals; j++)
 			{
 				visValsReq[i] += valsReq[j] * weights[weiPos];  //updating the vis layers requested values
 				weights[weiPos] += valsReq[j] - visValsAch[i] * learnRate;   //updating the weights based on requested values and vis layer achieved values
-				weiPos++;
+				weiPos += lenWeiSet;
 			}
 			visValsReq[i] = Functions.stepNeg(visValsReq[i]);   //stepping the requested value of the vis layer for the future weight learning
-			weiPos++;
 		}
 	}
 	
