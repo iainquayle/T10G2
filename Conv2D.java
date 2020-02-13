@@ -14,7 +14,7 @@ public class Conv2D extends Layer
 	int lenVisValsWid = 0; //wid of vis layer
 	int lenVisValsHei = 0; //hei of vis layer
 	int lenVisValsDep = 0; //depth of vis layer/depth of each kernel
-	int lenVisValsLayer = 0;
+	int lenVisValsImg = 0;
 	int weiLen = 0;
 	
 	public Conv2D()
@@ -24,21 +24,27 @@ public class Conv2D extends Layer
 	public void eval()
 	{
 		int valPos = 0;
-		int kerPos = 0;
 		int weiPos = 0;
+		int kerPos = 0;
+		int kerDepStop = 0;
+		int kerWidStop = 0;
+		int kerHeiStop = 0;
 		for(int i = 0; i < lenValsDep; i++) //iterate through each weight set/kernel/img
 		{
 			weiPos = i * lenKerDim * lenKerDim * lenVisValsDep;
-			for(int j = 0; j < lenValsHei; j++) //iterate through each layer
+			for(int j = 0; j < lenValsHei; j++) //iterate through each row
 			{
-				for(int k = 0; k < lenValsWid; k++) //iterate through each row
+				for(int k = 0; k < lenValsWid; k++) //iterate through each col
 				{
 					valsAch[valPos] = 0;
 					kerPos = j * stride * lenVisValsWid + k * stride;
+					//kerDepStop = kerPos + lenVisValsImg * (lenVisValsDep - 1) + kerDim * lenVisValsWid + kerDim;
 					for(int l = 0; l < lenVisValsDep; l++) //iterate through each img in the vis layer 
 					{
+						//kerHeiStop = kerPos + kerDim * lenVisValsWid + kerDim;
 						for(int m = 0; m < lenKerDim; m++) //iterate through kernel dim
 						{
+							//kerWidStop = kerPos + kerDim;
 							for(int n = 0; n < lenKerDim; n++) //iterate through kernel dim
 							{
 								valsAch[valPos] += visValsAch[kerPos] * weights[weiPos];
@@ -48,7 +54,7 @@ public class Conv2D extends Layer
 							kerPos += lenVisValsWid - lenKerDim;
 							weiPos++;
 						}
-						kerPos += lenVisValsLayer - (lenKerDim * lenVisValsWid + lenKerDim);
+						kerPos += lenVisValsImg - (lenKerDim * lenVisValsWid + lenKerDim);
 						weiPos++;
 					}
 					valsAch[valPos] = Functions.sigmoid(valsAch[valPos]);
@@ -65,6 +71,10 @@ public class Conv2D extends Layer
 		//look at iterating through the vis layer again 
 		//add in step func that is thread safe
 		
+		for(int i = 0; i < lenVals; i++)
+		{
+			valsReq[i] = Functions.stepNeg(valsReq[i]);
+		}
 		int valPos = 0;
 		int kerPos = 0;
 		int weiPos = 0;
@@ -89,42 +99,7 @@ public class Conv2D extends Layer
 							kerPos += lenVisValsWid - lenKerDim;
 							weiPos++;
 						}
-						kerPos += lenVisValsLayer - (lenKerDim * lenVisValsWid + lenKerDim);
-						weiPos++;
-					}
-					valPos++;
-				}
-				valPos++;
-			}
-			valPos++;
-		}
-		
-		//iterating through vis layer
-		valPos = 0;
-		kerPos = 0;
-		weiPos = 0;
-		for(int i = 0; i < lenVisValsDep; i++) //iterate through each weight set/kernel/img
-		{
-			for(int j = 0; j < lenVisValsHei; j++) //iterate through each layer
-			{
-				for(int k = 0; k < lenVisValsWid; k++) //iterate through each row
-				{
-					weiPos = 0;
-					kerPos = j * stride * lenVisValsWid + k * stride;
-					for(int l = 0; l < lenVisValsDep; l++) //iterate through each img in the vis layer 
-					{
-						for(int m = 0; m < lenKerDim; m++) //iterate through kernel dim
-						{
-							for(int n = 0; n < lenKerDim; n++) //iterate through kernel dim
-							{
-								visValsReq[kerPos] += valsReq[valPos] * weights[weiPos];
-								kerPos++;
-								weiPos++;
-							}
-							kerPos += lenVisValsWid - lenKerDim;
-							weiPos++;
-						}
-						kerPos += lenVisValsLayer - (lenKerDim * lenVisValsWid + lenKerDim);
+						kerPos += lenVisValsImg - (lenKerDim * lenVisValsWid + lenKerDim);
 						weiPos++;
 					}
 					valPos++;
