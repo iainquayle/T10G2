@@ -14,33 +14,34 @@ public class Dense extends Layer
 	public void eval()
 	{
 		int weiPos = 0;
-		for(int i = 0; i < lenVals; i++)
+		for(int i = 0; i < lenVals; i++) //iterate through the vals
 		{
 			valsAch[i] = 0;
-			for(int j = 0; j < lenVisVals; j++)
+			for(int j = 0; j < lenVisVals; j++) //iterate through the vis layer vals
 			{
-				valsAch[i] += visValsAch[j] * weights[weiPos];   //summing the activations of the vis layer mulled by weights
+				valsAch[i] += visValsAch[j] * weights[weiPos]; //summing the activations of the vis layer mulled by weights
+				valsReq[i] = 0; //clearing req vals for the training pass
 				weiPos++;
 			}
-			valsAch[i] = Functions.sigmoid(valsAch[i]);  //sigmoid function on value achieve
+			valsAch[i] = Functions.sigmoid(valsAch[i]);  //sigmoid activation on value achieve
 			weiPos++;
 		}
 	}
 	public void train()
 	{
-		//the roles of each loop have been reversed to allow for the possibility of multi-threading without backfeed steping on each other
 		int weiPos = 0;
-		for(int i = 0; i < lenVisVals; i++)
+		for(int i = 0; i < lenVals; i++)
 		{
-			visValsReq[i] = 0;
-			weiPos = i;
-			for(int j = 0; j < lenVals; j++)
+			valsReq[i] = Functions.stepNeg(valsReq[i]); //step applied to req vals
+		}
+		for(int i = 0; i < lenVals; i++) //iterate through vals
+		{
+			for(int j = 0; j < lenVisVals; j++) //iterate through vis layer vals
 			{
-				visValsReq[i] += valsReq[j] * weights[weiPos];  //updating the vis layers requested values
-				weights[weiPos] += valsReq[j] - visValsAch[i] * learnRate;   //updating the weights based on requested values and vis layer achieved values
-				weiPos += lenWeiSet;
+				visValsReq[j] += valsReq[i] * weights[weiPos];  //updating the vis layers requested values
+				weights[weiPos] += (valsReq[i] - visValsAch[i]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				weiPos++;
 			}
-			visValsReq[i] = Functions.stepNeg(visValsReq[i]);   //stepping the requested value of the vis layer for the future weight learning
 		}
 	}
 	

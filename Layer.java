@@ -13,14 +13,9 @@ public class Layer
 	protected float[] visValsReq;
 	protected int lenVisVals;
 	
-	protected float hold;
+	protected static float[] threadSplits;
 	
 	protected float learnRate;
-	
-	protected static int i;
-	protected static int j;
-	protected static int k;
-	protected static int w;
 	
 	public Layer()
 	{
