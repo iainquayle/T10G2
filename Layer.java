@@ -13,6 +13,11 @@ public class Layer
 	protected float[] visValsReq;
 	protected int lenVisVals;
 	
+	//protected int startVals;
+	//protected int endVals;
+	//protected int startValsVis;
+	//protected int endVisVals;
+	
 	protected static float[] threadSplits;
 	
 	protected float learnRate;
