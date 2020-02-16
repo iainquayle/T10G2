@@ -2,21 +2,20 @@ package engine;
 
 public class Layer 
 {
-	protected float[] valsAch;
-	protected float[] valsReq;
+	protected static float[] valsAch;
+	protected static float[] valsReq;
 	protected int lenVals;
+	protected int begVals;
+	protected int endVals;
 	
 	protected float[] weights;
 	protected int lenWeis;
 	
-	protected float[] visValsAch;
-	protected float[] visValsReq;
-	protected int lenVisVals;
-	
-	//protected int startVals;
-	//protected int endVals;
-	//protected int startValsVis;
-	//protected int endVisVals;
+	protected static float[] visValsAch;
+	protected static float[] visValsReq;
+	protected int lenValsVis;
+	protected int begValsVis;
+	protected int endValsVis;
 	
 	protected static float[] threadSplits;
 	
