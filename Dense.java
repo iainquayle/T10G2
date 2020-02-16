@@ -54,4 +54,12 @@ public class Dense extends Layer
 	public void setWeightsRef(float[] w)
 	{
 	}
+
+	public int getLenWeiSet() {
+		return lenWeiSet;
+	}
+
+	public void setLenWeiSet(int lenWeiSet) {
+		this.lenWeiSet = lenWeiSet;
+	}
 }
