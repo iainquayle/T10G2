@@ -126,4 +126,100 @@ public class Conv2D extends Layer
 	public void setWeightsRef(float[] w)
 	{
 	}
+
+	public int getStride() {
+		return stride;
+	}
+
+	public void setStride(int stride) {
+		this.stride = stride;
+	}
+
+	public int getLenKer() {
+		return lenKer;
+	}
+
+	public void setLenKer(int lenKer) {
+		this.lenKer = lenKer;
+	}
+
+	public int getLenKerDim() {
+		return lenKerDim;
+	}
+
+	public void setLenKerDim(int lenKerDim) {
+		this.lenKerDim = lenKerDim;
+	}
+
+	public int getLenValsWid() {
+		return lenValsWid;
+	}
+
+	public void setLenValsWid(int lenValsWid) {
+		this.lenValsWid = lenValsWid;
+	}
+
+	public int getLenValsHei() {
+		return lenValsHei;
+	}
+
+	public void setLenValsHei(int lenValsHei) {
+		this.lenValsHei = lenValsHei;
+	}
+
+	public int getLenValsDep() {
+		return lenValsDep;
+	}
+
+	public void setLenValsDep(int lenValsDep) {
+		this.lenValsDep = lenValsDep;
+	}
+
+	public int getLenValsLayer() {
+		return lenValsLayer;
+	}
+
+	public void setLenValsLayer(int lenValsLayer) {
+		this.lenValsLayer = lenValsLayer;
+	}
+
+	public int getLenVisValsWid() {
+		return lenVisValsWid;
+	}
+
+	public void setLenVisValsWid(int lenVisValsWid) {
+		this.lenVisValsWid = lenVisValsWid;
+	}
+
+	public int getLenVisValsHei() {
+		return lenVisValsHei;
+	}
+
+	public void setLenVisValsHei(int lenVisValsHei) {
+		this.lenVisValsHei = lenVisValsHei;
+	}
+
+	public int getLenVisValsDep() {
+		return lenVisValsDep;
+	}
+
+	public void setLenVisValsDep(int lenVisValsDep) {
+		this.lenVisValsDep = lenVisValsDep;
+	}
+
+	public int getLenVisValsImg() {
+		return lenVisValsImg;
+	}
+
+	public void setLenVisValsImg(int lenVisValsImg) {
+		this.lenVisValsImg = lenVisValsImg;
+	}
+
+	public int getWeiLen() {
+		return weiLen;
+	}
+
+	public void setWeiLen(int weiLen) {
+		this.weiLen = weiLen;
+	}
 }
