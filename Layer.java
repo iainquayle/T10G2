@@ -17,7 +17,7 @@ public class Layer
 	protected int begValsVis; //beginning index of valsVis
 	protected int endValsVis; //ending index of valsVis
 	
-	protected static float[] threadSplits; //the pre-calculated splits of where each thread ends and begins, may be changed to be calculated on the fly for cache hits
+	protected static float threadSplits; 
 	
 	protected float learnRate;
 	
@@ -34,11 +34,13 @@ public class Layer
 	
 	public void setValsRefs(float[] a, float[] r)
 	{
-	}
-	public void setVisRefs(float[] a, float[] r)
-	{
+		valsAch = a;
+		valsReq = r;
+		visValsAch = a;
+		visValsReq = r;
 	}
 	public void setWeightsRef(float[] w)
 	{
+		weights = w;
 	}
 }

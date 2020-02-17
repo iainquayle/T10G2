@@ -16,7 +16,7 @@ public class Conv2D extends Layer
 	int lenVisValsHei = 0; //hei of vis layer
 	int lenVisValsDep = 0; //depth of vis layer/depth of each kernel
 	int lenVisValsImg = 0;
-	int weiLen = 0;
+	float[] aveKer = null;
 	
 	public Conv2D()
 	{
@@ -99,6 +99,7 @@ public class Conv2D extends Layer
 							while(kerPos < kerWidStop) //iterate through kernel dim
 							{
 								visValsReq[kerPos] += valsReq[valPos] * weights[weiPos];
+								weights[weiPos] += (valsReq[valPos] - visValsAch[kerPos]) * learnRate;
 								kerPos++;
 								weiPos++;
 							}
@@ -115,16 +116,6 @@ public class Conv2D extends Layer
 			}
 			valPos++;
 		}
-	}
-	
-	public void setValsRefs(float[] a, float[] r)
-	{
-	}
-	public void setVisRefs(float[] a, float[] r)
-	{
-	}
-	public void setWeightsRef(float[] w)
-	{
 	}
 
 	public int getStride() {
@@ -213,13 +204,5 @@ public class Conv2D extends Layer
 
 	public void setLenVisValsImg(int lenVisValsImg) {
 		this.lenVisValsImg = lenVisValsImg;
-	}
-
-	public int getWeiLen() {
-		return weiLen;
-	}
-
-	public void setWeiLen(int weiLen) {
-		this.weiLen = weiLen;
 	}
 }

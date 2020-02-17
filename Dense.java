@@ -39,27 +39,18 @@ public class Dense extends Layer
 			for(int j = begValsVis; j < endValsVis; j++) //iterate through vis layer vals
 			{
 				visValsReq[j] += valsReq[i] * weights[weiPos];  //updating the vis layers requested values
-				weights[weiPos] += (valsReq[i] - visValsAch[i]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				weights[weiPos] += (valsReq[i] - visValsAch[j]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
 				weiPos++;
 			}
 		}
 	}
 	
-	public void setValsRefs(float[] a, float[] r)
+	public int getLenWeiSet() 
 	{
-	}
-	public void setVisRefs(float[] a, float[] r)
-	{
-	}
-	public void setWeightsRef(float[] w)
-	{
-	}
-
-	public int getLenWeiSet() {
 		return lenWeiSet;
 	}
-
-	public void setLenWeiSet(int lenWeiSet) {
+	public void setLenWeiSet(int lenWeiSet) 
+	{
 		this.lenWeiSet = lenWeiSet;
 	}
 }
