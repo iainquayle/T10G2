@@ -31,10 +31,8 @@ public class TextNet implements Runnable
 	public static void init(String loc) throws IOException
 	{
 		int temp = 0;
-		Scanner in = new Scanner(new File(""));
-		
+		Scanner in = new Scanner(new File(loc + "config"));
 		int layersLen = in.nextInt();
-		
 		layers = new Layer[layersLen];
 		for(int i = 0; i < layersLen; i++)
 		{
@@ -48,12 +46,10 @@ public class TextNet implements Runnable
 				layers[i] = new Conv2D();
 			}
 		}
-		
 		for(int i = 0; i < layersLen; i++)
 		{
-			layers[i].init(in, i);
+			layers[i].init(loc, in, i);
 		}
-		
 		in.close();
 	}
 	public static void save()

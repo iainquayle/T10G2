@@ -1,6 +1,8 @@
 package engine;
 
 import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
 
@@ -12,11 +14,19 @@ public class Dense extends Layer
 	public Dense()
 	{
 	}
-	public void init(Scanner in, int pos)
+	public void init(String loc, Scanner in, int pos) throws IOException
 	{
 		layerNum = pos;
 		visLayerNum = in.nextInt();
 		lenVals = in.nextInt();
+		lenWeis = in.nextInt();
+		Scanner wIn = new Scanner(new File("weights" + layerNum));
+		weights = new float[lenWeis];
+		for(int i = 0; i < lenWeis; i++)
+		{
+			weights[i] = wIn.nextFloat();
+		}
+		wIn.close();
 	}
 	
 	public void eval()

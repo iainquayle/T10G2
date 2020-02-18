@@ -1,6 +1,8 @@
 package engine;
 
 import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
 
@@ -23,15 +25,23 @@ public class Conv2D extends Layer
 	public Conv2D()
 	{
 	}
-	public void init(Scanner in, int pos)
+	public void init(String loc, Scanner in, int pos) throws IOException
 	{
 		layerNum = pos;
 		visLayerNum = in.nextInt();
 		lenValsX = in.nextInt();
 		lenValsY = in.nextInt();
 		lenValsZ = in.nextInt();
+		lenWeis = in.nextInt();
 		stride = in.nextInt();
 		lenVals = lenValsX * lenValsY * lenValsZ;
+		Scanner wIn = new Scanner(new File("weights" + layerNum));
+		weights = new float[lenWeis];
+		for(int i = 0; i < lenWeis; i++)
+		{
+			weights[i] = wIn.nextFloat();
+		}
+		wIn.close();
 	}
 	
 	public void eval()

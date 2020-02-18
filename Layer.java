@@ -1,7 +1,10 @@
 package engine;
 
 import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
 
+@SuppressWarnings("unused")
 public class Layer 
 {
 	protected static float[] valsAch;
@@ -28,7 +31,7 @@ public class Layer
 	public Layer()
 	{
 	}
-	public void init(Scanner in, int pos)
+	public void init(String loc, Scanner in, int pos) throws IOException
 	{
 	}
 	
