@@ -93,40 +93,80 @@ public class Conv2D extends Layer
 			valsReq[valPos] = Functions.stepNeg(valsReq[valPos]);
 			valPos++;
 		}
-		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/img
+		if(visValsReq != null)
 		{
-			weiPos = i * lenKerDim * lenKerDim * lenVisValsZ;
-			for(int j = 0; j < lenValsY; j++) //iterate through each layer
+			for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/img
 			{
-				for(int k = 0; k < lenValsX; k++) //iterate through each row
+				weiPos = i * lenKerDim * lenKerDim * lenVisValsZ;
+				for(int j = 0; j < lenValsY; j++) //iterate through each layer
 				{
-					kerPos = begValsVis + j * stride * lenVisValsX + k * stride;
-					kerZStop = kerPos + lenVisValsImg * (lenVisValsZ - 1);
-					while(kerPos <= kerZStop) //iterate through each img in the vis layer 
+					for(int k = 0; k < lenValsX; k++) //iterate through each row
 					{
-						kerYStop = kerPos + lenKerDim * lenVisValsX;
-						for(int m = 0; m <= kerYStop; m++) //iterate through kernel dim
+						kerPos = begValsVis + j * stride * lenVisValsX + k * stride;
+						kerZStop = kerPos + lenVisValsImg * (lenVisValsZ - 1);
+						while(kerPos <= kerZStop) //iterate through each img in the vis layer 
 						{
-							kerXStop = kerPos + lenKerDim;
-							while(kerPos < kerXStop) //iterate through kernel dim
+							kerYStop = kerPos + lenKerDim * lenVisValsX;
+							for(int m = 0; m <= kerYStop; m++) //iterate through kernel dim
 							{
-								visValsReq[kerPos] += valsReq[valPos] * weights[weiPos];
-								weights[weiPos] += (valsReq[valPos] - visValsAch[kerPos]) * learnRate;
-								kerPos++;
+								kerXStop = kerPos + lenKerDim;
+								while(kerPos < kerXStop) //iterate through kernel dim
+								{
+									visValsReq[kerPos] += valsReq[valPos] * weights[weiPos];
+									weights[weiPos] += (valsReq[valPos] - visValsAch[kerPos]) * learnRate;
+									kerPos++;
+									weiPos++;
+								}
+								kerPos += lenVisValsX - lenKerDim;
 								weiPos++;
 							}
-							kerPos += lenVisValsX - lenKerDim;
+							kerPos += lenVisValsImg - (lenKerDim * lenVisValsX + lenKerDim);
 							weiPos++;
 						}
-						kerPos += lenVisValsImg - (lenKerDim * lenVisValsX + lenKerDim);
-						weiPos++;
+						weiPos -= lenKerDim * lenKerDim * lenVisValsZ;
+						valPos++;
 					}
-					weiPos -= lenKerDim * lenKerDim * lenVisValsZ;
 					valPos++;
 				}
 				valPos++;
 			}
-			valPos++;
+		}
+		else
+		{
+			for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/img
+			{
+				weiPos = i * lenKerDim * lenKerDim * lenVisValsZ;
+				for(int j = 0; j < lenValsY; j++) //iterate through each layer
+				{
+					for(int k = 0; k < lenValsX; k++) //iterate through each row
+					{
+						kerPos = begValsVis + j * stride * lenVisValsX + k * stride;
+						kerZStop = kerPos + lenVisValsImg * (lenVisValsZ - 1);
+						while(kerPos <= kerZStop) //iterate through each img in the vis layer 
+						{
+							kerYStop = kerPos + lenKerDim * lenVisValsX;
+							for(int m = 0; m <= kerYStop; m++) //iterate through kernel dim
+							{
+								kerXStop = kerPos + lenKerDim;
+								while(kerPos < kerXStop) //iterate through kernel dim
+								{
+									weights[weiPos] += (valsReq[valPos] - visValsAch[kerPos]) * learnRate;
+									kerPos++;
+									weiPos++;
+								}
+								kerPos += lenVisValsX - lenKerDim;
+								weiPos++;
+							}
+							kerPos += lenVisValsImg - (lenKerDim * lenVisValsX + lenKerDim);
+							weiPos++;
+						}
+						weiPos -= lenKerDim * lenKerDim * lenVisValsZ;
+						valPos++;
+					}
+					valPos++;
+				}
+				valPos++;
+			}
 		}
 	}
 

@@ -42,13 +42,27 @@ public class Dense extends Layer
 		{
 			valsReq[i] = Functions.stepNeg(valsReq[i]); //step applied to req vals
 		}
-		for(int i = begVals; i < endVals; i++) //iterate through vals
+		if(visValsReq != null)
 		{
-			for(int j = begValsVis; j < endValsVis; j++) //iterate through vis layer vals
+			for(int i = begVals; i < endVals; i++) //iterate through vals
 			{
-				visValsReq[j] += valsReq[i] * weights[weiPos];  //updating the vis layers requested values
-				weights[weiPos] += (valsReq[i] - visValsAch[j]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
-				weiPos++;
+				for(int j = begValsVis; j < endValsVis; j++) //iterate through vis layer vals
+				{
+					visValsReq[j] += valsReq[i] * weights[weiPos];  //updating the vis layers requested values
+					weights[weiPos] += (valsReq[i] - visValsAch[j]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
+					weiPos++;
+				}
+			}
+		}
+		else
+		{
+			for(int i = begVals; i < endVals; i++) //iterate through vals
+			{
+				for(int j = begValsVis; j < endValsVis; j++) //iterate through vis layer vals
+				{
+					weights[weiPos] += (valsReq[i] - visValsAch[j]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
+					weiPos++;
+				}
 			}
 		}
 	}
