@@ -1,4 +1,6 @@
 package engine;
+
+import java.util.Scanner;
 import engine.Layer;
 import engine.Functions;
 
@@ -9,6 +11,12 @@ public class Dense extends Layer
 	
 	public Dense()
 	{
+	}
+	public void init(Scanner in, int pos)
+	{
+		layerNum = pos;
+		visLayerNum = in.nextInt();
+		lenVals = in.nextInt();
 	}
 	
 	public void eval()

@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.Scanner;
+
 public class Layer 
 {
 	protected static float[] valsAch;
@@ -7,6 +9,7 @@ public class Layer
 	protected int lenVals;
 	protected int begVals; //beginning index of vals
 	protected int endVals; //ending index of vals
+	protected int layerNum;
 	
 	protected float[] weights;
 	protected int lenWeis;
@@ -16,12 +19,16 @@ public class Layer
 	protected int lenValsVis;
 	protected int begValsVis; //beginning index of valsVis
 	protected int endValsVis; //ending index of valsVis
+	protected int visLayerNum;
 	
 	protected static float threadSplits; 
 	
 	protected float learnRate;
 	
 	public Layer()
+	{
+	}
+	public void init(Scanner in, int pos)
 	{
 	}
 	

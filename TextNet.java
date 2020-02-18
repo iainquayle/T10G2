@@ -2,6 +2,7 @@ package engine;
 
 import java.lang.Thread;
 import java.lang.Runnable;
+import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.File;
@@ -25,33 +26,35 @@ public class TextNet implements Runnable
 	public static void main(String[] args) 
 	{
 		//init(args[0])
-		
-		//
 	}
 	
 	public static void init(String loc) throws IOException
 	{
-		File file = null;
-		int data[] = null;
-		int filePos = 0;
-		@SuppressWarnings("null")
+		int temp = 0;
+		Scanner in = new Scanner(new File(""));
 		
-		int layersLen = data[0];
-		filePos++;
+		int layersLen = in.nextInt();
 		
 		layers = new Layer[layersLen];
 		for(int i = 0; i < layersLen; i++)
 		{
-			if(data[filePos + i] == 0)
+			temp = in.nextInt();
+			if(temp == 0)
 			{
 				layers[i] = new Dense();
 			}
-			else if(data[filePos + 1] == 1)
+			else if(temp == 1)
 			{
 				layers[i] = new Conv2D();
 			}
 		}
-		filePos += layersLen;
+		
+		for(int i = 0; i < layersLen; i++)
+		{
+			layers[i].init(in, i);
+		}
+		
+		in.close();
 	}
 	public static void save()
 	{
@@ -61,7 +64,6 @@ public class TextNet implements Runnable
 	@Override
 	public void run() 
 	{
-		// TODO Auto-generated method stub
 	}
 	public void start() 
 	{
