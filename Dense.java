@@ -77,6 +77,11 @@ public class Dense extends Layer
 		}
 	}
 	
+	public int getLayerType()
+	{
+		return 0;
+	}
+	
 	public int getLenWeiSet() 
 	{
 		return lenWeiSet;

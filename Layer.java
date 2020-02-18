@@ -53,4 +53,12 @@ public class Layer
 	{
 		weights = w;
 	}
+	public void setIORefs(float[] n)
+	{
+		
+	}
+	public int getLayerType()
+	{
+		return -1;
+	}
 }

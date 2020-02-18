@@ -179,92 +179,98 @@ public class Conv2D extends Layer
 			}
 		}
 	}
+	
+	public int getLayerType()
+	{
+		return 1;
+	}
 
-	public int getStride() {
+	public int getStride() 
+	{
 		return stride;
 	}
-
-	public void setStride(int stride) {
+	public void setStride(int stride) 
+	{
 		this.stride = stride;
 	}
-
-	public int getLenKer() {
+	public int getLenKer() 
+	{
 		return lenKer;
 	}
-
-	public void setLenKer(int lenKer) {
+	public void setLenKer(int lenKer) 
+	{
 		this.lenKer = lenKer;
 	}
-
-	public int getLenKerDim() {
+	public int getLenKerDim() 
+	{
 		return lenKerDim;
 	}
-
-	public void setLenKerDim(int lenKerDim) {
+	public void setLenKerDim(int lenKerDim) 
+	{
 		this.lenKerDim = lenKerDim;
 	}
-
-	public int getLenValsX() {
+	public int getLenValsX() 
+	{
 		return lenValsX;
 	}
-
-	public void setLenValsX(int lenValsX) {
+	public void setLenValsX(int lenValsX) 
+	{
 		this.lenValsX = lenValsX;
 	}
-
-	public int getLenValsY() {
+	public int getLenValsY() 
+	{
 		return lenValsY;
 	}
-
-	public void setLenValsY(int lenValsY) {
+	public void setLenValsY(int lenValsY) 
+	{
 		this.lenValsY = lenValsY;
 	}
-
-	public int getLenValsZ() {
+	public int getLenValsZ() 
+	{
 		return lenValsZ;
 	}
-
-	public void setLenValsZ(int lenValsZ) {
+	public void setLenValsZ(int lenValsZ) 
+	{
 		this.lenValsZ = lenValsZ;
 	}
-
-	public int getLenValsLayer() {
+	public int getLenValsLayer() 
+	{
 		return lenValsLayer;
 	}
-
-	public void setLenValsLayer(int lenValsLayer) {
+	public void setLenValsLayer(int lenValsLayer) 
+	{
 		this.lenValsLayer = lenValsLayer;
 	}
-
-	public int getLenVisValsX() {
+	public int getLenVisValsX() 
+	{
 		return lenVisValsX;
 	}
-
-	public void setLenVisValsX(int lenVisValsX) {
+	public void setLenVisValsX(int lenVisValsX) 
+	{
 		this.lenVisValsX = lenVisValsX;
 	}
-
-	public int getLenVisValsY() {
+	public int getLenVisValsY() 
+	{
 		return lenVisValsY;
 	}
-
-	public void setLenVisValsY(int lenVisValsY) {
+	public void setLenVisValsY(int lenVisValsY) 
+	{
 		this.lenVisValsY = lenVisValsY;
 	}
-
-	public int getLenVisValsZ() {
+	public int getLenVisValsZ() 
+	{
 		return lenVisValsZ;
 	}
-
-	public void setLenVisValsZ(int lenVisValsZ) {
+	public void setLenVisValsZ(int lenVisValsZ) 
+	{
 		this.lenVisValsZ = lenVisValsZ;
 	}
-
-	public int getLenVisValsImg() {
+	public int getLenVisValsImg() 
+	{
 		return lenVisValsImg;
 	}
-
-	public void setLenVisValsImg(int lenVisValsImg) {
+	public void setLenVisValsImg(int lenVisValsImg) 
+	{
 		this.lenVisValsImg = lenVisValsImg;
 	}
 }
