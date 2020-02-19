@@ -5,10 +5,13 @@ import engine.Layer;
 
 public class Input extends Layer
 {
+	float[] input = null;
+	int lenInputJump = 0;
+	
 	public Input()
 	{
 	}
-	public void init(String loc, Scanner in, int pos)
+	public void init(Layer l, String loc, Scanner in, int pos)
 	{
 		layerNum = pos;
 		lenVals = in.nextInt();
@@ -16,6 +19,10 @@ public class Input extends Layer
 	
 	public void eval()
 	{
+		for(int i = 0; i < lenVals; i++)
+		{
+			valsAch[begVals + i] = input[rndIndex * lenInputJump + i];
+		}
 	}
 	public void train()
 	{

@@ -25,7 +25,7 @@ public class Conv2D extends Layer
 	public Conv2D()
 	{
 	}
-	public void init(String loc, Scanner in, int pos) throws IOException
+	public void init(Layer[] l, String loc, Scanner in, int pos) throws IOException
 	{
 		layerNum = pos;
 		visLayerNum = in.nextInt();
@@ -40,6 +40,11 @@ public class Conv2D extends Layer
 		for(int i = 0; i < lenWeis; i++)
 		{
 			weights[i] = wIn.nextFloat();
+		}
+		if(pos != 0)
+		{
+			begVals = l[pos -1].getBegVals() + l[pos - 1].getLenVals();
+			begValsVis = l[visLayerNum].getBegVals();
 		}
 		wIn.close();
 	}
@@ -65,7 +70,7 @@ public class Conv2D extends Layer
 					while(kerPos <= kerZStop) //iterate through each img in the vis layer 
 					{
 						kerYStop = kerPos + lenKerDim * lenVisValsX;
-						for(int m = 0; m <= kerYStop; m++) //iterate through kernel dim
+						while(kerPos <= kerYStop) //iterate through kernel dim
 						{
 							kerXStop = kerPos + lenKerDim;
 							while(kerPos < kerXStop) //iterate through kernel dim
@@ -89,6 +94,7 @@ public class Conv2D extends Layer
 			valPos++;
 		}
 	}
+	@SuppressWarnings("unused")
 	public void train()
 	{
 		//look at iterating through the vis layer again 
@@ -103,7 +109,7 @@ public class Conv2D extends Layer
 			valsReq[valPos] = Functions.stepNeg(valsReq[valPos]);
 			valPos++;
 		}
-		if(visValsReq != null)
+		if(true) //may put back in order to optimizes
 		{
 			for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/img
 			{
@@ -141,7 +147,7 @@ public class Conv2D extends Layer
 				valPos++;
 			}
 		}
-		else
+		else 
 		{
 			for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/img
 			{

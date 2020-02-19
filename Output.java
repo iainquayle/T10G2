@@ -9,7 +9,7 @@ public class Output extends Layer
 	public Output()
 	{
 	}
-	public void init(String loc, Scanner in, int pos)
+	public void init(Layer l, String loc, Scanner in, int pos)
 	{
 		layerNum = pos;
 		lenVals = in.nextInt();

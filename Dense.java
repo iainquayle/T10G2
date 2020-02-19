@@ -14,7 +14,7 @@ public class Dense extends Layer
 	public Dense()
 	{
 	}
-	public void init(String loc, Scanner in, int pos) throws IOException
+	public void init(Layer[] l, String loc, Scanner in, int pos) throws IOException
 	{
 		layerNum = pos;
 		visLayerNum = in.nextInt();
@@ -25,6 +25,11 @@ public class Dense extends Layer
 		for(int i = 0; i < lenWeis; i++)
 		{
 			weights[i] = wIn.nextFloat();
+		}
+		if(pos != 0)
+		{
+			begVals = l[pos -1].getBegVals() + l[pos - 1].getLenVals();
+			begValsVis = l[visLayerNum].getBegVals();
 		}
 		wIn.close();
 	}
@@ -45,6 +50,7 @@ public class Dense extends Layer
 			weiPos++;
 		}
 	}
+	@SuppressWarnings("unused")
 	public void train()
 	{
 		int weiPos = 0;
@@ -52,7 +58,7 @@ public class Dense extends Layer
 		{
 			valsReq[i] = Functions.stepNeg(valsReq[i]); //step applied to req vals
 		}
-		if(visValsReq != null)
+		if(true) //may put back in order to optimizes
 		{
 			for(int i = begVals; i < endVals; i++) //iterate through vals
 			{

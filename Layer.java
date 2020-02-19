@@ -7,31 +7,36 @@ import java.io.IOException;
 @SuppressWarnings("unused")
 public class Layer 
 {
-	protected static float[] valsAch;
-	protected static float[] valsReq;
-	protected int lenVals;
-	protected int begVals; //beginning index of vals
-	protected int endVals; //ending index of vals
-	protected int layerNum;
+	protected static Integer rndIndex = null;
+	
+	protected static float[] valsAch = null;
+	protected static float[] valsReq = null;
+	protected int lenVals = 0;
+	protected int begVals = 0; //beginning index of vals
+	protected int endVals = 0; //ending index of vals
+	protected int layerNum = 0;
 	
 	protected float[] weights;
 	protected int lenWeis;
 	
-	protected static float[] visValsAch; //this is now the same pointer as valsAch, but this has been kept for code readability, it may be done away with
-	protected static float[] visValsReq; //this is now the same pointer as valsReq, but this has been kept for code readability, it may be done away with
-	protected int lenValsVis;
-	protected int begValsVis; //beginning index of valsVis
-	protected int endValsVis; //ending index of valsVis
-	protected int visLayerNum;
+	protected static float[] visValsAch = null; //this is now the same pointer as valsAch, but this has been kept for code readability, it may be done away with
+	protected static float[] visValsReq = null; //this is now the same pointer as valsReq, but this has been kept for code readability, it may be done away with
+	protected int lenValsVis = 0;
+	protected int begValsVis = 0; //beginning index of valsVis
+	protected int endValsVis = 0; //ending index of valsVis
+	protected int visLayerNum = 0;
 	
-	protected static float threadSplits; 
+	protected static float threadSplits; //value for fraction of layer a thread has command of
 	
 	protected float learnRate;
 	
 	public Layer()
 	{
 	}
-	public void init(String loc, Scanner in, int pos) throws IOException
+	public void init(Layer[] l, String loc, Scanner in, int pos) throws IOException
+	{
+	}
+	public void save(String loc)
 	{
 	}
 	
@@ -42,8 +47,9 @@ public class Layer
 	{
 	}
 	
-	public void setValsRefs(float[] a, float[] r)
+	public void setStatRefs(Integer i, float[] a, float[] r)
 	{
+		rndIndex = i;
 		valsAch = a;
 		valsReq = r;
 		visValsAch = a;
@@ -60,5 +66,13 @@ public class Layer
 	public int getLayerType()
 	{
 		return -1;
+	}
+	public int getLenVals()
+	{
+		return lenVals;
+	}
+	public int getBegVals()
+	{
+		return begVals;
 	}
 }

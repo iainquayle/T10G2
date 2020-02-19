@@ -11,6 +11,8 @@ import java.util.Date;
 import engine.Layer;
 import engine.Dense;
 import engine.Conv2D;
+import engine.Input;
+import engine.Output;
 @SuppressWarnings("unused")
 
 public class TextNet implements Runnable
@@ -18,6 +20,7 @@ public class TextNet implements Runnable
 	static Layer[] layers = null;
 	static Thread[] threads = null;
 	static Date time = null;
+	static Integer rndIndex = null;
 	static int layersLen = 0;
 	static int layerCoun = 0;
 	static int neurCoun = 0;
@@ -33,6 +36,7 @@ public class TextNet implements Runnable
 		int temp = 0;
 		Scanner in = new Scanner(new File(loc + "config"));
 		int layersLen = in.nextInt();
+		
 		layers = new Layer[layersLen];
 		for(int i = 0; i < layersLen; i++)
 		{
@@ -45,11 +49,24 @@ public class TextNet implements Runnable
 			{
 				layers[i] = new Conv2D();
 			}
+			else if(temp == 2)
+			{
+				layers[i] = new Input();
+			}
+			else if(temp == 3)
+			{
+				layers[i] = new Output();
+			}
 		}
+		
+		temp = 0;
 		for(int i = 0; i < layersLen; i++)
 		{
-			layers[i].init(loc, in, i);
+			layers[i].init(layers, loc, in, i);
+			temp += layers[i].getLenVals();
 		}
+		
+		layers[0].setStatRefs(rndIndex, new float[temp], new float[temp]);
 		in.close();
 	}
 	public static void save()
