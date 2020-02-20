@@ -17,6 +17,8 @@ IMG Processing TODO:
  (some function to bold edges (looks at old img pixel one by one, if coloured, colour surrounding pixels if their value is less))
  (some function to shrink edges (looks at old img pixel one by one, refill to the lowest value in a certain radius if their value is below a certain threshold))
  (img darkening function)
+GUI TODO:
+ ()
 
 CalcNet
 packages:
