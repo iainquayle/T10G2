@@ -11,10 +11,16 @@ public class Input extends Layer
 	public Input()
 	{
 	}
-	public void init(Layer l, String loc, Scanner in, int pos)
+	public void init(Layer[] l, String loc, Scanner in, int num)
 	{
-		layerNum = pos;
+		layerNum = num;
+		visLayerNum = in.nextInt();
 		lenVals = in.nextInt();
+		if(num != 0)
+		{
+			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
+			begValsVis = l[visLayerNum].getBegVals();
+		}
 	}
 	
 	public void eval()
@@ -24,7 +30,7 @@ public class Input extends Layer
 			valsAch[begVals + i] = input[rndIndex * lenInputJump + i];
 		}
 	}
-	public void train()
+	public void train() //don't need anything here
 	{
 	}
 	

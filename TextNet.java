@@ -21,14 +21,19 @@ public class TextNet implements Runnable
 	static Thread[] threads = null;
 	static Date time = null;
 	static Integer rndIndex = null;
-	static int layersLen = 0;
-	static int layerCoun = 0;
-	static int neurCoun = 0;
+	static int lenLayers = 0;
 	volatile static int threadPos = 0;
 	
 	public static void main(String[] args) 
 	{
-		//init(args[0])
+		try 
+		{
+			init(args[0]);
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public static void init(String loc) throws IOException
@@ -36,7 +41,6 @@ public class TextNet implements Runnable
 		int temp = 0;
 		Scanner in = new Scanner(new File(loc + "config"));
 		int layersLen = in.nextInt();
-		
 		layers = new Layer[layersLen];
 		for(int i = 0; i < layersLen; i++)
 		{
@@ -58,20 +62,28 @@ public class TextNet implements Runnable
 				layers[i] = new Output();
 			}
 		}
-		
 		temp = 0;
 		for(int i = 0; i < layersLen; i++)
 		{
 			layers[i].init(layers, loc, in, i);
 			temp += layers[i].getLenVals();
 		}
-		
 		layers[0].setStatRefs(rndIndex, new float[temp], new float[temp]);
 		in.close();
 	}
-	public static void save()
+	public static void save(String loc)
 	{
-		
+		for(int i = 0; i < lenLayers; i++)
+		{
+			try 
+			{
+				layers[i].save(loc);
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override

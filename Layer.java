@@ -1,6 +1,7 @@
 package engine;
 
 import java.util.Scanner;
+import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
 
@@ -33,11 +34,22 @@ public class Layer
 	public Layer()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, int pos) throws IOException
+	public void init(Layer[] l, String loc, Scanner in, int num) throws IOException
 	{
 	}
-	public void save(String loc)
+	public void save(String loc) throws IOException
 	{
+		if(weights != null)
+		{
+			FileWriter file = new FileWriter(loc + "weights" + layerNum);
+			String str = null;
+			for(int i = 0; i < lenWeis; i++)
+			{
+				str = str + weights[i];
+			}
+			file.write(str);
+			file.close();
+		}
 	}
 	
 	public void eval()

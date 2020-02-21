@@ -25,9 +25,9 @@ public class Conv2D extends Layer
 	public Conv2D()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, int pos) throws IOException
+	public void init(Layer[] l, String loc, Scanner in, int num) throws IOException
 	{
-		layerNum = pos; //(layer reference, width, height, depth, length weights, kernel width/height, stride)
+		layerNum = num; //(layer reference, width, height, depth, length weights, kernel width/height, stride)
 		visLayerNum = in.nextInt();
 		lenValsX = in.nextInt();
 		lenValsY = in.nextInt();
@@ -43,9 +43,9 @@ public class Conv2D extends Layer
 		{
 			weights[i] = wIn.nextFloat();
 		}
-		if(pos != 0)
+		if(num != 0)
 		{
-			begVals = l[pos -1].getBegVals() + l[pos - 1].getLenVals();
+			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
 			begValsVis = l[visLayerNum].getBegVals();
 		}
 		aveWei = new float[lenKer];
@@ -68,6 +68,7 @@ public class Conv2D extends Layer
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
 					valsAch[valsPos] = 0;
+					valsReq[valsPos] = 0;
 					valsVisPos = begValsVis + j * stride * lenValsVisX + k * stride;
 					kerZStop = valsVisPos + lenValsVisImg * (lenValsVisZ - 1);
 					while(valsVisPos <= kerZStop) //iterate through each img in the vis layer 
@@ -150,7 +151,6 @@ public class Conv2D extends Layer
 				}
 				valsPos++;
 			}
-			
 			for(int j = 0; j < lenKer; j++)
 			{
 				weights[weiPos] += aveWei[j];

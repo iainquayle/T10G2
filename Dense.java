@@ -14,9 +14,9 @@ public class Dense extends Layer
 	public Dense()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, int pos) throws IOException
+	public void init(Layer[] l, String loc, Scanner in, int num) throws IOException
 	{
-		layerNum = pos;
+		layerNum = num;
 		visLayerNum = in.nextInt();
 		lenVals = in.nextInt();
 		lenWeis = in.nextInt();
@@ -26,9 +26,9 @@ public class Dense extends Layer
 		{
 			weights[i] = wIn.nextFloat();
 		}
-		if(pos != 0)
+		if(num != 0)
 		{
-			begVals = l[pos -1].getBegVals() + l[pos - 1].getLenVals();
+			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
 			begValsVis = l[visLayerNum].getBegVals();
 		}
 		wIn.close();
@@ -40,10 +40,10 @@ public class Dense extends Layer
 		for(int i = begVals; i < endVals; i++) //iterate through the vals
 		{
 			valsAch[i] = 0;
+			valsReq[i] = 0; //clearing req vals for the training pass
 			for(int j = begValsVis; j < endValsVis; j++) //iterate through the vis layer vals
 			{
 				valsAch[i] += visValsAch[j] * weights[weiPos]; //summing the activations of the vis layer mulled by weights
-				valsReq[i] = 0; //clearing req vals for the training pass
 				weiPos++;
 			}
 			valsAch[i] = Functions.sigmoid(valsAch[i]);  //sigmoid activation on value achieve
@@ -51,34 +51,20 @@ public class Dense extends Layer
 		}
 	}
 	@SuppressWarnings("unused")
-	public void train()
+	public void train() //back pass and train
 	{
 		int weiPos = 0;
 		for(int i = begVals; i < endVals; i++)
 		{
 			valsReq[i] = Functions.stepNeg(valsReq[i]); //step applied to req vals
 		}
-		if(true) //may put back in order to optimizes
+		for(int i = begVals; i < endVals; i++) //iterate through vals
 		{
-			for(int i = begVals; i < endVals; i++) //iterate through vals
+			for(int j = begValsVis; j < endValsVis; j++) //iterate through vis layer vals
 			{
-				for(int j = begValsVis; j < endValsVis; j++) //iterate through vis layer vals
-				{
-					visValsReq[j] += valsReq[i] * weights[weiPos];  //updating the vis layers requested values
-					weights[weiPos] += (valsReq[i] - visValsAch[j]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
-					weiPos++;
-				}
-			}
-		}
-		else
-		{
-			for(int i = begVals; i < endVals; i++) //iterate through vals
-			{
-				for(int j = begValsVis; j < endValsVis; j++) //iterate through vis layer vals
-				{
-					weights[weiPos] += (valsReq[i] - visValsAch[j]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
-					weiPos++;
-				}
+				visValsReq[j] += valsReq[i] * weights[weiPos];  //updating the vis layers requested values
+				weights[weiPos] += (valsReq[i] - visValsAch[j]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				weiPos++;
 			}
 		}
 	}
