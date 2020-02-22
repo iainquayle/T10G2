@@ -34,7 +34,7 @@ public class Layer
 	public Layer()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, int num) throws IOException
+	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
 	{
 	}
 	public void save(String loc) throws IOException
@@ -45,7 +45,7 @@ public class Layer
 			String str = null;
 			for(int i = 0; i < lenWeis; i++)
 			{
-				str = str + weights[i];
+				str = str + weights[i] + ",";
 			}
 			file.write(str);
 			file.close();
@@ -70,10 +70,6 @@ public class Layer
 	public void setWeightsRef(float[] w)
 	{
 		weights = w;
-	}
-	public void setIORefs(float[] n)
-	{
-		
 	}
 	public int getLayerType()
 	{

@@ -14,7 +14,7 @@ public class Dense extends Layer
 	public Dense()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, int num) throws IOException
+	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;
 		visLayerNum = in.nextInt();

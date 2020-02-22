@@ -11,7 +11,7 @@ public class Input extends Layer
 	public Input()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, int num)
+	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num)
 	{
 		layerNum = num;
 		visLayerNum = in.nextInt();
@@ -21,6 +21,7 @@ public class Input extends Layer
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
 			begValsVis = l[visLayerNum].getBegVals();
 		}
+		input = io[visLayerNum];
 	}
 	
 	public void eval()

@@ -13,14 +13,17 @@ import engine.Dense;
 import engine.Conv2D;
 import engine.Input;
 import engine.Output;
+import engine.NetThread;
 @SuppressWarnings("unused")
 
-public class TextNet implements Runnable
+public class TextNet
 {
 	static Layer[] layers = null;
-	static Thread[] threads = null;
+	static NetThread[] threads = null;
 	static Date time = null;
 	static Integer rndIndex = null;
+	static float[][] IOputs;
+	static int lenData;
 	static int lenLayers = 0;
 	volatile static int threadPos = 0;
 	
@@ -29,6 +32,17 @@ public class TextNet implements Runnable
 		try 
 		{
 			init(args[0]);
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		run();
+		
+		try 
+		{
+			save(args[0]);
 		} 
 		catch (IOException e) 
 		{
@@ -65,32 +79,32 @@ public class TextNet implements Runnable
 		temp = 0;
 		for(int i = 0; i < layersLen; i++)
 		{
-			layers[i].init(layers, loc, in, i);
+			layers[i].init(layers, loc, in, IOputs, i);
 			temp += layers[i].getLenVals();
 		}
 		layers[0].setStatRefs(rndIndex, new float[temp], new float[temp]);
 		in.close();
 	}
-	public static void save(String loc)
+	public static void save(String loc) throws IOException
 	{
 		for(int i = 0; i < lenLayers; i++)
 		{
-			try 
-			{
 				layers[i].save(loc);
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 	
-	@Override
-	public void run() 
+	public static void run()
 	{
-	}
-	public void start() 
-	{
+		for(int i = 0; i < 10000; i++)
+		{
+			for(int j = 0; j < lenLayers; j++)
+			{
+				layers[j].eval();
+			}
+			for(int j = 0; j < lenLayers; j++)
+			{
+				layers[j].train();
+			}
+		}
 	}
 }

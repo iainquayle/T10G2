@@ -25,7 +25,7 @@ public class Conv2D extends Layer
 	public Conv2D()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, int num) throws IOException
+	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
 	{
 		layerNum = num; //(layer reference, width, height, depth, length weights, kernel width/height, stride)
 		visLayerNum = in.nextInt();
