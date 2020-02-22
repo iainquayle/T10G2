@@ -2,22 +2,61 @@ package engine;
 
 import java.util.ArrayList;
 
-public class CalculatorV2 {
+public class CalculatorV3 {
 	static ArrayList<String> formulaSplitAll = new ArrayList<String>();
 	static String[] ArrayForm;
 	static ArrayList<String> formulaSplitInBrackets = new ArrayList<String>();
 	static ArrayList<String> formulaSplitOutBrackets = new ArrayList<String>();
-	static String caldNum = null;
 	
-	public static ArrayList<String> converStrToList(String testCase){
+	public static ArrayList<String> converStrToListNoBrack(String testCase){
 		ArrayForm = testCase.split(" ");
-//		ArrayList<String> formulaSplitInBrackets = new ArrayList<String>();
 		for (int i = 0; i < ArrayForm.length; i++ ) {
 			formulaSplitAll.add(ArrayForm[i]);
 		}
 		return formulaSplitAll;
 	}
+	
+	public static ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplitAll) {
 
+		System.out.println(formulaSplitInBrackets);
+		int indexOfOpen = formulaSplitAll.indexOf("(");;
+		int indexOfClose = formulaSplitAll.indexOf(")");
+		System.out.println(indexOfOpen);
+		System.out.println(indexOfClose);
+		
+		for (int i= indexOfOpen ; i<= indexOfClose; i++ ) {
+			formulaSplitInBrackets.add(formulaSplitAll.get(i));
+		}
+		
+		division(formulaSplitInBrackets);
+		multiplication(formulaSplitInBrackets);
+		addition(formulaSplitInBrackets);
+		subtraction(formulaSplitInBrackets);
+
+		System.out.println(formulaSplitInBrackets);
+		
+		formulaSplitAll.subList(indexOfOpen, indexOfClose + 1).clear();
+		
+		for(String g : formulaSplitInBrackets) {
+			formulaSplitAll.add(g);
+		}
+		for (int j = 0; j <= formulaSplitAll.size() - 1; j++) {
+			while(formulaSplitAll.get(j).equals("(")) {
+				int indexOfThatSymbol = formulaSplitAll.indexOf("(");
+				double num1 = Double.parseDouble(formulaSplitAll.get(indexOfThatSymbol - 1));
+				double num2 = Double.parseDouble(formulaSplitAll.get(indexOfThatSymbol + 1));
+				double num3 = (num1 * num2);
+				String changed = Double.toString(num3);
+				formulaSplitAll.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
+				formulaSplitAll.add(indexOfThatSymbol - 1, changed);
+				System.out.println(formulaSplitAll);
+				formulaSplitAll.remove(")");
+				j = 0;
+			}
+		}
+		return formulaSplitAll;
+	}
+	
 	
 	public static void division(ArrayList<String> m) {
 		for (int i = 0 ; i <= m.size() - 1; i ++) {
@@ -27,9 +66,6 @@ public class CalculatorV2 {
 				double num2 = Double.parseDouble(m.get(indexOfThatSymbol + 1));
 				double num3 = (num1 / num2);
 				String changed = Double.toString(num3);
-//				System.out.println(num3);
-//				System.out.println(num1);
-//				System.out.println(num2);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
 				System.out.println(m);
@@ -46,9 +82,6 @@ public class CalculatorV2 {
 				double num2 = Double.parseDouble(m.get(indexOfThatSymbol + 1));
 				double num3 = (num1 * num2);
 				String changed = Double.toString(num3);
-//				System.out.println(num3);
-//				System.out.println(num1);
-//				System.out.println(num2);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
 				System.out.println(m);
@@ -65,9 +98,6 @@ public class CalculatorV2 {
 				double num2 = Double.parseDouble(m.get(indexOfThatSymbol + 1));
 				double num3 = (num1 + num2);
 				String changed = Double.toString(num3);
-//				System.out.println(num3);
-//				System.out.println(num1);
-//				System.out.println(num2);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
 				System.out.println(m);
@@ -83,9 +113,6 @@ public class CalculatorV2 {
 				double num2 = Double.parseDouble(m.get(indexOfThatSymbol + 1));
 				double num3 = (num1 - num2);
 				String changed = Double.toString(num3);
-//				System.out.println(num3);
-//				System.out.println(num1);
-//				System.out.println(num2);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
 				System.out.println(m);
@@ -95,15 +122,15 @@ public class CalculatorV2 {
 	}
 	
 	public static void main(String[] args) {
-		String testCase = "4 + 2 - 2 * 10 + 4 - 10 + 100 - 9 * 5";
-		ArrayList<String> formulaSplit = converStrToList(testCase);
-		System.out.println(formulaSplit);
-		division(formulaSplit);
-		multiplication(formulaSplit);
-		addition(formulaSplit);
-		subtraction(formulaSplit);
-		System.out.println(formulaSplit);
+		String testCase = "8 ( 2 + 3 )";
 		
+		ArrayList<String> formulaSplitAll = converStrToListNoBrack(testCase);
+		ArrayList<String> formulaSplitInBrackets = converStrToListWithBrack(formulaSplitAll);
+		System.out.println(formulaSplitInBrackets);
+		division(formulaSplitAll);
+		multiplication(formulaSplitAll);
+		addition(formulaSplitAll);
+		subtraction(formulaSplitAll);
 		
 	}
 	
