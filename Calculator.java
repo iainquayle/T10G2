@@ -1,6 +1,7 @@
 package engine;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class CalculatorV3 {
 	static ArrayList<String> formulaSplitAll = new ArrayList<String>();
@@ -122,15 +123,21 @@ public class CalculatorV3 {
 	}
 	
 	public static void main(String[] args) {
-		String testCase = "8 ( 2 + 3 )";
+		Scanner inputFromUser = new Scanner(System.in);
+		System.out.print("Enter a string with spaces in between operaotrs: ");
+		String testCase = inputFromUser.nextLine();
 		
 		ArrayList<String> formulaSplitAll = converStrToListNoBrack(testCase);
-		ArrayList<String> formulaSplitInBrackets = converStrToListWithBrack(formulaSplitAll);
-		System.out.println(formulaSplitInBrackets);
+		for (String g : formulaSplitAll) {
+			if(formulaSplitAll.contains("(")) {
+				ArrayList<String> formulaSplitInBrackets = converStrToListWithBrack(formulaSplitAll);
+			}
+		}
 		division(formulaSplitAll);
 		multiplication(formulaSplitAll);
 		addition(formulaSplitAll);
 		subtraction(formulaSplitAll);
+		System.out.print("Your answer is: "+ formulaSplitAll);
 		
 	}
 	
