@@ -5,8 +5,8 @@ import engine.Layer;
 
 public class Input extends Layer
 {
-	float[] input = null;
-	int lenInputJump = 0;
+	float[] data = null;
+	int dataNum = 0;
 	
 	public Input()
 	{
@@ -14,21 +14,20 @@ public class Input extends Layer
 	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num)
 	{
 		layerNum = num;
-		visLayerNum = in.nextInt();
+		layerVisNum = in.nextInt();
 		lenVals = in.nextInt();
 		if(num != 0)
 		{
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
-			begValsVis = l[visLayerNum].getBegVals();
 		}
-		input = io[visLayerNum];
+		data = io[dataNum];
 	}
 	
 	public void eval()
 	{
 		for(int i = 0; i < lenVals; i++)
 		{
-			valsAch[begVals + i] = input[rndIndex * lenInputJump + i];
+			valsAch[begVals + i] = data[rndIndex * lenValsVis + i];
 		}
 	}
 	public void train() //don't need anything here

@@ -6,9 +6,8 @@ import engine.Layer;
 
 public class Output extends Layer
 {
-	float[] output = null;
-	int lenOutputJump = 0;
-	int outputNum = 0;
+	float[] data = null;
+	int dataNum = 0;
 	
 	public Output()
 	{
@@ -16,31 +15,31 @@ public class Output extends Layer
 	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num)
 	{
 		layerNum = num;
-		visLayerNum = in.nextInt();
-		outputNum = in.nextInt();
-		lenVals = l[visLayerNum].getLenVals();
+		layerVisNum = in.nextInt();
+		dataNum = in.nextInt();
+		lenVals = l[layerVisNum].getLenVals();
 		if(num != 0)
 		{
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
-			begValsVis = l[visLayerNum].getBegVals();
+			begValsVis = l[layerVisNum].getBegVals();
 		}
-		output = io[outputNum];
+		data = io[dataNum];
 	}
 	
 	public void eval()
 	{
 		for(int i = 0; i < lenVals; i++)
 		{
-			valsAch[begVals + i] = visValsAch[begValsVis + i];
+			valsAch[begVals + i] = valsAch[begValsVis + i];
 		}
 	}
 	public void train()
 	{
-		visValsReq[(int)output[rndIndex]] = 1;
+		valsAch[(int)data[rndIndex]] = 1;
 	}
 	
 	public int getLayerType()
 	{
-		return 3;
+		return 5;
 	}
 }

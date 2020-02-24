@@ -6,7 +6,7 @@ import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
 
-public class Conv2D extends Layer
+public class InConv2D extends Layer
 {
 	//there is no current options built in for padding
 	static float[] aveWei = null;
@@ -16,46 +16,45 @@ public class Conv2D extends Layer
 	int lenValsX = 0; //width of vals
 	int lenValsY = 0; //height of vals
 	int lenValsZ = 0; //depth of vals/number of kernels
+	int lenValsLayer = 0; //total length of img, may not use and just go with X x Y cache hit dependent 
 	int lenValsVisX = 0; //X of vis layer
 	int lenValsVisY = 0; //Y of vis layer
 	int lenValsVisZ = 0; //Zth of vis layer/Zth of each kernel
 	int lenValsVisImg = 0;
 	
-	public Conv2D()
+	float data[] = null;
+	int dataNum = 0;
+	
+	public InConv2D()
 	{
 	}
 	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
 	{
 		layerNum = num; //(layer reference, width, height, depth, length weights, kernel width/height, stride)
-		layerVisNum = in.nextInt();
+		dataNum = in.nextInt();
 		lenValsX = in.nextInt();
 		lenValsY = in.nextInt();
 		lenValsZ = in.nextInt();
-		lenValsVisX = in.nextInt();
-		lenValsVisY = in.nextInt();
-		lenValsVisZ = in.nextInt();
 		lenWeis = in.nextInt();
 		lenKerDim = in.nextInt();
+		lenValsVis = in.nextInt();
 		stride = in.nextInt();
 		lenVals = lenValsX * lenValsY * lenValsZ;
-		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
-		lenValsVisImg = lenValsVisX * lenValsVisY;
 		lenKer = lenKerDim * lenKerDim * lenValsZ;
-		Scanner wFile = new Scanner(new File("weights" + layerNum));
+		Scanner wIn = new Scanner(new File("weights" + layerNum));
 		weights = new float[lenWeis];
 		for(int i = 0; i < lenWeis; i++)
 		{
-			weights[i] = wFile.nextFloat();
+			weights[i] = wIn.nextFloat();
 		}
 		if(num != 0)
 		{
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
-			begValsVis = l[layerVisNum].getBegVals();
+			
 		}
-		endVals = begVals + lenVals;
-		endValsVis = begValsVis + lenValsVis;
 		aveWei = new float[lenKer];
-		wFile.close();
+		data = io[dataNum];
+		wIn.close();
 	}
 	
 	public void eval()
@@ -66,6 +65,7 @@ public class Conv2D extends Layer
 		int kerZStop = 0;
 		int kerXStop = 0;
 		int kerYStop = 0;
+		begValsVis = rndIndex * lenValsVis;  //sets the beg val for the data
 		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/img
 		{
 			weiPos = i * lenKerDim * lenKerDim * lenValsVisZ;
@@ -85,7 +85,7 @@ public class Conv2D extends Layer
 							kerXStop = valsVisPos + lenKerDim;
 							while(valsVisPos < kerXStop) //iterate through kernel dim
 							{
-								valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos];
+								valsAch[valsPos] += data[valsVisPos] * weights[weiPos];
 								valsVisPos++;
 								weiPos++;
 							}
@@ -104,71 +104,13 @@ public class Conv2D extends Layer
 			valsPos++;
 		}
 	}
-	@SuppressWarnings("unused")
-	public void train() //backpass and train, will optimize later
+	public void train() //no need for code here
 	{
-		//look at iterating through the vis layer again 
-		int valsPos = begVals;
-		int weiPos = 0;
-		int valsVisPos = begValsVis;
-		int aveWeiPos = 0;
-		int kerZStop = 0;
-		int kerXStop = 0;
-		int kerYStop = 0;
-		while(valsPos < endVals)
-		{
-			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]);
-			valsPos++;
-		}
-		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/img
-		{
-			weiPos = i * lenKerDim * lenKerDim * lenValsVisZ;
-			for(int j = 0; j < lenValsY; j++) //iterate through each layer
-			{
-				for(int k = 0; k < lenValsX; k++) //iterate through each row
-				{
-					valsVisPos = begValsVis + j * stride * lenValsVisX + k * stride;
-					aveWeiPos = 0;
-					kerZStop = valsVisPos + lenValsVisImg * (lenValsVisZ - 1);
-					while(valsVisPos <= kerZStop) //iterate through each img in the vis layer 
-					{
-						kerYStop = valsVisPos + lenKerDim * lenValsVisX;
-						for(int m = 0; m <= kerYStop; m++) //iterate through kernel dim
-						{
-							kerXStop = valsVisPos + lenKerDim;
-							while(valsVisPos < kerXStop) //iterate through kernel dim
-							{
-								valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];
-								aveWei[aveWeiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
-								valsVisPos++;
-								weiPos++;
-								aveWeiPos++;
-							}
-							valsVisPos += lenValsVisX - lenKerDim;
-							weiPos++;
-							aveWeiPos++;
-						}
-						valsVisPos += lenValsVisImg - (lenKerDim * lenValsVisX + lenKerDim);
-						weiPos++;
-						aveWeiPos++;
-					}
-					weiPos -= lenKer;
-					valsPos++;
-				}
-				valsPos++;
-			}
-			for(int j = 0; j < lenKer; j++)
-			{
-				weights[weiPos] += aveWei[j];
-				weiPos++;
-			}
-			valsPos++;
-		}
 	}
 	
 	public int getLayerType()
 	{
-		return 1;
+		return 4;
 	}
 
 	public int getStride() 
@@ -218,6 +160,14 @@ public class Conv2D extends Layer
 	public void setLenValsZ(int lenValsZ) 
 	{
 		this.lenValsZ = lenValsZ;
+	}
+	public int getLenValsLayer() 
+	{
+		return lenValsLayer;
+	}
+	public void setLenValsLayer(int lenValsLayer) 
+	{
+		this.lenValsLayer = lenValsLayer;
 	}
 	public int getLenValsVisX() 
 	{

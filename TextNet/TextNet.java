@@ -73,7 +73,19 @@ public class TextNet
 			}
 			else if(temp == 3)
 			{
+				layers[i] = new InDense();
+			}
+			else if(temp == 4)
+			{
+				layers[i] = new InConv2D();
+			}
+			else if(temp == 5)
+			{
 				layers[i] = new Output();
+			}
+			else if(temp == 6)
+			{
+				layers[i] = new OutDense();
 			}
 		}
 		temp = 0;

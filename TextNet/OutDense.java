@@ -6,15 +6,19 @@ import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
 
-public class Dense extends Layer
+public class OutDense extends Layer
 {
-	public Dense()
+	float data[] = null;
+	int dataNum = 0;
+	
+	public OutDense()
 	{
 	}
 	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;
 		layerVisNum = in.nextInt();
+		dataNum = in.nextInt();
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
 		lenWeis = in.nextInt();
@@ -31,6 +35,7 @@ public class Dense extends Layer
 		}
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
+		data = io[dataNum];
 		wFile.close();
 	}
 	
@@ -54,10 +59,7 @@ public class Dense extends Layer
 	public void train() //back pass and train
 	{
 		int weiPos = 0;
-		for(int valsPos = begVals; valsPos < endVals; valsPos++)
-		{
-			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]); //step applied to req vals
-		}
+		valsAch[(int)(data[rndIndex] + 0.5)] = 1;
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
@@ -67,10 +69,11 @@ public class Dense extends Layer
 				weiPos++;
 			}
 		}
+		valsAch[(int)(data[rndIndex] + 0.5)] = 1;
 	}
 	
 	public int getLayerType()
 	{
-		return 0;
+		return 6;
 	}
 }

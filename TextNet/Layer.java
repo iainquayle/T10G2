@@ -10,8 +10,8 @@ public class Layer
 {
 	protected static Integer rndIndex = null;
 	
-	protected static float[] valsAch = null;
-	protected static float[] valsReq = null;
+	protected static float[] valsAch = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
+	protected static float[] valsReq = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
 	protected int lenVals = 0;
 	protected int begVals = 0; //beginning index of vals
 	protected int endVals = 0; //ending index of vals
@@ -20,12 +20,10 @@ public class Layer
 	protected float[] weights;
 	protected int lenWeis;
 	
-	protected static float[] visValsAch = null; //this is now the same pointer as valsAch, but this has been kept for code readability, it may be done away with
-	protected static float[] visValsReq = null; //this is now the same pointer as valsReq, but this has been kept for code readability, it may be done away with
 	protected int lenValsVis = 0;
 	protected int begValsVis = 0; //beginning index of valsVis
 	protected int endValsVis = 0; //ending index of valsVis
-	protected int visLayerNum = 0;
+	protected int layerVisNum = 0;
 	
 	protected static float threadSplits; //value for fraction of layer a thread has command of
 	
@@ -64,8 +62,6 @@ public class Layer
 		rndIndex = i;
 		valsAch = a;
 		valsReq = r;
-		visValsAch = a;
-		visValsReq = r;
 	}
 	public void setWeightsRef(float[] w)
 	{
