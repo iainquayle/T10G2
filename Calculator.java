@@ -22,8 +22,8 @@ public class CalculatorV3 {
 		System.out.println(formulaSplitInBrackets);
 		int indexOfOpen = formulaSplitAll.indexOf("(");;
 		int indexOfClose = formulaSplitAll.indexOf(")");
-		System.out.println(indexOfOpen);
-		System.out.println(indexOfClose);
+//		System.out.println(indexOfOpen);
+//		System.out.println(indexOfClose);
 		
 		for (int i= indexOfOpen ; i<= indexOfClose; i++ ) {
 			formulaSplitInBrackets.add(formulaSplitAll.get(i));
@@ -34,7 +34,7 @@ public class CalculatorV3 {
 		addition(formulaSplitInBrackets);
 		subtraction(formulaSplitInBrackets);
 
-		System.out.println(formulaSplitInBrackets);
+//		System.out.println(formulaSplitInBrackets);
 		
 		formulaSplitAll.subList(indexOfOpen, indexOfClose + 1).clear();
 		
@@ -69,7 +69,7 @@ public class CalculatorV3 {
 				String changed = Double.toString(num3);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
-				System.out.println(m);
+//				System.out.println(m);
 				i = 0;
 				}	
 		}
@@ -85,7 +85,7 @@ public class CalculatorV3 {
 				String changed = Double.toString(num3);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
-				System.out.println(m);
+//				System.out.println(m);
 				i = 0;
 				}	
 		}
@@ -101,7 +101,7 @@ public class CalculatorV3 {
 				String changed = Double.toString(num3);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
-				System.out.println(m);
+//				System.out.println(m);
 				i = 0;
 				}	
 		}
@@ -116,7 +116,7 @@ public class CalculatorV3 {
 				String changed = Double.toString(num3);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
-				System.out.println(m);
+//				System.out.println(m);
 				i = 0;
 				}	
 		}
@@ -137,7 +137,20 @@ public class CalculatorV3 {
 		multiplication(formulaSplitAll);
 		addition(formulaSplitAll);
 		subtraction(formulaSplitAll);
-		System.out.print("Your answer is: "+ formulaSplitAll);
+		double num = 0;
+		int num2 = 0;
+		for (String b : formulaSplitAll) {
+			num = Double.parseDouble(b);
+			if(num % 1 == 0) {
+				num2 = (int) num;
+				System.out.println("Final answer: " + num2);
+			}
+			else {
+				System.out.println("Final answer: " + num);
+			}
+			
+		}
+		
 		
 	}
 	
