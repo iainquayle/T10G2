@@ -3,7 +3,7 @@ package engine;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Calculator {
+public class CalculatorV3 {
 	static ArrayList<String> formulaSplitAll = new ArrayList<String>();
 	static String[] ArrayForm;
 	static ArrayList<String> formulaSplitInBrackets = new ArrayList<String>();
@@ -22,8 +22,6 @@ public class Calculator {
 		System.out.println(formulaSplitInBrackets);
 		int indexOfOpen = formulaSplitAll.indexOf("(");;
 		int indexOfClose = formulaSplitAll.indexOf(")");
-//		System.out.println(indexOfOpen);
-//		System.out.println(indexOfClose);
 		
 		for (int i= indexOfOpen ; i<= indexOfClose; i++ ) {
 			formulaSplitInBrackets.add(formulaSplitAll.get(i));
@@ -34,22 +32,44 @@ public class Calculator {
 		addition(formulaSplitInBrackets);
 		subtraction(formulaSplitInBrackets);
 
-//		System.out.println(formulaSplitInBrackets);
 		
 		formulaSplitAll.subList(indexOfOpen, indexOfClose + 1).clear();
 		
 		for(String g : formulaSplitInBrackets) {
 			formulaSplitAll.add(g);
+//			double num3 = Double.parseDouble(g);
 		}
+		System.out.println(formulaSplitAll);
 		for (int j = 0; j <= formulaSplitAll.size() - 1; j++) {
 			while(formulaSplitAll.get(j).equals("(")) {
 				int indexOfThatSymbol = formulaSplitAll.indexOf("(");
-				double num1 = Double.parseDouble(formulaSplitAll.get(indexOfThatSymbol - 1));
-				double num2 = Double.parseDouble(formulaSplitAll.get(indexOfThatSymbol + 1));
-				double num3 = (num1 * num2);
+				System.out.println(indexOfThatSymbol);
+				double num3 = Double.parseDouble(formulaSplitAll.get(indexOfThatSymbol + 1));
+//				double num2 = Double.parseDouble(formulaSplitAll.get(indexOfThatSymbol + 1));
+				if(indexOfThatSymbol > 0) {
+				if (formulaSplitAll.get(indexOfThatSymbol - 1).equals("+")) {
+//					|| formulaSplitAll.get(indexOfThatSymbol - 1) == "*" || formulaSplitAll.get(indexOfThatSymbol - 1) == "/") {
+					double num1 = Double.parseDouble(formulaSplitAll.get(indexOfThatSymbol - 2));
+					System.out.println(num1);
+//					if (formulaSplitAll.get(indexOfThatSymbol - 1) == "+") {
+						num3 = num1 + num3;
+					System.out.println(num3);
+				}
+			
+				else{
+					double num1 = Double.parseDouble(formulaSplitAll.get(indexOfThatSymbol - 1));
+					num3 = (num1 * num3);
+					}
+				}
+				System.out.println(num3);
+				System.out.println(formulaSplitAll);
+				formulaSplitAll.subList(indexOfThatSymbol , indexOfThatSymbol + 3).clear();
 				String changed = Double.toString(num3);
-				formulaSplitAll.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
-				formulaSplitAll.add(indexOfThatSymbol - 1, changed);
+				System.out.println(changed);
+				System.out.println(formulaSplitAll);
+				formulaSplitAll.subList((indexOfThatSymbol - 2), (indexOfThatSymbol)).clear();
+				System.out.println(formulaSplitAll);
+				formulaSplitAll.add(changed);
 				System.out.println(formulaSplitAll);
 				formulaSplitAll.remove(")");
 				j = 0;
@@ -69,7 +89,6 @@ public class Calculator {
 				String changed = Double.toString(num3);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
-//				System.out.println(m);
 				i = 0;
 				}	
 		}
@@ -85,7 +104,6 @@ public class Calculator {
 				String changed = Double.toString(num3);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
-//				System.out.println(m);
 				i = 0;
 				}	
 		}
@@ -101,7 +119,6 @@ public class Calculator {
 				String changed = Double.toString(num3);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
-//				System.out.println(m);
 				i = 0;
 				}	
 		}
@@ -116,7 +133,6 @@ public class Calculator {
 				String changed = Double.toString(num3);
 				m.subList((indexOfThatSymbol - 1), (indexOfThatSymbol + 2)).clear();
 				m.add(indexOfThatSymbol - 1, changed);
-//				System.out.println(m);
 				i = 0;
 				}	
 		}
@@ -124,7 +140,7 @@ public class Calculator {
 	
 	public static void main(String[] args) {
 		Scanner inputFromUser = new Scanner(System.in);
-		System.out.print("Enter a string with spaces in between operaotrs: ");
+		System.out.print("Enter a string with spaces in between operators: ");
 		String testCase = inputFromUser.nextLine();
 		
 		ArrayList<String> formulaSplitAll = converStrToListNoBrack(testCase);
