@@ -17,7 +17,7 @@ public class Dense extends Layer
 		layerVisNum = in.nextInt();
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
-		lenWeis = in.nextInt();
+		lenWeis = lenVals * lenValsVis;
 		Scanner wFile = new Scanner(new File("weights" + layerNum));
 		weights = new float[lenWeis];
 		for(int i = 0; i < lenWeis; i++)

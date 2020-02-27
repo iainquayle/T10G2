@@ -9,18 +9,17 @@ import engine.Functions;
 public class InConv2D extends Layer
 {
 	//there is no current options built in for padding
-	static float[] aveWei = null;
-	int stride = 0; //stride length between neurons in vis layer
-	int lenKer = 0;
-	int lenKerDim = 0; //individual kernel dimensions, they are square so it acts for X and Y
-	int lenValsX = 0; //width of vals
-	int lenValsY = 0; //height of vals
-	int lenValsZ = 0; //depth of vals/number of kernels
-	int lenValsLayer = 0; //total length of img, may not use and just go with X x Y cache hit dependent 
-	int lenValsVisX = 0; //X of vis layer
-	int lenValsVisY = 0; //Y of vis layer
-	int lenValsVisZ = 0; //Zth of vis layer/Zth of each kernel
-	int lenValsVisImg = 0;
+	private int stride = 0; //stride length between neurons in vis layer
+	private int lenKer = 0;
+	private int lenKerDim = 0; //individual kernel dimensions, they are square so it acts for X and Y
+	private int lenValsX = 0; //width of vals
+	private int lenValsY = 0; //height of vals
+	private int lenValsZ = 0; //depth of vals/number of kernels
+	private int lenValsLayer = 0; //total length of img, may not use and just go with X x Y cache hit dependent 
+	private int lenValsVisX = 0; //X of vis layer
+	private int lenValsVisY = 0; //Y of vis layer
+	private int lenValsVisZ = 0; //Zth of vis layer/Zth of each kernel
+	private int lenValsVisImg = 0;
 	
 	float data[] = null;
 	int dataNum = 0;
@@ -52,7 +51,6 @@ public class InConv2D extends Layer
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
 			
 		}
-		aveWei = new float[lenKer];
 		data = io[dataNum];
 		wIn.close();
 	}
@@ -106,6 +104,52 @@ public class InConv2D extends Layer
 	}
 	public void train() //no need for code here
 	{
+		//look at iterating through the vis layer again 
+		int valsPos = begVals;
+		int weiPos = 0;
+		int valsVisPos = begValsVis;
+		int kerZStop = 0;
+		int kerXStop = 0;
+		int kerYStop = 0;
+		while(valsPos < endVals)
+		{
+			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]);
+			valsPos++;
+		}
+		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/img
+		{
+			weiPos = i * lenKerDim * lenKerDim * lenValsVisZ;
+			for(int j = 0; j < lenValsY; j++) //iterate through each layer
+			{
+				for(int k = 0; k < lenValsX; k++) //iterate through each row
+				{
+					valsVisPos = begValsVis + j * stride * lenValsVisX + k * stride;
+					kerZStop = valsVisPos + lenValsVisImg * (lenValsVisZ - 1);
+					while(valsVisPos <= kerZStop) //iterate through each img in the vis layer 
+					{
+						kerYStop = valsVisPos + lenKerDim * lenValsVisX;
+						for(int m = 0; m <= kerYStop; m++) //iterate through kernel dim
+						{
+							kerXStop = valsVisPos + lenKerDim;
+							while(valsVisPos < kerXStop) //iterate through kernel dim
+							{
+								weights[weiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
+								valsVisPos++;
+								weiPos++;
+							}
+							valsVisPos += lenValsVisX - lenKerDim;
+							weiPos++;
+						}
+						valsVisPos += lenValsVisImg - (lenKerDim * lenValsVisX + lenKerDim);
+						weiPos++;
+					}
+					weiPos -= lenKer;
+					valsPos++;
+				}
+				valsPos++;
+			}
+			valsPos++;
+		}
 	}
 	
 	public int getLayerType()

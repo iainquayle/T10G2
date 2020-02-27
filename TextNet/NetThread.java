@@ -3,12 +3,14 @@ package engine;
 import java.lang.Thread;
 import java.lang.Runnable;
 
+@SuppressWarnings("unused")
 public class NetThread implements Runnable
 {
-	NetThread[] selfRef = null;
-	Thread thread = null;
-	int num = 0;
-	boolean state = false;
+	private NetThread[] selfRef = null;
+	private Thread thread = null;
+	private int num = 0;
+	private boolean state = false;
+	private boolean seen = false;
 	
 	public NetThread(String str, int n)
 	{

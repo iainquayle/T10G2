@@ -9,17 +9,17 @@ import engine.Functions;
 public class Conv2D extends Layer
 {
 	//there is no current options built in for padding
-	static float[] aveWei = null;
-	int stride = 0; //stride length between neurons in vis layer
-	int lenKer = 0;
-	int lenKerDim = 0; //individual kernel dimensions, they are square so it acts for X and Y
-	int lenValsX = 0; //width of vals
-	int lenValsY = 0; //height of vals
-	int lenValsZ = 0; //depth of vals/number of kernels
-	int lenValsVisX = 0; //X of vis layer
-	int lenValsVisY = 0; //Y of vis layer
-	int lenValsVisZ = 0; //Zth of vis layer/Zth of each kernel
-	int lenValsVisImg = 0;
+	private static float[] aveWei = null;
+	private int stride = 0; //stride length between neurons in vis layer
+	private int lenKer = 0;
+	private int lenKerDim = 0; //individual kernel dimensions, they are square so it acts for X and Y
+	private int lenValsX = 0; //width of vals
+	private int lenValsY = 0; //height of vals
+	private int lenValsZ = 0; //depth of vals/number of kernels
+	private int lenValsVisX = 0; //X of vis layer
+	private int lenValsVisY = 0; //Y of vis layer
+	private int lenValsVisZ = 0; //Zth of vis layer/Zth of each kernel
+	private int lenValsVisImg = 0;
 	
 	public Conv2D()
 	{

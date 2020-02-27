@@ -8,8 +8,8 @@ import engine.Functions;
 
 public class InDense extends Layer
 {
-	float data[] = null;
-	int dataNum = 0;
+	private float data[] = null;
+	private int dataNum = 0;
 	
 	public InDense()
 	{
@@ -20,7 +20,7 @@ public class InDense extends Layer
 		dataNum = in.nextInt();
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
-		lenWeis = in.nextInt();
+		lenWeis = lenVals * lenValsVis;
 		Scanner wFile = new Scanner(new File("weights" + layerNum));
 		weights = new float[lenWeis];
 		for(int i = 0; i < lenWeis; i++)
@@ -54,8 +54,18 @@ public class InDense extends Layer
 		}
 	}
 	@SuppressWarnings("unused")
-	public void train() //no need for code here
+	public void train()
 	{
+		int weiPos = 0;
+		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
+		{
+			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]); //step applied to req vals
+			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
+			{
+				weights[weiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				weiPos++;
+			}
+		}
 	}
 	
 	public int getLayerType()

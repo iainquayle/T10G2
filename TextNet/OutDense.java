@@ -8,8 +8,8 @@ import engine.Functions;
 
 public class OutDense extends Layer
 {
-	float data[] = null;
-	int dataNum = 0;
+	private float data[] = null;
+	private int dataNum = 0;
 	
 	public OutDense()
 	{
@@ -21,7 +21,7 @@ public class OutDense extends Layer
 		dataNum = in.nextInt();
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
-		lenWeis = in.nextInt();
+		lenWeis = lenVals * lenValsVis;
 		Scanner wFile = new Scanner(new File("weights" + layerNum));
 		weights = new float[lenWeis];
 		for(int i = 0; i < lenWeis; i++)

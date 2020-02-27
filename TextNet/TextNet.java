@@ -18,14 +18,14 @@ import engine.NetThread;
 
 public class TextNet
 {
-	static Layer[] layers = null;
-	static NetThread[] threads = null;
-	static Date time = null;
-	static Integer rndIndex = null;
-	static float[][] IOputs;
-	static int lenData;
-	static int lenLayers = 0;
-	volatile static int threadPos = 0;
+	private static Layer[] layers = null;
+	private static NetThread[] threads = null;
+	private static Date time = null;
+	private static Integer rndIndex = null;
+	private static float[][] IOputs;
+	private static int lenData;
+	private static int lenLayers = 0;
+	private volatile static int threadPos = 0;
 	
 	public static void main(String[] args) 
 	{

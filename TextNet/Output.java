@@ -6,8 +6,8 @@ import engine.Layer;
 
 public class Output extends Layer
 {
-	float[] data = null;
-	int dataNum = 0;
+	private float[] data = null;
+	private int dataNum = 0;
 	
 	public Output()
 	{
