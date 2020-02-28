@@ -1,9 +1,7 @@
-
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Calculator {
+public class Calculator{
 	static ArrayList<String> formulaSplitAll = new ArrayList<String>();
 	static String[] ArrayForm;
 	static ArrayList<String> formulaSplitInBrackets = new ArrayList<String>();
@@ -60,9 +58,9 @@ public class Calculator {
 					double num1 = Double.parseDouble(formulaSplitAll.get(indexOfOpen- 1));
 					double num3 = Double.parseDouble(formulaSplitAll.get(indexOfOpen+ 1));
 					num3 = (num1 * num3);
-					formulaSplitAll.subList(indexOfOpen- 1, indexOfOpen+ 2).clear();
+					formulaSplitAll.subList(indexOfOpen- 1, indexOfOpen+ 3).clear();
 					String change = Double.toString(num3);
-					formulaSplitAll.add(change);
+					formulaSplitAll.add(indexOfOpen - 1, change);
 				}
 				else {
 					formulaSplitAll.remove("(");
@@ -80,6 +78,7 @@ public class Calculator {
 		formulaSplitAll.remove(")");		
 		return formulaSplitAll;
 	}
+	
 	// from the order BIDMAS, it looks for the division symbol and divides the numbers before and after the "/" symbol
 	public static void division(ArrayList<String> m) {
 		for (int i = 0 ; i <= m.size() - 1; i ++) {
@@ -145,7 +144,7 @@ public class Calculator {
 		Scanner inputFromUser = new Scanner(System.in);
 		System.out.print("Enter a string with spaces in between operators: ");
 		String testCase = inputFromUser.nextLine();
-	
+
 		
 		ArrayList<String> formulaSplitAll = converStrToListNoBrack(testCase);
 		//look for if the formulaSplitAll array list has any brackets operator, and if it does, carry out the function with the brackets 
@@ -174,7 +173,6 @@ public class Calculator {
 			}
 			
 		}
-		
 		
 		
 	}
