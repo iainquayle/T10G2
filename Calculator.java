@@ -80,7 +80,6 @@ public class Calculator {
 		formulaSplitAll.remove(")");		
 		return formulaSplitAll;
 	}
-	
 	// from the order BIDMAS, it looks for the division symbol and divides the numbers before and after the "/" symbol
 	public static void division(ArrayList<String> m) {
 		for (int i = 0 ; i <= m.size() - 1; i ++) {
