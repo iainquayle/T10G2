@@ -3,7 +3,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CalculatorV4 {
+public class Calculator {
 	static ArrayList<String> formulaSplitAll = new ArrayList<String>();
 	static String[] ArrayForm;
 	static ArrayList<String> formulaSplitInBrackets = new ArrayList<String>();
