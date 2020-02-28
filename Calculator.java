@@ -29,19 +29,25 @@ public class CalculatorV4 {
 		for (int i= indexOfOpen ; i<= indexOfClose; i++ ) {
 			formulaSplitInBrackets.add(formulaSplitAll.get(i));
 		}
-		
+		System.out.println(formulaSplitAll);
+		System.out.println(formulaSplitInBrackets);
 		// do the necessary calculations of the equations 
 		division(formulaSplitInBrackets);
 		multiplication(formulaSplitInBrackets);
 		addition(formulaSplitInBrackets);
 		subtraction(formulaSplitInBrackets);
+		System.out.println(formulaSplitInBrackets);
 
 		// clear out the equation stored in the brackets in the formulaSplitAll array list 
-		formulaSplitAll.subList(indexOfOpen, indexOfClose + 1).clear();
+		formulaSplitAll.subList(indexOfOpen + 1, indexOfClose ).clear();
 
 		// from the formulaSplitInBrackets, the calculated value from the brackets is added to the formulaSplitAll list
-		for(String g : formulaSplitInBrackets) {
-			formulaSplitAll.add(g);
+
+		formulaSplitInBrackets.remove("(");
+		formulaSplitInBrackets.remove(")");
+		System.out.println(formulaSplitInBrackets);
+		for (int j = 0 ; j <= formulaSplitInBrackets.size() - 1; j ++) {
+			formulaSplitAll.add(indexOfOpen + 1, formulaSplitInBrackets.get(j));;
 		}
 
 		// if there is a number before the opening brackets, it multiplies the number with the calculated value in brackets 
@@ -58,10 +64,16 @@ public class CalculatorV4 {
 					String change = Double.toString(num3);
 					formulaSplitAll.add(change);
 				}
+				else {
+					formulaSplitAll.remove("(");
+					formulaSplitAll.remove(")");
+				}
+				
 				}
 			}
 				
 		}
+		System.out.println(formulaSplitAll);
 		
 		// remove the opening and closing brackets symbol
 		formulaSplitAll.remove("(");
@@ -134,7 +146,7 @@ public class CalculatorV4 {
 		Scanner inputFromUser = new Scanner(System.in);
 		System.out.print("Enter a string with spaces in between operators: ");
 		String testCase = inputFromUser.nextLine();
-		
+	
 		
 		ArrayList<String> formulaSplitAll = converStrToListNoBrack(testCase);
 		//look for if the formulaSplitAll array list has any brackets operator, and if it does, carry out the function with the brackets 
@@ -163,6 +175,7 @@ public class CalculatorV4 {
 			}
 			
 		}
+		
 		
 		
 	}
