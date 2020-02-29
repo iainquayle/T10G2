@@ -72,4 +72,8 @@ public class InDense extends Layer
 	{
 		return 3;
 	}
+	public String toString()
+	{
+		return null;
+	}
 }

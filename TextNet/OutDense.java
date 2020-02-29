@@ -76,4 +76,8 @@ public class OutDense extends Layer
 	{
 		return 6;
 	}
+	public String toString()
+	{
+		return null;
+	}
 }

@@ -79,4 +79,8 @@ public class Layer
 	{
 		return begVals;
 	}
+	public String toString()
+	{
+		return null;
+	}
 }

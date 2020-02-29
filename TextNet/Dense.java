@@ -73,4 +73,8 @@ public class Dense extends Layer
 	{
 		return 0;
 	}
+	public String toString()
+	{
+		return null;
+	}
 }
