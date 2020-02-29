@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * This class uses the external openCSV library.
  * http://opencsv.sourceforge.net/
  */
-public class inputData {
+public class InputData {
 	
 	@SuppressWarnings("deprecation")
 	/**
