@@ -18,7 +18,7 @@ public class Dense extends Layer
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
 		lenWeis = lenVals * lenValsVis;
-		Scanner wFile = new Scanner(new File("weights" + layerNum));
+		Scanner wFile = new Scanner(new File(loc + "weights" + layerNum));
 		weights = new float[lenWeis];
 		for(int i = 0; i < lenWeis; i++)
 		{
@@ -39,7 +39,7 @@ public class Dense extends Layer
 		int weiPos = 0;
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through the vals
 		{
-			valsAch[valsPos] = 0;
+			valsAch[valsPos] = 0; //clearing ach vals
 			valsReq[valsPos] = 0; //clearing req vals for the training pass
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through the vis layer vals
 			{
@@ -75,6 +75,6 @@ public class Dense extends Layer
 	}
 	public String toString()
 	{
-		return null;
+		return "" + layerNum + ", " + layerVisNum + ", ";
 	}
 }

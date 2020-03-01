@@ -43,8 +43,8 @@ public class InConv2D extends Layer
 		lenVals = lenValsX * lenValsY * lenValsZ;
 		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
 		lenValsVisImg = lenValsVisX * lenValsVisY;
-		lenKer = lenKerX * lenKerX * lenValsZ;
-		Scanner wFile = new Scanner(new File("weights" + layerNum));
+		lenKer = lenKerX * lenKerX * lenValsVisZ;
+		Scanner wFile = new Scanner(new File(loc + "weights" + layerNum));
 		weights = new float[lenWeis];
 		for(int i = 0; i < lenWeis; i++)
 		{
