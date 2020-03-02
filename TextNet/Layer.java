@@ -1,6 +1,7 @@
 package engine;
 
 import java.util.Scanner;
+import java.util.Random;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class Layer
 	{
 		if(weights != null)
 		{
-			FileWriter file = new FileWriter(loc + "weights" + layerNum);
+			FileWriter file = new FileWriter(loc + "Weights" + layerNum + ".csv", false);
 			String str = null;
 			for(int i = 0; i < lenWeis; i++)
 			{
@@ -57,6 +58,29 @@ public class Layer
 	{
 	}
 	
+	public void loadWeights(String loc) throws IOException
+	{
+		File file = new File(loc + "Weights" + layerNum + ".csv");
+		if(file.exists())
+		{
+			Scanner wFile = new Scanner(file);
+			weights = new float[lenWeis];
+			for(int i = 0; i < lenWeis; i++)
+			{
+				weights[i] = wFile.nextFloat();
+			}
+			wFile.close();
+		}
+		else
+		{
+			Random rnd = new Random();
+			weights = new float[lenWeis];
+			for(int i = 0; i < lenWeis; i++)
+			{
+				weights[i] = rnd.nextFloat() * 2 - 1;
+			}
+		}
+	}
 	public void setStatRefs(Integer i, float[] a, float[] r)
 	{
 		rndIndex = i;

@@ -1,13 +1,11 @@
 package engine;
 
+import java.lang.System;
 import java.lang.Thread;
 import java.lang.Runnable;
 import java.util.Scanner;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import engine.Layer;
 import engine.Dense;
 import engine.Conv2D;
@@ -20,8 +18,9 @@ public class TextNet
 {
 	private static Layer[] layers = null;
 	private static NetThread[] threads = null;
-	private static Date time = null;
 	private static Integer rndIndex = null;
+	private static String loc = System.getProperty("user.dir") + "/";
+	private static String name = null;
 	private static float[][] IOputs;
 	private static int lenData;
 	private static int lenLayers = 0;
@@ -29,7 +28,8 @@ public class TextNet
 	
 	public static void main(String[] args) 
 	{
-		try 
+		
+		/*try 
 		{
 			init(args[0]);
 		} 
@@ -37,23 +37,41 @@ public class TextNet
 		{
 			e.printStackTrace();
 		}
+		*/System.gc();
 		
-		run();
+		System.out.println(loc);
+		//print();
+		//run();
 		
-		try 
+		/*try 
 		{
 			save(args[0]);
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public static void init(String loc) throws IOException
 	{
+		Scanner in = new Scanner(System.in);
+		System.out.println("Training data name: ");
+		name = in.nextLine();
+		in.close();
+		in = new Scanner(new File(loc + name + "splits.csv"));
+		int tempLen = in.nextInt();
+		int[] split = new int[tempLen];
+		for(int i = 0; i < tempLen; i++)
+		{
+			split[i] = in.nextInt();
+		}
+		IOputs = InputData.csvToFloatArray(loc + name + ".csv", split);
+		System.out.print("Net config name: ");
+		name = in.nextLine();
+		in.close();
 		int temp = 0;
-		Scanner in = new Scanner(new File(loc + "config"));
+		in = new Scanner(new File(loc + name + ".csv"));
 		int layersLen = in.nextInt();
 		layers = new Layer[layersLen];
 		for(int i = 0; i < layersLen; i++)
@@ -91,7 +109,7 @@ public class TextNet
 		temp = 0;
 		for(int i = 0; i < layersLen; i++)
 		{
-			layers[i].init(layers, loc, in, IOputs, i);
+			layers[i].init(layers, loc + name, in, IOputs, i);
 			temp += layers[i].getLenVals();
 		}
 		layers[0].setStatRefs(rndIndex, new float[temp], new float[temp]);
@@ -118,5 +136,15 @@ public class TextNet
 				layers[j].train();
 			}
 		}
+	}
+	
+	public static void print()
+	{
+		String str = "";
+		for(int i = 0; i < lenLayers; i++)
+		{
+			str += layers[i];
+		}
+		System.out.print(str);
 	}
 }

@@ -1,7 +1,6 @@
 package engine;
 
 import java.util.Scanner;
-import java.io.File;
 import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
@@ -18,12 +17,7 @@ public class Dense extends Layer
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
 		lenWeis = lenVals * lenValsVis;
-		Scanner wFile = new Scanner(new File(loc + "weights" + layerNum));
-		weights = new float[lenWeis];
-		for(int i = 0; i < lenWeis; i++)
-		{
-			weights[i] = wFile.nextFloat();
-		}
+		super.loadWeights(loc);
 		if(num != 0)
 		{
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
@@ -31,7 +25,6 @@ public class Dense extends Layer
 		}
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
-		wFile.close();
 	}
 	
 	public void eval()
@@ -75,6 +68,6 @@ public class Dense extends Layer
 	}
 	public String toString()
 	{
-		return "" + layerNum + ", " + layerVisNum + ", ";
+		return layerNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + "\n";
 	}
 }

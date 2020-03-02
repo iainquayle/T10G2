@@ -1,7 +1,6 @@
 package engine;
 
 import java.util.Scanner;
-import java.io.File;
 import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
@@ -53,12 +52,7 @@ public class Conv2D extends Layer
 		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - lenKerX;
 		jumpValsVisBack = lenValsVisXY * (lenKerX - 1) + lenKerX + jumpValsVisXY + jumpValsVisZ - stride;
 		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
-		Scanner wFile = new Scanner(new File(loc + "weights" + layerNum));
-		weights = new float[lenWeis];
-		for(int i = 0; i < lenWeis; i++)
-		{
-			weights[i] = wFile.nextFloat();
-		}
+		super.loadWeights(loc);
 		if(num != 0)
 		{
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
@@ -67,7 +61,6 @@ public class Conv2D extends Layer
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
 		aveWei = new float[lenKer];
-		wFile.close();
 	}
 	
 	public void eval()
@@ -86,10 +79,10 @@ public class Conv2D extends Layer
 				{
 					valsAch[valsPos] = 0;
 					valsReq[valsPos] = 0;
-					stopKerZ = valsVisPos + jumpValsVisBack;                                             ///This needs fixing
+					stopKerZ = valsVisPos + jumpValsVisBack;   
 					while(valsVisPos <= stopKerZ) //iterate through each XY in the vis layer 
 					{
-						stopKerY = valsVisPos + jumpValsVisXY;                                             ///This needs fixing jump y is not correct for this
+						stopKerY = valsVisPos + jumpValsVisXY;  
 						while(valsVisPos <= stopKerY) //iterate through kernel dim
 						{
 							stopKerX = valsVisPos + lenKerX;
@@ -188,7 +181,7 @@ public class Conv2D extends Layer
 	}
 	public String toString()
 	{
-		return null;
+		return layerNum + ", " + layerVisNum + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + "\n";
 	}
 
 	public int getStride() 

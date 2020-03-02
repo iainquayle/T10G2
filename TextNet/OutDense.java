@@ -1,7 +1,6 @@
 package engine;
 
 import java.util.Scanner;
-import java.io.File;
 import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
@@ -10,6 +9,8 @@ public class OutDense extends Layer
 {
 	private float data[] = null;
 	private int dataNum = 0;
+	@SuppressWarnings("unused")
+	private int jumpData = 0;
 	
 	public OutDense()
 	{
@@ -22,12 +23,7 @@ public class OutDense extends Layer
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
 		lenWeis = lenVals * lenValsVis;
-		Scanner wFile = new Scanner(new File(loc + "weights" + layerNum));
-		weights = new float[lenWeis];
-		for(int i = 0; i < lenWeis; i++)
-		{
-			weights[i] = wFile.nextFloat();
-		}
+		super.loadWeights(loc);
 		if(num != 0)
 		{
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
@@ -36,7 +32,6 @@ public class OutDense extends Layer
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
 		data = io[dataNum];
-		wFile.close();
 	}
 	
 	public void eval()
