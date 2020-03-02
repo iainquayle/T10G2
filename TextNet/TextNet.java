@@ -19,7 +19,7 @@ public class TextNet
 	private static Layer[] layers = null;
 	private static NetThread[] threads = null;
 	private static Integer rndIndex = null;
-	private static String loc = System.getProperty("user.dir") + "/";
+	private static String loc = System.getProperty("user.dir") + "\\";
 	private static String name = null;
 	private static float[][] IOputs;
 	private static int lenData;
@@ -29,18 +29,17 @@ public class TextNet
 	public static void main(String[] args) 
 	{
 		
-		/*try 
+		try 
 		{
-			init(args[0]);
+			init();
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
-		*/System.gc();
+		System.gc();
 		
-		System.out.println(loc);
-		//print();
+		print();
 		//run();
 		
 		/*try 
@@ -53,30 +52,31 @@ public class TextNet
 		}*/
 	}
 	
-	public static void init(String loc) throws IOException
+	public static void init() throws IOException
 	{
-		Scanner in = new Scanner(System.in);
+		Scanner com = new Scanner(System.in);
 		System.out.println("Training data name: ");
-		name = in.nextLine();
-		in.close();
-		in = new Scanner(new File(loc + name + "splits.csv"));
-		int tempLen = in.nextInt();
+		name = com.nextLine();
+		Scanner file = new Scanner(new File(loc + name + "Splits.csv"));
+		file.useDelimiter(",");
+		int tempLen = file.nextInt();
 		int[] split = new int[tempLen];
 		for(int i = 0; i < tempLen; i++)
 		{
-			split[i] = in.nextInt();
+			split[i] = file.nextInt();
 		}
 		IOputs = InputData.csvToFloatArray(loc + name + ".csv", split);
 		System.out.print("Net config name: ");
-		name = in.nextLine();
-		in.close();
+		name = com.nextLine();
 		int temp = 0;
-		in = new Scanner(new File(loc + name + ".csv"));
-		int layersLen = in.nextInt();
+		file.close();
+		file = new Scanner(new File(loc + name + ".csv"));
+		file.useDelimiter(",");
+		int layersLen = file.nextInt();
 		layers = new Layer[layersLen];
 		for(int i = 0; i < layersLen; i++)
 		{
-			temp = in.nextInt();
+			temp = file.nextInt();
 			if(temp == 0)
 			{
 				layers[i] = new Dense();
@@ -109,11 +109,12 @@ public class TextNet
 		temp = 0;
 		for(int i = 0; i < layersLen; i++)
 		{
-			layers[i].init(layers, loc + name, in, IOputs, i);
+			layers[i].init(layers, loc + name, file, IOputs, i);
 			temp += layers[i].getLenVals();
 		}
 		layers[0].setStatRefs(rndIndex, new float[temp], new float[temp]);
-		in.close();
+		file.close();
+		com.close();
 	}
 	public static void save(String loc) throws IOException
 	{
