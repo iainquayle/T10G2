@@ -33,18 +33,19 @@ public class Layer
 	public Layer()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
+	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
+		System.out.println("Wrong layer");
 	}
 	public void save(String loc) throws IOException
 	{
 		if(weights != null)
 		{
 			FileWriter file = new FileWriter(loc + "Weights" + layerNum + ".csv", false);
-			String str = null;
+			String str = "";
 			for(int i = 0; i < lenWeis; i++)
 			{
-				str = str + weights[i] + ",";
+				str += weights[i] + ",";
 			}
 			file.write(str);
 			file.close();
@@ -63,12 +64,8 @@ public class Layer
 		File file = new File(loc + "Weights" + layerNum + ".csv");
 		if(file.exists())
 		{
-			Scanner wFile = new Scanner(file);
-			weights = new float[lenWeis];
-			for(int i = 0; i < lenWeis; i++)
-			{
-				weights[i] = wFile.nextFloat();
-			}
+			InputData wFile = new InputData(loc + "Weights" + layerNum + ".csv");
+			weights = wFile.toFloatArray();
 			wFile.close();
 		}
 		else

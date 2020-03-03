@@ -1,6 +1,5 @@
 package engine;
 
-import java.util.Scanner;
 import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
@@ -10,7 +9,7 @@ public class Dense extends Layer
 	public Dense()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
+	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;
 		layerVisNum = in.nextInt();
@@ -40,7 +39,6 @@ public class Dense extends Layer
 				weiPos++;
 			}
 			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);  //sigmoid activation on value achieve
-			weiPos++;
 		}
 	}
 	@SuppressWarnings("unused")
@@ -68,6 +66,6 @@ public class Dense extends Layer
 	}
 	public String toString()
 	{
-		return layerNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + "\n";
+		return layerNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
 	}
 }

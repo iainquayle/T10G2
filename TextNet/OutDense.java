@@ -1,6 +1,5 @@
 package engine;
 
-import java.util.Scanner;
 import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
@@ -15,7 +14,7 @@ public class OutDense extends Layer
 	public OutDense()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
+	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;
 		layerVisNum = in.nextInt();
@@ -47,7 +46,6 @@ public class OutDense extends Layer
 				weiPos++;
 			}
 			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);  //sigmoid activation on value achieve
-			weiPos++;
 		}
 	}
 	@SuppressWarnings("unused")
@@ -73,6 +71,6 @@ public class OutDense extends Layer
 	}
 	public String toString()
 	{
-		return null;
+		return dataNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
 	}
 }

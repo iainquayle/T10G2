@@ -1,6 +1,5 @@
 package engine;
 
-import java.util.Scanner;
 import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
@@ -32,7 +31,7 @@ public class InConv2D extends Layer
 	public InConv2D()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
+	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num; //(layer reference, width, height, depth, vis depth, length weights, kernel width/height, stride)
 		dataNum = in.nextInt();
@@ -49,9 +48,9 @@ public class InConv2D extends Layer
 		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
 		lenValsVisXY = lenValsVisX * lenValsVisY;
 		lenKer = lenKerX * lenKerX * lenValsVisZ;
-		jumpValsVisY = lenValsVisX - lenKerX;
+		jumpValsVisY = lenValsVisX - lenKerX - 1;
 		jumpValsVisXY = lenValsVisX * (lenKerX - 1);
-		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - lenKerX;
+		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
 		jumpValsVisBack = lenValsVisXY * (lenKerX - 1) + lenKerX + jumpValsVisXY + jumpValsVisZ - stride;
 		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
 		super.loadWeights(loc);
@@ -93,10 +92,8 @@ public class InConv2D extends Layer
 								weiPos++;
 							}
 							valsVisPos += jumpValsVisY;
-							weiPos++;
 						}
 						valsVisPos += jumpValsVisZ;
-						weiPos++;
 					}
 					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
 					valsVisPos -= jumpValsVisBack;
@@ -104,11 +101,9 @@ public class InConv2D extends Layer
 					valsPos++;
 				}
 				valsVisPos += jumpValsVisStride;
-				valsPos++;
 			}
 			valsVisPos = begValsVis;
 			weiPos += lenKer;
-			valsPos++;
 		}
 	}
 	public void train()
@@ -157,11 +152,9 @@ public class InConv2D extends Layer
 					valsPos++;
 				}
 				valsVisPos += jumpValsVisStride;
-				valsPos++;
 			}
 			valsVisPos = begValsVis;
 			weiPos += lenKer;
-			valsPos++;
 		}
 	}
 	
@@ -171,7 +164,7 @@ public class InConv2D extends Layer
 	}
 	public String toString()
 	{
-		return layerNum + ", " + layerVisNum + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + "\n";
+		return layerNum + ", " + layerVisNum + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + ", " + lenWeis + "\n";
 	}
 
 	public int getStride() 

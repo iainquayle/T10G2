@@ -1,6 +1,6 @@
 package engine;
 
-import java.util.Scanner;
+import java.io.IOException;
 import engine.Layer;
 
 public class Input extends Layer
@@ -11,7 +11,7 @@ public class Input extends Layer
 	public Input()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num)
+	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;
 		layerVisNum = in.nextInt();

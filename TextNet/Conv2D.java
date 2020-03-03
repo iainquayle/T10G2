@@ -1,6 +1,5 @@
 package engine;
 
-import java.util.Scanner;
 import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
@@ -30,7 +29,7 @@ public class Conv2D extends Layer
 	public Conv2D()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
+	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num; //(layer reference, width, height, depth, vis wid, vis ehi, vis dep, length weights, kernel width/height, stride)
 		layerVisNum = in.nextInt();
@@ -47,9 +46,9 @@ public class Conv2D extends Layer
 		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
 		lenValsVisXY = lenValsVisX * lenValsVisY;
 		lenKer = lenKerX * lenKerX * lenValsVisZ;
-		jumpValsVisY = lenValsVisX - lenKerX;
+		jumpValsVisY = lenValsVisX - lenKerX - 1;
 		jumpValsVisXY = lenValsVisX * (lenKerX - 1);
-		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - lenKerX;
+		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
 		jumpValsVisBack = lenValsVisXY * (lenKerX - 1) + lenKerX + jumpValsVisXY + jumpValsVisZ - stride;
 		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
 		super.loadWeights(loc);
@@ -93,10 +92,8 @@ public class Conv2D extends Layer
 								weiPos++;
 							}
 							valsVisPos += jumpValsVisY;
-							weiPos++;
 						}
 						valsVisPos += jumpValsVisZ;
-						weiPos++;
 					}
 					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
 					valsVisPos -= jumpValsVisBack;
@@ -104,11 +101,9 @@ public class Conv2D extends Layer
 					valsPos++;
 				}
 				valsVisPos += jumpValsVisStride;
-				valsPos++;
 			}
 			valsVisPos = begValsVis;
 			weiPos += lenKer;
-			valsPos++;
 		}
 	}
 	@SuppressWarnings("unused")
@@ -149,19 +144,15 @@ public class Conv2D extends Layer
 								aveWeiPos++;
 							}
 							valsVisPos += jumpValsVisY;
-							weiPos++;
-							aveWeiPos++;
 						}
 						valsVisPos += jumpValsVisZ;
-						weiPos++;
-						aveWeiPos++;
 					}
 					valsVisPos -= jumpValsVisBack;
 					weiPos -= lenKer;
+					aveWeiPos -= lenKer;
 					valsPos++;
 				}
 				valsVisPos += jumpValsVisStride;
-				valsPos++;
 			}
 			aveWeiPos = 0;
 			while(aveWeiPos < lenKer)
@@ -171,7 +162,6 @@ public class Conv2D extends Layer
 				aveWeiPos++;
 			}
 			valsVisPos = begValsVis;
-			valsPos++;
 		}
 	}
 	
@@ -181,7 +171,7 @@ public class Conv2D extends Layer
 	}
 	public String toString()
 	{
-		return layerNum + ", " + layerVisNum + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + "\n";
+		return layerNum + ", " + layerVisNum + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + ", " + lenWeis + "\n";
 	}
 
 	public int getStride() 
@@ -286,10 +276,8 @@ public class Conv2D extends Layer
 						weiPos++;
 					}
 					valsVisPos += jumpValsVisY;
-					weiPos++;
 				}
 				valsVisPos += jumpValsVisZ;
-				weiPos++;
 			}
 			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
 			if((valsPos - begVals) % lenValsXY != 0)
