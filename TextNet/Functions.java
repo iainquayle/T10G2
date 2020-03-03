@@ -2,6 +2,13 @@ package engine;
 
 public class Functions 
 {
+	final public static int padNorm(int n)
+	{
+		if(n >= 0)
+			return n;
+		else
+			return 0;
+	}
 	final public static float sigmoid(float n)
 	{
 		return (float)(n/Math.sqrt(1 + n * n));
