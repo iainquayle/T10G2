@@ -44,6 +44,7 @@ public class InDense extends Layer
 				weiPos++;
 			}
 			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);  //sigmoid activation on value achieve
+			weiPos++;
 		}
 	}
 	@SuppressWarnings("unused")

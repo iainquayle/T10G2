@@ -4,10 +4,8 @@ import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
 
-public class Conv2D extends Layer
+public class InConv2D extends Layer
 {
-	//there is no current options built in for padding
-	private static float[] aveWei = null;
 	private int stride = 0; //stride length between neurons in vis layer
 	private int lenKer = 0;
 	private int lenKerX = 0; //individual kernel dimensions, they are square so it acts for X and Y
@@ -26,13 +24,17 @@ public class Conv2D extends Layer
 	private int jumpValsVisBack = 0; //moves back to start of ker + stride
 	private int jumpValsVisStride = 0; //moves vertical stride length
 	
-	public Conv2D()
+	float data[] = null;
+	int dataNum = 0;
+	int jumpData = 0;
+	
+	public InConv2D()
 	{
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
-		layerNum = num; //(layer reference, width, height, depth, vis wid, vis ehi, vis dep, length weights, kernel width/height, stride)
-		layerVisNum = in.nextInt();
+		layerNum = num; //(layer reference, width, height, depth, vis depth, length weights, kernel width/height, stride)
+		dataNum = in.nextInt();
 		lenValsX = in.nextInt();
 		lenValsY = in.nextInt();
 		lenValsZ = in.nextInt();
@@ -46,24 +48,22 @@ public class Conv2D extends Layer
 		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
 		lenValsVisXY = lenValsVisX * lenValsVisY;
 		lenKer = lenKerX * lenKerX * lenValsVisZ;
-		jumpValsVisY = lenValsVisX - lenKerX - 1;
+		jumpValsVisY = lenValsVisX - lenKerX;
 		jumpValsVisXY = lenValsVisX * (lenKerX - 1);
-		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
+		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - lenKerX;
 		jumpValsVisBack = lenValsVisXY * (lenKerX - 1) + lenKerX + jumpValsVisXY + jumpValsVisZ - stride;
 		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
 		super.loadWeights(loc);
 		if(num != 0)
 		{
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
-			begValsVis = l[layerVisNum].getBegVals();
 		}
-		endVals = begVals + lenVals;
-		endValsVis = begValsVis + lenValsVis;
-		aveWei = new float[lenKer];
+		data = io[dataNum];
 	}
 	
 	public void eval()
 	{
+		begValsVis = rndIndex * lenValsVis;  //sets the beg val for the data
 		int valsPos = begVals;
 		int weiPos = 0;
 		int valsVisPos = begValsVis;
@@ -92,8 +92,10 @@ public class Conv2D extends Layer
 								weiPos++;
 							}
 							valsVisPos += jumpValsVisY;
+							weiPos++;
 						}
 						valsVisPos += jumpValsVisZ;
+						weiPos++;
 					}
 					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
 					valsVisPos -= jumpValsVisBack;
@@ -101,21 +103,21 @@ public class Conv2D extends Layer
 					valsPos++;
 				}
 				valsVisPos += jumpValsVisStride;
+				valsPos++;
 			}
 			valsVisPos = begValsVis;
 			weiPos += lenKer;
+			valsPos++;
 		}
 	}
-	@SuppressWarnings("unused")
 	public void train()
 	{
 		int valsPos = begVals;
 		int weiPos = 0;
 		int valsVisPos = begValsVis;
-		int aveWeiPos = 0;
-		int stopKerZ = 0;
 		int stopKerX = 0;
 		int stopKerY = 0;
+		int stopKerZ = 0;
 		while(valsPos < endVals)
 		{
 			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]);
@@ -127,47 +129,44 @@ public class Conv2D extends Layer
 			{
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
-					aveWeiPos = 0;
-					stopKerZ = valsVisPos + jumpValsVisBack;                                             ///This needs fixing
+					valsAch[valsPos] = 0;
+					valsReq[valsPos] = 0;
+					stopKerZ = valsVisPos + jumpValsVisBack;   
 					while(valsVisPos <= stopKerZ) //iterate through each XY in the vis layer 
 					{
-						stopKerY = valsVisPos + jumpValsVisXY;                                             ///This needs fixing jump y is not correct for this
+						stopKerY = valsVisPos + jumpValsVisXY;  
 						while(valsVisPos <= stopKerY) //iterate through kernel dim
 						{
 							stopKerX = valsVisPos + lenKerX;
 							while(valsVisPos < stopKerX) //iterate through kernel dim
 							{
-								valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];
-								aveWei[aveWeiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
+								weights[weiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
 								valsVisPos++;
 								weiPos++;
-								aveWeiPos++;
 							}
 							valsVisPos += jumpValsVisY;
+							weiPos++;
 						}
 						valsVisPos += jumpValsVisZ;
+						weiPos++;
 					}
+					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
 					valsVisPos -= jumpValsVisBack;
 					weiPos -= lenKer;
-					aveWeiPos -= lenKer;
 					valsPos++;
 				}
 				valsVisPos += jumpValsVisStride;
-			}
-			aveWeiPos = 0;
-			while(aveWeiPos < lenKer)
-			{
-				weights[weiPos] += aveWei[aveWeiPos];
-				weiPos++;
-				aveWeiPos++;
+				valsPos++;
 			}
 			valsVisPos = begValsVis;
+			weiPos += lenKer;
+			valsPos++;
 		}
 	}
 	
 	public int getLayerType()
 	{
-		return 1;
+		return 4;
 	}
 	public String toString()
 	{
@@ -246,137 +245,12 @@ public class Conv2D extends Layer
 	{
 		this.lenValsVisZ = lenValsVisZ;
 	}
-	public int getLenValsVisXY() 
+	public int getlenValsVisXY() 
 	{
 		return lenValsVisXY;
 	}
-	public void setLenValsVisXY(int lenValsVisXY) 
+	public void setlenValsVisXY(int lenValsVisXY) 
 	{
 		this.lenValsVisXY = lenValsVisXY;
 	}
 }
-
-
-
-/* 		while(valsPos < endVals) //iterate through each weight set/kernel/XY
-		{
-			valsAch[valsPos] = 0;
-			valsReq[valsPos] = 0;
-			stopKerZ = valsVisPos + jumpValsVisBack;
-			while(valsVisPos <= stopKerZ) //iterate through each XY in the vis layer 
-			{
-				stopKerY = valsVisPos + jumpValsVisXY;
-				while(valsVisPos <= stopKerY) //iterate through kernel dim
-				{
-					stopKerX = valsVisPos + lenKerX;
-					while(valsVisPos < stopKerX) //iterate through kernel dim
-					{
-						valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos];
-						valsVisPos++;
-						weiPos++;
-					}
-					valsVisPos += jumpValsVisY;
-				}
-				valsVisPos += jumpValsVisZ;
-			}
-			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
-			if((valsPos - begVals) % lenValsXY != 0)
-			{
-				valsVisPos -= jumpValsVisBack;
-				weiPos -= lenKer;
-			}
-			else if((valsPos - begVals) % lenVals != 0)
-			{
-				valsVisPos += jumpValsVisStride;
-			}
-			else
-			{
-				valsVisPos = begValsVis;
-			}
-			valsPos++;
-		}
- */
-/*
- 		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/XY
-		{
-			for(int j = 0; j < lenValsY; j++) //iterate through each row
-			{
-				for(int k = 0; k < lenValsX; k++) //iterate through each col
-				{
-					valsAch[valsPos] = 0;
-					valsReq[valsPos] = 0;
-					valsVisPos = begValsVis + j * stride * lenValsVisX + k * stride;
-					stopKerZ = valsVisPos + lenValsVisXY * (lenValsVisZ - 1);
-					while(valsVisPos <= stopKerZ) //iterate through each XY in the vis layer 
-					{
-						stopKerY = valsVisPos + lenKerX * lenValsVisX;
-						while(valsVisPos <= stopKerY) //iterate through kernel dim
-						{
-							stopKerX = valsVisPos + lenKerX;
-							while(valsVisPos < stopKerX) //iterate through kernel dim
-							{
-								valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos];
-								valsVisPos++;
-								weiPos++;
-							}
-							valsVisPos += lenValsVisX - lenKerX;
-							weiPos++;
-						}
-						valsVisPos += lenValsVisXY - (lenKerX * lenValsVisX + lenKerX);
-						weiPos++;
-					}
-					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
-					weiPos -= lenKerX * lenKerX * lenValsVisZ;
-					valsPos++;
-				}
-				valsPos++;
-			}
-			weiPos += lenKerX * lenKerX * lenValsVisZ;
-			valsPos++;
-		}
-*/
-/*
-		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/XY
-		{
-			for(int j = 0; j < lenValsY; j++) //iterate through each layer
-			{
-				for(int k = 0; k < lenValsX; k++) //iterate through each row
-				{
-					valsVisPos = begValsVis + j * stride * lenValsVisX + k * stride;
-					aveWeiPos = 0;
-					stopKerZ = valsVisPos + lenValsVisXY * (lenValsVisZ - 1);
-					while(valsVisPos <= stopKerZ) //iterate through each XY in the vis layer 
-					{
-						stopKerY = valsVisPos + lenKerX * lenValsVisX;
-						for(int m = 0; m <= stopKerY; m++) //iterate through kernel dim
-						{
-							stopKerX = valsVisPos + lenKerX;
-							while(valsVisPos < stopKerX) //iterate through kernel dim
-							{
-								valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];
-								aveWei[aveWeiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
-								valsVisPos++;
-								weiPos++;
-								aveWeiPos++;
-							}
-							valsVisPos += lenValsVisX - lenKerX;
-							weiPos++;
-							aveWeiPos++;
-						}
-						valsVisPos += lenValsVisXY - (lenKerX * lenValsVisX + lenKerX);
-						weiPos++;
-						aveWeiPos++;
-					}
-					weiPos -= lenKer;
-					valsPos++;
-				}
-				valsPos++;
-			}
-			for(int j = 0; j < lenKer; j++)
-			{
-				weights[weiPos] += aveWei[j];
-				weiPos++;
-			}
-			valsPos++;
-		}
-*/

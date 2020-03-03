@@ -1,57 +1,51 @@
-package inputData;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
+package engine;
+
+import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
-/*
- * This class uses the external openCSV library.
- * http://opencsv.sourceforge.net/
- */
+
 public class InputData {
-	
-	@SuppressWarnings("deprecation")
 	/**
-	 * Hideous code ahead...
 	 * @param file is a string indicating the file path for FileReader
 	 * @return a single float array containing all the data for the images
 	 * @throws IOException 
-	 * @throws CsvException
 	 */
-	
-	public Float[] csvToFloatArray(String file) throws IOException, CsvException {
-		 try {
-			FileReader rFile = new FileReader(file);
-			
-			CSVReader readCSV = new CSVReader(rFile);
-			String[] dataString;
-			List<Float> dataFloatList = new ArrayList<Float>();
-			while ((dataString = readCSV.readNext()) != null) { 					//reading the CSV data into a string array
-	            for (String cell : dataString) { 									//adding each element of the string array into a Float ArrayList
-	            	dataFloatList.add(new BigDecimal(cell).setScale(1, BigDecimal.ROUND_CEILING).floatValue());
-
-	                
-	            } 
-	            
-			}
-			Float[] dataFloatArray = new Float[dataFloatList.size()];  
-			dataFloatArray = dataFloatList.toArray(dataFloatArray);  //Converting the Float ArrayList into a Float Array
-			readCSV.close();
-			return dataFloatArray;
-			
-		
-			} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public static float[][] csvToFloatArray(String file, int[] splits) throws IOException, FileNotFoundException
+	{
+		int total = 0;
+		for(int i = 0; i < splits.length; i++)
+		{
+			total += splits[i];
 		}
-		return null;
-		 
-		 
-		 
+		Scanner in = new Scanner(new File(file));
+		ArrayList<Float> list = new ArrayList<Float>();
+		while(in.hasNextFloat())
+		{
+			list.add(in.nextFloat());
+		}
+		float[][] arr = new float[splits.length][];
+		int len = list.size() / total;
+		for(int i = 0; i < arr.length; i++)
+		{
+			arr[i] = new float[splits[i] * len];
+		}
+		int pos = 0;
+		for(int i = 0; i < len; i++)
+		{
+			for(int j = 0; i < arr.length; j++)
+			{
+				for(int k = 0; k < splits[j]; k++)
+				{
+					arr[j][i * splits[j] + k] = list.get(pos);
+					pos++;
+				}
+				pos++;
+			}
+			pos++;
+		}
+		in.close();
+		return arr;
 	}
-
 }

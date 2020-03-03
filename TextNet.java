@@ -5,7 +5,6 @@ import java.lang.Thread;
 import java.lang.Runnable;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Random;
 import java.io.File;
 import java.io.IOException;
 import engine.Layer;
@@ -20,14 +19,12 @@ public class TextNet
 {
 	private static Layer[] layers = null;
 	private static NetThread[] threads = null;
-	@SuppressWarnings("deprecation")
-	private static Integer rndIndex = new Integer(0);
-	private static Random rnd = new Random();
+	private static Integer rndIndex = null;
 	private static String loc = System.getProperty("user.dir") + "\\";
 	private static String netName = null;
 	private static String dataName = null;
-	private static float[][] ioPuts = null;
-	private static int lenIoPuts = 0;
+	private static float[][] ioPuts;
+	private static int lenData;
 	private static int lenLayers = 0;
 	private volatile static int threadPos = 0;
 	
@@ -45,8 +42,7 @@ public class TextNet
 		System.gc();
 		
 		print();
-		
-		run();
+		//run();
 		
 		try 
 		{
@@ -69,10 +65,9 @@ public class TextNet
 		
 		System.out.println("Data");
 		InputData file = new InputData(loc + dataName + "Splits.csv");
-		int[] splits = file.toIntArray();
+		int[] split = file.toIntArray();
 		file.setFile(loc + dataName + ".csv");
-		ioPuts = file.toFloatArray2D(splits);
-		lenIoPuts = ioPuts[0].length / splits[0];
+		ioPuts = file.toFloatArray2D(split);
 		file.close();
 		
 		System.out.println("Init");
@@ -135,22 +130,15 @@ public class TextNet
 	
 	public static void run()
 	{
-		long preTime = 0;
-		long curTime = System.nanoTime();
-		for(int i = 0; i < 100; i++)
+		for(int i = 0; i < 10000; i++)
 		{
-			rndIndex = rnd.nextInt(lenIoPuts);
 			for(int j = 0; j < lenLayers; j++)
 			{
-				preTime = curTime;
 				layers[j].eval();
-				curTime = System.nanoTime();
-				System.out.println("Eval " + j + " time " + (curTime - preTime));
 			}
 			for(int j = 0; j < lenLayers; j++)
 			{
 				layers[j].train();
-				System.out.println("Train " + j);
 			}
 			System.out.println(i);
 		}

@@ -46,9 +46,9 @@ public class Conv2D extends Layer
 		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
 		lenValsVisXY = lenValsVisX * lenValsVisY;
 		lenKer = lenKerX * lenKerX * lenValsVisZ;
-		jumpValsVisY = lenValsVisX - lenKerX - 1;
+		jumpValsVisY = lenValsVisX - lenKerX;
 		jumpValsVisXY = lenValsVisX * (lenKerX - 1);
-		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
+		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - lenKerX;
 		jumpValsVisBack = lenValsVisXY * (lenKerX - 1) + lenKerX + jumpValsVisXY + jumpValsVisZ - stride;
 		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
 		super.loadWeights(loc);
@@ -92,8 +92,10 @@ public class Conv2D extends Layer
 								weiPos++;
 							}
 							valsVisPos += jumpValsVisY;
+							weiPos++;
 						}
 						valsVisPos += jumpValsVisZ;
+						weiPos++;
 					}
 					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
 					valsVisPos -= jumpValsVisBack;
@@ -101,9 +103,11 @@ public class Conv2D extends Layer
 					valsPos++;
 				}
 				valsVisPos += jumpValsVisStride;
+				valsPos++;
 			}
 			valsVisPos = begValsVis;
 			weiPos += lenKer;
+			valsPos++;
 		}
 	}
 	@SuppressWarnings("unused")
@@ -144,15 +148,19 @@ public class Conv2D extends Layer
 								aveWeiPos++;
 							}
 							valsVisPos += jumpValsVisY;
+							weiPos++;
+							aveWeiPos++;
 						}
 						valsVisPos += jumpValsVisZ;
+						weiPos++;
+						aveWeiPos++;
 					}
 					valsVisPos -= jumpValsVisBack;
 					weiPos -= lenKer;
-					aveWeiPos -= lenKer;
 					valsPos++;
 				}
 				valsVisPos += jumpValsVisStride;
+				valsPos++;
 			}
 			aveWeiPos = 0;
 			while(aveWeiPos < lenKer)
@@ -162,6 +170,7 @@ public class Conv2D extends Layer
 				aveWeiPos++;
 			}
 			valsVisPos = begValsVis;
+			valsPos++;
 		}
 	}
 	
@@ -276,8 +285,10 @@ public class Conv2D extends Layer
 						weiPos++;
 					}
 					valsVisPos += jumpValsVisY;
+					weiPos++;
 				}
 				valsVisPos += jumpValsVisZ;
+				weiPos++;
 			}
 			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
 			if((valsPos - begVals) % lenValsXY != 0)

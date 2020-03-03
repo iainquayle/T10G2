@@ -1,7 +1,5 @@
 package engine;
 
-import java.util.Scanner;
-import java.io.File;
 import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
@@ -10,11 +8,13 @@ public class OutDense extends Layer
 {
 	private float data[] = null;
 	private int dataNum = 0;
+	@SuppressWarnings("unused")
+	private int jumpData = 0;
 	
 	public OutDense()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
+	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;
 		layerVisNum = in.nextInt();
@@ -22,12 +22,7 @@ public class OutDense extends Layer
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
 		lenWeis = lenVals * lenValsVis;
-		Scanner wFile = new Scanner(new File("weights" + layerNum));
-		weights = new float[lenWeis];
-		for(int i = 0; i < lenWeis; i++)
-		{
-			weights[i] = wFile.nextFloat();
-		}
+		super.loadWeights(loc);
 		if(num != 0)
 		{
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
@@ -36,7 +31,6 @@ public class OutDense extends Layer
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
 		data = io[dataNum];
-		wFile.close();
 	}
 	
 	public void eval()
@@ -52,7 +46,6 @@ public class OutDense extends Layer
 				weiPos++;
 			}
 			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);  //sigmoid activation on value achieve
-			weiPos++;
 		}
 	}
 	@SuppressWarnings("unused")
@@ -78,6 +71,6 @@ public class OutDense extends Layer
 	}
 	public String toString()
 	{
-		return null;
+		return dataNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
 	}
 }

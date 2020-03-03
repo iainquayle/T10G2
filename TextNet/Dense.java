@@ -1,7 +1,5 @@
 package engine;
 
-import java.util.Scanner;
-import java.io.File;
 import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
@@ -11,19 +9,14 @@ public class Dense extends Layer
 	public Dense()
 	{
 	}
-	public void init(Layer[] l, String loc, Scanner in, float[][] io, int num) throws IOException
+	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;
 		layerVisNum = in.nextInt();
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
 		lenWeis = lenVals * lenValsVis;
-		Scanner wFile = new Scanner(new File("weights" + layerNum));
-		weights = new float[lenWeis];
-		for(int i = 0; i < lenWeis; i++)
-		{
-			weights[i] = wFile.nextFloat();
-		}
+		super.loadWeights(loc);
 		if(num != 0)
 		{
 			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
@@ -31,7 +24,6 @@ public class Dense extends Layer
 		}
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
-		wFile.close();
 	}
 	
 	public void eval()
@@ -39,7 +31,7 @@ public class Dense extends Layer
 		int weiPos = 0;
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through the vals
 		{
-			valsAch[valsPos] = 0;
+			valsAch[valsPos] = 0; //clearing ach vals
 			valsReq[valsPos] = 0; //clearing req vals for the training pass
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through the vis layer vals
 			{
@@ -47,7 +39,6 @@ public class Dense extends Layer
 				weiPos++;
 			}
 			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);  //sigmoid activation on value achieve
-			weiPos++;
 		}
 	}
 	@SuppressWarnings("unused")
@@ -75,6 +66,6 @@ public class Dense extends Layer
 	}
 	public String toString()
 	{
-		return null;
+		return layerNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
 	}
 }
