@@ -139,7 +139,6 @@ public class TextNet
 		long curTime = System.nanoTime();
 		for(int i = 0; i < 100; i++)
 		{
-			rndIndex = rnd.nextInt(lenIoPuts);
 			for(int j = 0; j < lenLayers; j++)
 			{
 				preTime = curTime;
@@ -153,6 +152,7 @@ public class TextNet
 				System.out.println("Train " + j);
 			}
 			System.out.println(i);
+			rndIndex = rnd.nextInt(lenIoPuts);
 		}
 	}
 	

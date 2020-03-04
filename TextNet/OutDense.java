@@ -45,7 +45,7 @@ public class OutDense extends Layer
 				valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos]; //summing the activations of the vis layer mulled by weights
 				weiPos++;
 			}
-			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);  //sigmoid activation on value achieve
+			valsAch[valsPos] = Functions.sigmoidZer(valsAch[valsPos]);  //sigmoid activation on value achieve
 		}
 	}
 	@SuppressWarnings("unused")

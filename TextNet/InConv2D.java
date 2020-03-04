@@ -41,17 +41,17 @@ public class InConv2D extends Layer
 		lenValsVisX = in.nextInt();
 		lenValsVisY = in.nextInt();
 		lenValsVisZ = in.nextInt();
-		lenWeis = in.nextInt();
 		lenKerX = in.nextInt();
 		stride = in.nextInt();
 		lenVals = lenValsX * lenValsY * lenValsZ;
 		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
+		lenWeis = lenKerX * lenKerX * lenValsZ * lenValsVisZ;
 		lenValsVisXY = lenValsVisX * lenValsVisY;
 		lenKer = lenKerX * lenKerX * lenValsVisZ;
-		jumpValsVisY = lenValsVisX - lenKerX - 1;
+		jumpValsVisY = lenValsVisX - lenKerX;
 		jumpValsVisXY = lenValsVisX * (lenKerX - 1);
 		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
-		jumpValsVisBack = lenValsVisXY * (lenKerX - 1) + lenKerX + jumpValsVisXY + jumpValsVisZ - stride;
+		jumpValsVisBack = lenValsVisXY * lenValsVisZ - stride;
 		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
 		super.loadWeights(loc);
 		if(num != 0)
@@ -67,9 +67,9 @@ public class InConv2D extends Layer
 		int valsPos = begVals;
 		int weiPos = 0;
 		int valsVisPos = begValsVis;
-		int stopKerX = 0;
-		int stopKerY = 0;
-		int stopKerZ = 0;
+		int stopValsVisX = 0;
+		int stopValsVisY = 0;
+		int stopValsVisZ = 0;
 		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/XY
 		{
 			for(int j = 0; j < lenValsY; j++) //iterate through each row
@@ -78,14 +78,14 @@ public class InConv2D extends Layer
 				{
 					valsAch[valsPos] = 0;
 					valsReq[valsPos] = 0;
-					stopKerZ = valsVisPos + jumpValsVisBack;   
-					while(valsVisPos <= stopKerZ) //iterate through each XY in the vis layer 
+					stopValsVisZ = valsVisPos + jumpValsVisBack;   
+					while(valsVisPos < stopValsVisZ) //iterate through each XY in the vis layer 
 					{
-						stopKerY = valsVisPos + jumpValsVisXY;  
-						while(valsVisPos <= stopKerY) //iterate through kernel dim
+						stopValsVisY = valsVisPos + jumpValsVisXY;  
+						while(valsVisPos <= stopValsVisY) //iterate through kernel dim
 						{
-							stopKerX = valsVisPos + lenKerX;
-							while(valsVisPos < stopKerX) //iterate through kernel dim
+							stopValsVisX = valsVisPos + lenKerX;
+							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
 								valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos];
 								valsVisPos++;
@@ -111,14 +111,15 @@ public class InConv2D extends Layer
 		int valsPos = begVals;
 		int weiPos = 0;
 		int valsVisPos = begValsVis;
-		int stopKerX = 0;
-		int stopKerY = 0;
-		int stopKerZ = 0;
+		int stopValsVisX = 0;
+		int stopValsVisY = 0;
+		int stopValsVisZ = 0;
 		while(valsPos < endVals)
 		{
 			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]);
 			valsPos++;
 		}
+		valsPos = begVals;
 		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/XY
 		{
 			for(int j = 0; j < lenValsY; j++) //iterate through each row
@@ -127,24 +128,22 @@ public class InConv2D extends Layer
 				{
 					valsAch[valsPos] = 0;
 					valsReq[valsPos] = 0;
-					stopKerZ = valsVisPos + jumpValsVisBack;   
-					while(valsVisPos <= stopKerZ) //iterate through each XY in the vis layer 
+					stopValsVisZ = valsVisPos + jumpValsVisBack;   
+					while(valsVisPos < stopValsVisZ) //iterate through each XY in the vis layer 
 					{
-						stopKerY = valsVisPos + jumpValsVisXY;  
-						while(valsVisPos <= stopKerY) //iterate through kernel dim
+						stopValsVisY = valsVisPos + jumpValsVisXY;  
+						while(valsVisPos <= stopValsVisY) //iterate through kernel dim
 						{
-							stopKerX = valsVisPos + lenKerX;
-							while(valsVisPos < stopKerX) //iterate through kernel dim
+							stopValsVisX = valsVisPos + lenKerX;
+							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
 								weights[weiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
 								valsVisPos++;
 								weiPos++;
 							}
 							valsVisPos += jumpValsVisY;
-							weiPos++;
 						}
 						valsVisPos += jumpValsVisZ;
-						weiPos++;
 					}
 					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
 					valsVisPos -= jumpValsVisBack;

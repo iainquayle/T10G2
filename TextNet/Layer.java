@@ -26,7 +26,8 @@ public class Layer
 	protected int endValsVis = 0; //ending index of valsVis
 	protected int layerVisNum = 0;
 	
-	protected static float threadSplits; //value for fraction of layer a thread has command of
+	protected static float threadSplits = 1; //value for fraction of layer a thread has command of
+	protected static int numThreads = 1; //number of threads working on layers
 	
 	protected float learnRate;
 	
