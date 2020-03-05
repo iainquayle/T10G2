@@ -145,7 +145,7 @@ public class TextNet
 	{
 		long preTime = 0;
 		long curTime = System.nanoTime();
-		for(int i = 0; i < 50000; i++)
+		for(int i = 0; i < 100000; i++)
 		{
 			for(int j = 0; j < lenLayers; j++)
 			{
@@ -162,6 +162,7 @@ public class TextNet
 			System.out.println(i);
 			rndIndex = rnd.nextInt(lenIoPuts);
 		}
+		System.out.println(layers[0].errString());
 	}
 	
 	public static void print()

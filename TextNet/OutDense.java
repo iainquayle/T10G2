@@ -59,7 +59,7 @@ public class OutDense extends Layer
 		int aveErr = 0;
 		float valsLarg = 0;
 		int largPos = 0;
-		valsAch[(int)(data[rndIndex] + 0.5)] = 1;
+		valsReq[(int)(data[rndIndex] + 0.5)] = 1;
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
@@ -87,7 +87,7 @@ public class OutDense extends Layer
 		{
 			netCorr *= (float)0.9;
 		}
-		valsAch[(int)(data[rndIndex] + 0.5)] = 0;
+		valsReq[(int)(data[rndIndex] + 0.5)] = 0;
 	}
 	
 	public int getLayerType()
