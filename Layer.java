@@ -11,25 +11,25 @@ public class Layer
 {	
 	protected static float[] valsAch = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
 	protected static float[] valsReq = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
-	protected int lenVals = 0;
+	protected int lenVals = 0; //total length of values ach/req
 	protected int begVals = 0; //beginning index of vals
 	protected int endVals = 0; //ending index of vals
-	protected int layerNum = 0;
+	protected int layerNum = 0; //position in net
 	
 	protected float[] weights;
-	protected int lenWeis;
+	protected int lenWeis; //total weights length
 	
-	protected int lenValsVis = 0;
+	protected int lenValsVis = 0; //total length of values ach/req of vis layer
 	protected int begValsVis = 0; //beginning index of valsVis
 	protected int endValsVis = 0; //ending index of valsVis
-	protected int layerVisNum = 0;
+	protected int layerVisNum = 0; //position of vis layer
 	
-	protected static float learnRate = (float)0.05;
+	protected static float learnRate = (float)0.03; //learning adjustment rate
 	
-	protected static int rndIndex = 0;
+	protected static int rndIndex = 0; //random index for io layers picking data from set
 	
-	protected static float netErr = 0;
-	protected static float netCorr = 0;
+	protected static float netErr = 0; //average error of the net at the outputs layer (weighted 0.01 to the newest value)
+	protected static float netCorr = 0; //average amount of correct guesses (weighted 0.01 to the newest value)
 	
 	protected static float threadSplits = 1; //value for fraction of layer a thread has command of
 	protected static int numThreads = 1; //number of threads working on layers
@@ -70,15 +70,15 @@ public class Layer
 			weights = new float[lenWeis];
 			for(int i = 0; i < lenWeis; i++)
 			{
-				weights[i] = rnd.nextFloat() * 2 - 1;
+				weights[i] = rnd.nextFloat() - (float)(0.5);
 			}
 		}
 	}
 	
-	public void eval()
+	public void eval() //virtual method
 	{
 	}
-	public void train()
+	public void train() //virtual method
 	{
 	}
 	

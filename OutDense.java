@@ -8,8 +8,6 @@ public class OutDense extends Layer
 {
 	private float data[] = null;
 	private int dataNum = 0;
-	@SuppressWarnings("unused")
-	private int jumpData = 0;
 	
 	public OutDense()
 	{
@@ -43,7 +41,6 @@ public class OutDense extends Layer
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through the vals
 		{
 			valsAch[valsPos] = 0;
-			valsReq[valsPos] = 0; //clearing req vals for the training pass
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through the vis layer vals
 			{
 				valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos]; //summing the activations of the vis layer mulled by weights
@@ -52,19 +49,18 @@ public class OutDense extends Layer
 			valsAch[valsPos] = Functions.sigmoidZer(valsAch[valsPos]);  //sigmoid activation on value achieve
 		}
 	}
-	@SuppressWarnings("unused")
 	public void train() //back pass and train
 	{
 		int weiPos = 0;
 		int aveErr = 0;
-		float valsLarg = 0;
-		int largPos = 0;
+		float valsLarg = valsAch[begVals];
+		int largPos = begVals;
 		valsReq[(int)(data[rndIndex] + 0.5)] = 1;
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
-				valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];  //updating the vis layers requested values
+				valsReq[valsVisPos] += (valsReq[valsPos] - valsAch[valsPos]) * weights[weiPos];  //updating the vis layers requested values
 				weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
 				weiPos++;
 			}
@@ -88,7 +84,6 @@ public class OutDense extends Layer
 			netCorr *= (float)0.99;
 		}
 		valsReq[(int)(data[rndIndex] + 0.5)] = 0;
-		System.out.println(largPos + "  " + ((int)(data[rndIndex] + 0.5) + begVals) + "   " + rndIndex);
 	}
 	
 	public int getLayerType()

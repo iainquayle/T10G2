@@ -41,7 +41,6 @@ public class Dense extends Layer
 			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);  //sigmoid activation on value achieve
 		}
 	}
-	@SuppressWarnings("unused")
 	public void train() //back pass and train
 	{
 		int weiPos = 0;
@@ -53,7 +52,7 @@ public class Dense extends Layer
 		{
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
-				valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];  //updating the vis layers requested values
+				valsReq[valsVisPos] += (valsReq[valsPos] - valsAch[valsPos]) * weights[weiPos];  //updating the vis layers requested values
 				weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
 				weiPos++;
 			}
@@ -69,6 +68,6 @@ public class Dense extends Layer
 	}
 	public String toString()
 	{
-		return layerNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
+		return layerNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + begValsVis + ", " + endValsVis + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
 	}
 }

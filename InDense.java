@@ -8,8 +8,6 @@ public class InDense extends Layer
 {
 	private float data[] = null;
 	private int dataNum = 0;
-	@SuppressWarnings("unused")
-	private int jumpData = 0;
 	
 	public InDense()
 	{
@@ -67,6 +65,6 @@ public class InDense extends Layer
 	}
 	public String toString()
 	{
-		return dataNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
+		return dataNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
 	}
 }

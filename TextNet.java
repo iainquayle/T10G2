@@ -20,18 +20,18 @@ public class TextNet
 {
 	private static Layer[] layers = null;
 	private static NetThread[] threads = null;
-	private static Random rnd = new Random();
+	
 	private static String loc = System.getProperty("user.dir") + "\\";
 	private static String netName = null;
 	private static String dataName = null;
+	
 	private static float[][] ioPuts = null;
+	private static Random rnd = new Random();
 	private static int lenIoPuts = 0;
 	private static int lenLayers = 0;
-	private volatile static int threadPos = 0;
 	
 	public static void main(String[] args) 
 	{
-		
 		try 
 		{
 			init();
@@ -141,10 +141,9 @@ public class TextNet
 	
 	public static void run()
 	{
-		int temp = 0;
 		long preTime = 0;
 		long curTime = System.nanoTime();
-		for(int i = 0; i < 100000; i++)
+		for(int i = 0; i < 1500000; i++)
 		{
 			for(int j = 0; j < lenLayers; j++)
 			{

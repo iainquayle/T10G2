@@ -7,17 +7,20 @@ import engine.Functions;
 public class InConv2D extends Layer
 {
 	private int stride = 0; //stride length between neurons in vis layer
+	
 	private int lenKer = 0;
 	private int lenKerX = 0; //individual kernel dimensions, they are square so it acts for X and Y
+	
 	private int lenValsX = 0; //width of vals
 	private int lenValsY = 0; //height of vals
 	private int lenValsZ = 0; //depth of vals/number of kernels
-	@SuppressWarnings("unused")
-	private int lenValsXY = 0;
+	//private int lenValsXY = 0;
+	
 	private int lenValsVisX = 0; //X of vis layer
 	private int lenValsVisY = 0; //Y of vis layer
 	private int lenValsVisZ = 0; //Zth of vis layer/Zth of each kernel
 	private int lenValsVisXY = 0;
+	
 	private int jumpValsVisY = 0; //moves down one row
 	private int jumpValsVisXY = 0; //moves down all rows on one img
 	private int jumpValsVisZ = 0; //moves down one img
@@ -26,7 +29,6 @@ public class InConv2D extends Layer
 	
 	float data[] = null;
 	int dataNum = 0;
-	int jumpData = 0;
 	
 	public InConv2D()
 	{
@@ -43,22 +45,26 @@ public class InConv2D extends Layer
 		lenValsVisZ = in.nextInt();
 		lenKerX = in.nextInt();
 		stride = in.nextInt();
+		
 		lenVals = lenValsX * lenValsY * lenValsZ;
 		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
 		lenWeis = lenKerX * lenKerX * lenValsZ * lenValsVisZ;
 		lenValsVisXY = lenValsVisX * lenValsVisY;
 		lenKer = lenKerX * lenKerX * lenValsVisZ;
+		
 		jumpValsVisY = lenValsVisX - lenKerX;
 		jumpValsVisXY = lenValsVisX * (lenKerX - 1);
 		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
 		jumpValsVisBack = lenValsVisXY * lenValsVisZ - stride;
 		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
+		
 		data = io[dataNum];
 		super.loadWeights(loc);
 		if(num != 0)
 		{
-			begVals = l[num -1].getBegVals() + l[num - 1].getLenVals();
+			begVals = l[num - 1].getBegVals() + l[num - 1].getLenVals();
 		}
+		endVals = begVals + lenVals;
 		data = io[dataNum];
 	}
 	
@@ -87,7 +93,7 @@ public class InConv2D extends Layer
 							stopValsVisX = valsVisPos + lenKerX;
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
-								valsAch[valsPos] += data[valsVisPos] * weights[weiPos];
+								valsAch[valsPos] += data[valsVisPos] * weights[weiPos]; //summing neuron
 								valsVisPos++;
 								weiPos++;
 							}
@@ -95,7 +101,7 @@ public class InConv2D extends Layer
 						}
 						valsVisPos += jumpValsVisZ;
 					}
-					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
+					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]); //sigmoid activation on vals ach
 					valsVisPos -= jumpValsVisBack;
 					weiPos -= lenKer;
 					valsPos++;
@@ -108,7 +114,6 @@ public class InConv2D extends Layer
 	}
 	public void train()
 	{
-		//would reset beg/end valsvis but they are still set from eval
 		int valsPos = begVals;
 		int weiPos = 0;
 		int valsVisPos = begValsVis;
@@ -136,7 +141,7 @@ public class InConv2D extends Layer
 							stopValsVisX = valsVisPos + lenKerX;
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
-								weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * data[valsVisPos]) * learnRate;
+								weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * data[valsVisPos]) * learnRate; //adjusting weights
 								valsVisPos++;
 								weiPos++;
 							}
@@ -144,7 +149,6 @@ public class InConv2D extends Layer
 						}
 						valsVisPos += jumpValsVisZ;
 					}
-					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
 					valsVisPos -= jumpValsVisBack;
 					weiPos -= lenKer;
 					valsPos++;
@@ -162,7 +166,7 @@ public class InConv2D extends Layer
 	}
 	public String toString()
 	{
-		return layerNum + ", " + layerVisNum + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + ", " + lenWeis + "\n";
+		return layerNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + ", " + lenWeis + "\n";
 	}
 
 	public int getStride() 
