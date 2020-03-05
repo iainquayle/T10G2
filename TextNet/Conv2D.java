@@ -31,7 +31,7 @@ public class Conv2D extends Layer
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
-		layerNum = num; //(layer reference, width, height, depth, vis wid, vis ehi, vis dep, kernel width/height, stride)
+		layerNum = num; //(layer reference, width, height, depth, vis wid, vis hei, vis dep, kernel width/height, stride)
 		layerVisNum = in.nextInt();
 		lenValsX = in.nextInt();
 		lenValsY = in.nextInt();
@@ -69,7 +69,6 @@ public class Conv2D extends Layer
 		int valsVisPos = begValsVis;
 		int stopValsVisX = 0;
 		int stopValsVisY = 0;
-		int stopValsVisZ = 0;
 		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/XY
 		{
 			for(int j = 0; j < lenValsY; j++) //iterate through each row
@@ -77,9 +76,8 @@ public class Conv2D extends Layer
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
 					valsAch[valsPos] = 0;
-					valsReq[valsPos] = 0;
-					stopValsVisZ = valsVisPos + jumpValsVisBack;   
-					while(valsVisPos < stopValsVisZ) //iterate through each XY in the vis layer 
+					valsReq[valsPos] = 0; 
+					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
 					{
 						stopValsVisY = valsVisPos + jumpValsVisXY;  
 						while(valsVisPos <= stopValsVisY) //iterate through kernel dim
@@ -106,14 +104,12 @@ public class Conv2D extends Layer
 			weiPos += lenKer;
 		}
 	}
-	@SuppressWarnings("unused")
 	public void train()
 	{
 		int valsPos = begVals;
 		int weiPos = 0;
 		int valsVisPos = begValsVis;
 		int aveWeiPos = 0;
-		int stopValsVisZ = 0;
 		int stopValsVisX = 0;
 		int stopValsVisY = 0;
 		while(valsPos < endVals)
@@ -128,18 +124,17 @@ public class Conv2D extends Layer
 			{
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
-					aveWeiPos = 0;
-					stopValsVisZ = valsVisPos + jumpValsVisBack;                                             ///This needs fixing
-					while(valsVisPos < stopValsVisZ) //iterate through each XY in the vis layer 
+					aveWeiPos = 0; 
+					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
 					{
-						stopValsVisY = valsVisPos + jumpValsVisXY;                                             ///This needs fixing jump y is not correct for this
+						stopValsVisY = valsVisPos + jumpValsVisXY; 
 						while(valsVisPos <= stopValsVisY) //iterate through kernel dim
 						{
 							stopValsVisX = valsVisPos + lenKerX;
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
 								valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];
-								aveWei[aveWeiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
+								aveWei[aveWeiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate;
 								valsVisPos++;
 								weiPos++;
 								aveWeiPos++;

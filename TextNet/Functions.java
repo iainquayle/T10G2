@@ -24,6 +24,13 @@ public class Functions
 		else
 			return (float)0;
 	}
+	final public static float leakyRelu(float n)
+	{
+		if(n >= 0)
+			return n;
+		else
+			return (float)0.01 * n;
+	}
 	final public static float stepNeg(float n)
 	{
 		if(n >= 0)

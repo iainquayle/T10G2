@@ -11,7 +11,7 @@ public class Dense extends Layer
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
-		layerNum = num;
+		layerNum = num;          //(vis layer num, len vals, lenvisvals)
 		layerVisNum = in.nextInt();
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
@@ -54,10 +54,13 @@ public class Dense extends Layer
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
 				valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];  //updating the vis layers requested values
-				weights[weiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
 				weiPos++;
 			}
 		}
+		//Two ways of learning, believe the top will work better for accuracy in the long run
+		//((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate;
+		//(valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
 	}
 	
 	public int getLayerType()

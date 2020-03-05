@@ -26,10 +26,13 @@ public class Layer
 	protected int endValsVis = 0; //ending index of valsVis
 	protected int layerVisNum = 0;
 	
+	protected static float netErr = 0;
+	protected static float netCorr = 0;
+	
 	protected static float threadSplits = 1; //value for fraction of layer a thread has command of
 	protected static int numThreads = 1; //number of threads working on layers
 	
-	protected float learnRate;
+	protected static float learnRate = (float)0.05;
 	
 	public Layer()
 	{
@@ -52,14 +55,6 @@ public class Layer
 			file.close();
 		}
 	}
-	
-	public void eval()
-	{
-	}
-	public void train()
-	{
-	}
-	
 	public void loadWeights(String loc) throws IOException
 	{
 		File file = new File(loc + "Weights" + layerNum + ".csv");
@@ -79,6 +74,14 @@ public class Layer
 			}
 		}
 	}
+	
+	public void eval()
+	{
+	}
+	public void train()
+	{
+	}
+	
 	public void setStatRefs(Integer i, float[] a, float[] r)
 	{
 		rndIndex = i;
@@ -101,8 +104,13 @@ public class Layer
 	{
 		return begVals;
 	}
+	
 	public String toString()
 	{
 		return null;
+	}
+	public String errString()
+	{
+		return "Error: " + netErr + "   Correct:" + netCorr; 
 	}
 }

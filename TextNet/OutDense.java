@@ -16,7 +16,7 @@ public class OutDense extends Layer
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
-		layerNum = num;
+		layerNum = num;    //(vis layernum, datanum, len vals, lenvisvals)
 		layerVisNum = in.nextInt();
 		dataNum = in.nextInt();
 		lenVals = in.nextInt();
@@ -31,6 +31,10 @@ public class OutDense extends Layer
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
 		data = io[dataNum];
+	}
+	public void save()
+	{
+		
 	}
 	
 	public void eval()
@@ -52,17 +56,38 @@ public class OutDense extends Layer
 	public void train() //back pass and train
 	{
 		int weiPos = 0;
+		int aveErr = 0;
+		float valsLarg = 0;
+		int largPos = 0;
 		valsAch[(int)(data[rndIndex] + 0.5)] = 1;
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
 				valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];  //updating the vis layers requested values
-				weights[weiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
 				weiPos++;
 			}
 		}
-		valsAch[(int)(data[rndIndex] + 0.5)] = 1;
+		for(int valsPos = begVals; valsPos < endVals; valsPos++)
+		{
+			aveErr += valsReq[valsPos] - valsAch[valsPos];
+			if(valsAch[valsPos] > valsLarg)
+			{
+				valsLarg = valsAch[valsPos];
+				largPos = valsPos;
+			}
+		}
+		netErr = (netErr * (float)0.9) + (aveErr / lenVals * (float)0.1);
+		if(largPos == (int)(data[rndIndex] + 0.5))
+		{
+			netCorr = (netCorr * (float)0.9) + (float)0.1;
+		}
+		else
+		{
+			netCorr *= (float)0.9;
+		}
+		valsAch[(int)(data[rndIndex] + 0.5)] = 0;
 	}
 	
 	public int getLayerType()

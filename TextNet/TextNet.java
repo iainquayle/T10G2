@@ -77,7 +77,7 @@ public class TextNet
 		
 		System.out.println("Init");
 		int temp = 0;
-		file.setFile(loc + netName + ".csv");
+		file.setFile(loc + netName + "\\" + netName + ".csv");
 		lenLayers = file.nextInt();
 		layers = new Layer[lenLayers];
 		for(int i = 0; i < lenLayers; i++)
@@ -116,12 +116,20 @@ public class TextNet
 		for(int i = 0; i < lenLayers; i++)
 		{
 			System.out.println("Init layer " + i);
-			layers[i].init(layers, loc + netName, file, ioPuts, i);
+			layers[i].init(layers, loc + netName + "\\" + netName, file, ioPuts, i);
 			temp += layers[i].getLenVals();
 		}
 		layers[0].setStatRefs(rndIndex, new float[temp], new float[temp]);
 		file.close();
 		com.close();
+		try 
+		{
+			Thread.sleep(1000);
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	public static void save() throws IOException
 	{
@@ -129,7 +137,7 @@ public class TextNet
 		for(int i = 0; i < lenLayers; i++)
 		{
 			System.out.println("Save Layer" + i);
-			layers[i].save(loc + netName);
+			layers[i].save(loc + netName + "\\" + netName);
 		}
 	}
 	
@@ -137,7 +145,7 @@ public class TextNet
 	{
 		long preTime = 0;
 		long curTime = System.nanoTime();
-		for(int i = 0; i < 100; i++)
+		for(int i = 0; i < 50000; i++)
 		{
 			for(int j = 0; j < lenLayers; j++)
 			{
@@ -146,7 +154,7 @@ public class TextNet
 				curTime = System.nanoTime();
 				System.out.println("Eval " + j + " time " + (curTime - preTime));
 			}
-			for(int j = 0; j < lenLayers; j++)
+			for(int j = lenLayers - 1; j >= 0; j--)
 			{
 				layers[j].train();
 				System.out.println("Train " + j);
