@@ -195,6 +195,14 @@ public class CalculatorGUI extends JFrame {
 				
 			}
 		});
+		JButton btnNewButton_1_8_1 = new JButton("C");
+		btnNewButton_1_8_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textField.setText(null);
+
+				
+			}
+		});
 		btnNewButton_1_11_2.setBounds(175, 197, 110, 53);
 		contentPane.add(btnNewButton_1_11_2);
 		
