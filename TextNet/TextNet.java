@@ -20,20 +20,18 @@ public class TextNet
 {
 	private static Layer[] layers = null;
 	private static NetThread[] threads = null;
-	@SuppressWarnings("deprecation")
-	private static Integer rndIndex = new Integer(0);
-	private static Random rnd = new Random();
+	
 	private static String loc = System.getProperty("user.dir") + "\\";
 	private static String netName = null;
 	private static String dataName = null;
+	
 	private static float[][] ioPuts = null;
+	private static Random rnd = new Random();
 	private static int lenIoPuts = 0;
 	private static int lenLayers = 0;
-	private volatile static int threadPos = 0;
 	
 	public static void main(String[] args) 
 	{
-		
 		try 
 		{
 			init();
@@ -119,7 +117,7 @@ public class TextNet
 			layers[i].init(layers, loc + netName + "\\" + netName, file, ioPuts, i);
 			temp += layers[i].getLenVals();
 		}
-		layers[0].setStatRefs(rndIndex, new float[temp], new float[temp]);
+		layers[0].setStatRefs(new float[temp], new float[temp]);
 		file.close();
 		com.close();
 		try 
@@ -145,22 +143,22 @@ public class TextNet
 	{
 		long preTime = 0;
 		long curTime = System.nanoTime();
-		for(int i = 0; i < 100000; i++)
+		for(int i = 0; i < 1500000; i++)
 		{
 			for(int j = 0; j < lenLayers; j++)
 			{
 				preTime = curTime;
 				layers[j].eval();
 				curTime = System.nanoTime();
-				System.out.println("Eval " + j + " time " + (curTime - preTime));
+				//System.out.println("Eval " + j + " time " + (curTime - preTime));
 			}
 			for(int j = lenLayers - 1; j >= 0; j--)
 			{
 				layers[j].train();
-				System.out.println("Train " + j);
+				//System.out.println("Train " + j);
 			}
+			layers[0].setRndIndex(rnd.nextInt(lenIoPuts));
 			System.out.println(i);
-			rndIndex = rnd.nextInt(lenIoPuts);
 		}
 		System.out.println(layers[0].errString());
 	}

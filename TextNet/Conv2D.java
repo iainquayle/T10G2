@@ -6,20 +6,23 @@ import engine.Functions;
 
 public class Conv2D extends Layer
 {
-	//there is no current options built in for padding
 	private static float[] aveWei = null;
+	
 	private int stride = 0; //stride length between neurons in vis layer
+	
 	private int lenKer = 0;
 	private int lenKerX = 0; //individual kernel dimensions, they are square so it acts for X and Y
+	
 	private int lenValsX = 0; //width of vals
 	private int lenValsY = 0; //height of vals
 	private int lenValsZ = 0; //depth of vals/number of kernels
-	@SuppressWarnings("unused")
-	private int lenValsXY = 0;
+	//private int lenValsXY = 0;
+	
 	private int lenValsVisX = 0; //X of vis layer
 	private int lenValsVisY = 0; //Y of vis layer
 	private int lenValsVisZ = 0; //Zth of vis layer/Zth of each kernel
 	private int lenValsVisXY = 0;
+	
 	private int jumpValsVisY = 0; //moves down one row
 	private int jumpValsVisXY = 0; //moves down all rows on one img
 	private int jumpValsVisZ = 0; //moves down one img
@@ -41,16 +44,19 @@ public class Conv2D extends Layer
 		lenValsVisZ = in.nextInt();
 		lenKerX = in.nextInt();
 		stride = in.nextInt();
+		
 		lenVals = lenValsX * lenValsY * lenValsZ;
 		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
 		lenWeis = lenKerX * lenKerX * lenValsZ * lenValsVisZ;
 		lenValsVisXY = lenValsVisX * lenValsVisY;
 		lenKer = lenKerX * lenKerX * lenValsVisZ;
+		
 		jumpValsVisY = lenValsVisX - lenKerX;
 		jumpValsVisXY = lenValsVisX * (lenKerX - 1);
 		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
 		jumpValsVisBack = lenValsVisXY * lenValsVisZ - stride;
 		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
+		
 		super.loadWeights(loc);
 		if(num != 0)
 		{
@@ -85,23 +91,23 @@ public class Conv2D extends Layer
 							stopValsVisX = valsVisPos + lenKerX;
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
-								valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos];
+								valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos]; //summing the activations of the vis layer mulled by weights
 								valsVisPos++;
 								weiPos++;
 							}
-							valsVisPos += jumpValsVisY;
+							valsVisPos += jumpValsVisY; //moving down to start of next row in kernel
 						}
-						valsVisPos += jumpValsVisZ;
+						valsVisPos += jumpValsVisZ; //moving back to start of next img in kernel
 					}
-					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);
-					valsVisPos -= jumpValsVisBack;
-					weiPos -= lenKer;
+					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]); //sigmoid activation on vals ach
+					valsVisPos -= jumpValsVisBack; //moving back to the starting position minus the stride
+					weiPos -= lenKer; //moving weipos back to start
 					valsPos++;
 				}
-				valsVisPos += jumpValsVisStride;
+				valsVisPos += jumpValsVisStride; //moving down a row in the local layer
 			}
-			valsVisPos = begValsVis;
-			weiPos += lenKer;
+			valsVisPos = begValsVis; //moving back to the start of vis layer to start new kernel
+			weiPos += lenKer; //moving to new kernel
 		}
 	}
 	public void train()
@@ -133,8 +139,8 @@ public class Conv2D extends Layer
 							stopValsVisX = valsVisPos + lenKerX;
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
-								valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];
-								aveWei[aveWeiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate;
+								valsReq[valsVisPos] += (valsReq[valsPos] - valsAch[valsPos]) * weights[weiPos]; //backpropagation of error
+								aveWei[aveWeiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate; //accumuling adjustments to not disturb backpropagation 
 								valsVisPos++;
 								weiPos++;
 								aveWeiPos++;
@@ -151,9 +157,10 @@ public class Conv2D extends Layer
 				valsVisPos += jumpValsVisStride;
 			}
 			aveWeiPos = 0;
-			while(aveWeiPos < lenKer)
+			while(aveWeiPos < lenKer) //iterating through the current kernel
 			{
-				weights[weiPos] += aveWei[aveWeiPos];
+				weights[weiPos] += aveWei[aveWeiPos]; //adding adjustments to weights
+				aveWei[aveWeiPos] = 0;
 				weiPos++;
 				aveWeiPos++;
 			}
@@ -167,7 +174,7 @@ public class Conv2D extends Layer
 	}
 	public String toString()
 	{
-		return layerNum + ", " + layerVisNum + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + ", " + lenWeis + "\n";
+		return layerNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + begValsVis + ", " + endValsVis + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + ", " + lenWeis + "\n";
 	}
 
 	public int getStride() 

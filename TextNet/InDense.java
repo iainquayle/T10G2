@@ -8,8 +8,6 @@ public class InDense extends Layer
 {
 	private float data[] = null;
 	private int dataNum = 0;
-	@SuppressWarnings("unused")
-	private int jumpData = 0;
 	
 	public InDense()
 	{
@@ -46,7 +44,6 @@ public class InDense extends Layer
 			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);  //sigmoid activation on value achieve
 		}
 	}
-	@SuppressWarnings("unused")
 	public void train()
 	{
 		int weiPos = 0;
@@ -55,7 +52,7 @@ public class InDense extends Layer
 			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]); //step applied to req vals
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
-				weights[weiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;   //updating the weights based on requested values and vis layer achieved values
+				weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * data[valsVisPos]) * learnRate; //adjusting weights based on ach/rew error
 				weiPos++;
 			}
 		}
@@ -67,6 +64,6 @@ public class InDense extends Layer
 	}
 	public String toString()
 	{
-		return dataNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
+		return dataNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
 	}
 }
