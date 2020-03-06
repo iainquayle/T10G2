@@ -142,14 +142,13 @@ public class TextNet
 	public static void run()
 	{
 		long preTime = 0;
-		long curTime = System.nanoTime();
-		for(int i = 0; i < 1500000; i++)
+		long curTime = System.currentTimeMillis();
+		for(int i = 0; i < 10000; i++)
 		{
+			preTime = curTime;
 			for(int j = 0; j < lenLayers; j++)
 			{
-				preTime = curTime;
 				layers[j].eval();
-				curTime = System.nanoTime();
 				//System.out.println("Eval " + j + " time " + (curTime - preTime));
 			}
 			for(int j = lenLayers - 1; j >= 0; j--)
@@ -157,8 +156,9 @@ public class TextNet
 				layers[j].train();
 				//System.out.println("Train " + j);
 			}
+			curTime = System.nanoTime();
 			layers[0].setRndIndex(rnd.nextInt(lenIoPuts));
-			System.out.println(i);
+			System.out.println(i + "   " + (curTime - preTime));
 		}
 		System.out.println(layers[0].errString());
 	}

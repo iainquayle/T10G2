@@ -10,8 +10,8 @@ import java.io.IOException;
 public class Layer 
 {	
 	protected static float[] valsAch = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
-	protected static float[] valsReq = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
-	protected int lenVals = 0; //total length of values ach/req
+	protected static float[] valsErr = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
+	protected int lenVals = 0; //total length of values ach/Err
 	protected int begVals = 0; //beginning index of vals
 	protected int endVals = 0; //ending index of vals
 	protected int layerNum = 0; //position in net
@@ -19,12 +19,12 @@ public class Layer
 	protected float[] weights;
 	protected int lenWeis; //total weights length
 	
-	protected int lenValsVis = 0; //total length of values ach/req of vis layer
+	protected int lenValsVis = 0; //total length of values ach/Err of vis layer
 	protected int begValsVis = 0; //beginning index of valsVis
 	protected int endValsVis = 0; //ending index of valsVis
 	protected int layerVisNum = 0; //position of vis layer
 	
-	protected static float learnRate = (float)0.03; //learning adjustment rate
+	protected static float learnRate = (float)0.06; //learning adjustment rate
 	
 	protected static int rndIndex = 0; //random index for io layers picking data from set
 	
@@ -85,7 +85,7 @@ public class Layer
 	public void setStatRefs(float[] a, float[] r)
 	{
 		valsAch = a;
-		valsReq = r;
+		valsErr = r;
 	}
 	public void setWeightsRef(float[] w)
 	{

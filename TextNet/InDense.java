@@ -35,7 +35,7 @@ public class InDense extends Layer
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through the vals
 		{
 			valsAch[valsPos] = 0;
-			valsReq[valsPos] = 0; //clearing req vals for the training pass
+			valsErr[valsPos] = 0; //clearing Err vals for the training pass
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through the vis layer vals
 			{
 				valsAch[valsPos] += data[valsVisPos] * weights[weiPos]; //summing the activations of the vis layer mulled by weights
@@ -47,12 +47,16 @@ public class InDense extends Layer
 	public void train()
 	{
 		int weiPos = 0;
+		for(int valsPos = begVals; valsPos < endVals; valsPos++)
+		{
+			valsErr[valsPos] = Functions.stepNeg(valsErr[valsPos]) - valsAch[valsPos]; //step applied to Err vals
+		}
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
-			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]); //step applied to req vals
+			valsErr[valsPos] = Functions.stepNeg(valsErr[valsPos]); //step applied to Err vals
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
-				weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * data[valsVisPos]) * learnRate; //adjusting weights based on ach/rew error
+				weights[weiPos] += valsErr[valsPos] * data[valsVisPos] * learnRate; //adjusting weights based on ach/rew error
 				weiPos++;
 			}
 		}

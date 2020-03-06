@@ -11,7 +11,6 @@ public class Functions
 	}
 	final public static float sigmoid(float n)
 	{
-		//n *= 8;
 		return n/(float)Math.sqrt(1 + n * n);
 	}
 	final public static float sigmoidZer(float n)
@@ -28,7 +27,7 @@ public class Functions
 	final public static float leakyRelu(float n)
 	{
 		if(n >= 0)
-			return n;
+			return (float)0.5 * n;
 		else
 			return (float)0.01 * n;
 	}

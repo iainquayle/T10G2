@@ -30,9 +30,9 @@ public class OutDense extends Layer
 		endValsVis = begValsVis + lenValsVis;
 		data = io[dataNum];
 	}
-	public void save()
+	public void save(String loc) throws IOException
 	{
-		
+		super.save(loc);
 	}
 	
 	public void eval()
@@ -52,30 +52,40 @@ public class OutDense extends Layer
 	public void train() //back pass and train
 	{
 		int weiPos = 0;
-		int aveErr = 0;
-		float valsLarg = valsAch[begVals];
-		int largPos = begVals;
-		valsReq[(int)(data[rndIndex] + 0.5)] = 1;
+		float aveErr = 0;
+		float valsLar = valsAch[begVals];
+		int larPos = begVals;
+		for(int valsPos = begVals; valsPos < endVals; valsPos++)
+		{
+			if((int)(data[rndIndex] + 0.5) + begVals != valsPos)
+			{
+				valsErr[valsPos] = -valsAch[valsPos]; 
+			}
+			else
+			{
+				valsErr[valsPos] = (float)1 - valsAch[valsPos];
+			}
+		}
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
-				valsReq[valsVisPos] += (valsReq[valsPos] - valsAch[valsPos]) * weights[weiPos]; //backpropagation of error
-				weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate; //adjusting weights based on ach/rew error
+				valsErr[valsVisPos] += valsErr[valsPos] * weights[weiPos]; //backpropagation of error
+				weights[weiPos] += valsErr[valsPos] * valsAch[valsVisPos] * learnRate; //adjusting weights based on ach/rew error
 				weiPos++;
 			}
 		}
 		for(int valsPos = begVals; valsPos < endVals; valsPos++)
 		{
-			aveErr += Math.abs(valsReq[valsPos] - valsAch[valsPos]);
-			if(valsAch[valsPos] > valsLarg)
+			aveErr += Math.abs(valsErr[valsPos]);
+			if(valsAch[valsPos] > valsLar)
 			{
-				valsLarg = valsAch[valsPos];
-				largPos = valsPos;
+				valsLar = valsAch[valsPos];
+				larPos = valsPos;
 			}
 		}
 		netErr = (netErr * (float)0.99) + (aveErr / lenVals * (float)0.01);
-		if(largPos == (int)(data[rndIndex] + 0.5) + begVals)
+		if(larPos == (int)(data[rndIndex] + 0.5) + begVals)
 		{
 			netCorr = (netCorr * (float)0.99) + (float)0.01;
 		}
@@ -83,7 +93,6 @@ public class OutDense extends Layer
 		{
 			netCorr *= (float)0.99;
 		}
-		valsReq[(int)(data[rndIndex] + 0.5)] = 0;
 	}
 	
 	public int getLayerType()

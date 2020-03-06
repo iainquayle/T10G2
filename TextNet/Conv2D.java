@@ -82,7 +82,7 @@ public class Conv2D extends Layer
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
 					valsAch[valsPos] = 0;
-					valsReq[valsPos] = 0; 
+					valsErr[valsPos] = 0; 
 					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
 					{
 						stopValsVisY = valsVisPos + jumpValsVisXY;  
@@ -120,7 +120,7 @@ public class Conv2D extends Layer
 		int stopValsVisY = 0;
 		while(valsPos < endVals)
 		{
-			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]);
+			valsErr[valsPos] = Functions.stepNeg(valsErr[valsPos]) - valsAch[valsPos];;
 			valsPos++;
 		}
 		valsPos = begVals;
@@ -139,8 +139,8 @@ public class Conv2D extends Layer
 							stopValsVisX = valsVisPos + lenKerX;
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
-								valsReq[valsVisPos] += (valsReq[valsPos] - valsAch[valsPos]) * weights[weiPos]; //backpropagation of error
-								aveWei[aveWeiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate; //accumuling adjustments to not disturb backpropagation 
+								valsErr[valsVisPos] += valsErr[valsPos] * weights[weiPos]; //backpropagation of error
+								aveWei[aveWeiPos] += valsErr[valsPos] * valsAch[valsVisPos] * learnRate; //accumuling adjustments to not disturb backpropagation 
 								valsVisPos++;
 								weiPos++;
 								aveWeiPos++;
@@ -264,7 +264,7 @@ public class Conv2D extends Layer
 /* 		while(valsPos < endVals) //iterate through each weight set/kernel/XY
 		{
 			valsAch[valsPos] = 0;
-			valsReq[valsPos] = 0;
+			valsErr[valsPos] = 0;
 			stopValsVisZ = valsVisPos + jumpValsVisBack;
 			while(valsVisPos <= stopValsVisZ) //iterate through each XY in the vis layer 
 			{
@@ -307,7 +307,7 @@ public class Conv2D extends Layer
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
 					valsAch[valsPos] = 0;
-					valsReq[valsPos] = 0;
+					valsErr[valsPos] = 0;
 					valsVisPos = begValsVis + j * stride * lenValsVisX + k * stride;
 					stopValsVisZ = valsVisPos + lenValsVisXY * (lenValsVisZ - 1);
 					while(valsVisPos <= stopValsVisZ) //iterate through each XY in the vis layer 
@@ -352,8 +352,8 @@ public class Conv2D extends Layer
 							stopValsVisX = valsVisPos + lenKerX;
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
-								valsReq[valsVisPos] += valsReq[valsPos] * weights[weiPos];
-								aveWei[aveWeiPos] += (valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
+								valsErr[valsVisPos] += valsErr[valsPos] * weights[weiPos];
+								aveWei[aveWeiPos] += (valsErr[valsPos] - valsAch[valsVisPos]) * learnRate;
 								valsVisPos++;
 								weiPos++;
 								aveWeiPos++;

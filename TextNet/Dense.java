@@ -32,7 +32,7 @@ public class Dense extends Layer
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through the vals
 		{
 			valsAch[valsPos] = 0; //clearing ach vals
-			valsReq[valsPos] = 0; //clearing req vals for the training pass
+			valsErr[valsPos] = 0; //clearing Err vals for the training pass
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through the vis layer vals
 			{
 				valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos]; //summing the activations of the vis layer mulled by weights
@@ -46,20 +46,17 @@ public class Dense extends Layer
 		int weiPos = 0;
 		for(int valsPos = begVals; valsPos < endVals; valsPos++)
 		{
-			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]); //step applied to req vals
+			valsErr[valsPos] = Functions.stepNeg(valsErr[valsPos]) - valsAch[valsPos]; //step applied to Err vals
 		}
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
-				valsReq[valsVisPos] += (valsReq[valsPos] - valsAch[valsPos]) * weights[weiPos]; //backpropagation of error
-				weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate; //adjusting weights based on ach/rew error
+				valsErr[valsVisPos] += valsErr[valsPos] * weights[weiPos]; //backpropagation of error
+				weights[weiPos] += valsErr[valsPos] * valsAch[valsVisPos] * learnRate; //adjusting weights based on ach/rew error
 				weiPos++;
 			}
 		}
-		//Two ways of learning, believe the top will work better for accuracy in the long run
-		//((valsReq[valsPos] - valsAch[valsPos]) * valsAch[valsVisPos]) * learnRate;
-		//(valsReq[valsPos] - valsAch[valsVisPos]) * learnRate;
 	}
 	
 	public int getLayerType()

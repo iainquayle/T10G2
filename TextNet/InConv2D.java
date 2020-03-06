@@ -84,7 +84,7 @@ public class InConv2D extends Layer
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
 					valsAch[valsPos] = 0;
-					valsReq[valsPos] = 0;   
+					valsErr[valsPos] = 0;   
 					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
 					{
 						stopValsVisY = valsVisPos + jumpValsVisXY;  
@@ -121,7 +121,7 @@ public class InConv2D extends Layer
 		int stopValsVisY = 0;
 		while(valsPos < endVals)
 		{
-			valsReq[valsPos] = Functions.stepNeg(valsReq[valsPos]);
+			valsErr[valsPos] = Functions.stepNeg(valsErr[valsPos]) - valsAch[valsPos];
 			valsPos++;
 		}
 		valsPos = begVals;
@@ -132,7 +132,7 @@ public class InConv2D extends Layer
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
 					valsAch[valsPos] = 0;
-					valsReq[valsPos] = 0;
+					valsErr[valsPos] = 0;
 					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
 					{
 						stopValsVisY = valsVisPos + jumpValsVisXY;  
@@ -141,7 +141,7 @@ public class InConv2D extends Layer
 							stopValsVisX = valsVisPos + lenKerX;
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
-								weights[weiPos] += ((valsReq[valsPos] - valsAch[valsPos]) * data[valsVisPos]) * learnRate; //adjusting weights based on ach/rew error
+								weights[weiPos] += valsErr[valsPos] * data[valsVisPos] * learnRate; //adjusting weights based on ach/rew error
 								valsVisPos++;
 								weiPos++;
 							}
