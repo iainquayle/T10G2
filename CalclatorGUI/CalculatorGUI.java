@@ -14,6 +14,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Color;
 
 public class CalculatorGUI extends JFrame {
 
@@ -48,6 +49,7 @@ public class CalculatorGUI extends JFrame {
 		setContentPane(contentPane);
 		
 		JButton btnNewButton = new JButton("1");
+		btnNewButton.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Display.setText(Display.getText() + "1");
@@ -56,6 +58,7 @@ public class CalculatorGUI extends JFrame {
 		btnNewButton.setBounds(15, 75, 50, 42);
 		
 		JButton btnNewButton_1 = new JButton("4");
+		btnNewButton_1.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + "4");
@@ -67,6 +70,7 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1);
 		
 		JButton btnNewButton_1_1 = new JButton("6");
+		btnNewButton_1_1.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + "6");
@@ -76,6 +80,7 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_1);
 		
 		JButton btnNewButton_1_2 = new JButton("2");
+		btnNewButton_1_2.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + "2");
@@ -85,6 +90,7 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_2);
 		
 		JButton btnNewButton_1_3 = new JButton("3");
+		btnNewButton_1_3.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + "3");
@@ -94,6 +100,7 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_3);
 		
 		JButton btnNewButton_1_4 = new JButton("5");
+		btnNewButton_1_4.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + "5");
@@ -103,6 +110,7 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_4);
 		
 		JButton btnNewButton_1_5 = new JButton("7");
+		btnNewButton_1_5.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Display.setText(Display.getText() + "7");
@@ -113,6 +121,7 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_5);
 		
 		JButton btnNewButton_1_6 = new JButton("8");
+		btnNewButton_1_6.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + "8");
@@ -122,6 +131,7 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_6);
 		
 		JButton btnNewButton_1_7 = new JButton("9");
+		btnNewButton_1_7.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + "9");
@@ -131,6 +141,7 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_7);
 		
 		JButton btnNewButton_1_8 = new JButton("0");
+		btnNewButton_1_8.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + "0");
@@ -140,6 +151,8 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_8);
 		
 		JButton btnNewButton_1_9 = new JButton("X");
+		btnNewButton_1_9.setForeground(Color.RED);
+		btnNewButton_1_9.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + " * " );
@@ -149,6 +162,8 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_9);
 		
 		JButton btnNewButton_1_10 = new JButton("/");
+		btnNewButton_1_10.setForeground(Color.RED);
+		btnNewButton_1_10.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + " / ");
@@ -158,15 +173,18 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_10);
 		
 		JButton btnNewButton_1_11 = new JButton("+");
+		btnNewButton_1_11.setForeground(Color.RED);
+		btnNewButton_1_11.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + " + ");
 			}
 		});
-		btnNewButton_1_11.setBounds(175, 139, 50, 53);
+		btnNewButton_1_11.setBounds(175, 139, 53, 53);
 		contentPane.add(btnNewButton_1_11);
 		
 		JButton btnNewButton_1_5_1 = new JButton(".");
+		btnNewButton_1_5_1.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_5_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + ".");
@@ -176,6 +194,8 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_5_1);
 		
 		JButton btnNewButton_1_11_1 = new JButton("-");
+		btnNewButton_1_11_1.setForeground(Color.RED);
+		btnNewButton_1_11_1.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_11_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + " - ");
@@ -185,10 +205,12 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_11_1);
 		
 		JButton btnNewButton_1_11_2 = new JButton("=");
+		btnNewButton_1_11_2.setForeground(Color.RED);
+		btnNewButton_1_11_2.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_11_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				testCase = Display.getText();
-				Display.setText(Display.getText() + " =");
+				Display.setText(Display.getText() + " = ");
 				
 				
 				CalculatorV5 runEquation = new CalculatorV5();
@@ -199,7 +221,7 @@ public class CalculatorGUI extends JFrame {
 				
 			}
 		});
-		btnNewButton_1_11_2.setBounds(175, 197, 110, 53);
+		btnNewButton_1_11_2.setBounds(175, 197, 110, 98);
 		contentPane.add(btnNewButton_1_11_2);
 		
 		Display = new JTextField();
@@ -221,6 +243,8 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_8_1);
 		
 		JButton btnNewButton_1_8_2 = new JButton("(");
+		btnNewButton_1_8_2.setForeground(Color.RED);
+		btnNewButton_1_8_2.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_8_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Display.setText(Display.getText() + " ( ");
@@ -230,6 +254,8 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_8_2);
 		
 		JButton btnNewButton_1_8_3 = new JButton(")");
+		btnNewButton_1_8_3.setForeground(Color.RED);
+		btnNewButton_1_8_3.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_8_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + " ) ");
@@ -239,6 +265,8 @@ public class CalculatorGUI extends JFrame {
 		contentPane.add(btnNewButton_1_8_3);
 		
 		JButton btnNewButton_1_8_4 = new JButton("^");
+		btnNewButton_1_8_4.setForeground(Color.RED);
+		btnNewButton_1_8_4.setFont(new Font("Arial", Font.BOLD, 18));
 		btnNewButton_1_8_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Display.setText(Display.getText() + " ^ ");
