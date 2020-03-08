@@ -1,7 +1,7 @@
-package engine;
+
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CalculatorV5 {
@@ -23,10 +23,15 @@ public class CalculatorV5 {
 		//add all elements from the array to an array list
 		for (int i = 0; i < ArrayForm.length; i++ ) {
 			formulaSplitAll.add(ArrayForm[i]);
-			if (formulaSplitAll.get(i).equals("(")) {
+
+			if (formulaSplitAll.get(i).equals("("))
+			{
 				counter = counter + 1;
 			}
+//			
+		
 		}
+		formulaSplitAll.removeAll(Arrays.asList("", null));
 		return formulaSplitAll;
 	}
 	
@@ -181,7 +186,7 @@ public class CalculatorV5 {
 		}
 	}
 	
-	public double run(String testCase){
+	public String run(String testCase){
 
 		
 		CalculatorV5 calc = new CalculatorV5();
@@ -205,21 +210,23 @@ public class CalculatorV5 {
 		// gives a cleaner output with either an integer value or double 
 		for (String b : calc.formulaSplitAll) {
 			num = Double.parseDouble(b);
+			
 			if(num % 1 == 0) {
 				num2 = (int) num;
-				return num2;
+				String num_dis = Integer.toString(num2);
+				return num_dis;
 //				System.out.println("Final answer: " + num2);
 				
 			}
 			else {
-//				System.out.println("Final answer: " + num);
-				return num;
+				String num_dat = String.format("%.5f", num);
+				return num_dat;
 				
 			}
 			
 			
 		}
-		return 0;
+		return"Invalid";
 		
 		
 	}
