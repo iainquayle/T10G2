@@ -1,4 +1,4 @@
-package engine;
+
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -21,6 +21,7 @@ public class CalculatorGUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField Display;
 	public String testCase;
+	private JTextField Display2;
 	/**
 	 * Launch the application.
 	 */
@@ -43,7 +44,7 @@ public class CalculatorGUI extends JFrame {
 	 */
 	public CalculatorGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 309, 345);
+		setBounds(100, 100, 330, 407);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -55,7 +56,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + "1");
 			}
 		});
-		btnNewButton.setBounds(15, 75, 50, 42);
+		btnNewButton.setBounds(15, 100, 50, 42);
 		
 		JButton btnNewButton_1 = new JButton("4");
 		btnNewButton_1.setFont(new Font("Arial", Font.BOLD, 18));
@@ -64,7 +65,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + "4");
 			}
 		});
-		btnNewButton_1.setBounds(15, 120, 50, 42);
+		btnNewButton_1.setBounds(15, 153, 50, 42);
 		contentPane.setLayout(null);
 		contentPane.add(btnNewButton);
 		contentPane.add(btnNewButton_1);
@@ -76,7 +77,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + "6");
 			}
 		});
-		btnNewButton_1_1.setBounds(112, 120, 53, 42);
+		btnNewButton_1_1.setBounds(131, 153, 53, 42);
 		contentPane.add(btnNewButton_1_1);
 		
 		JButton btnNewButton_1_2 = new JButton("2");
@@ -86,7 +87,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + "2");
 			}
 		});
-		btnNewButton_1_2.setBounds(64, 75, 50, 42);
+		btnNewButton_1_2.setBounds(71, 100, 50, 42);
 		contentPane.add(btnNewButton_1_2);
 		
 		JButton btnNewButton_1_3 = new JButton("3");
@@ -96,7 +97,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + "3");
 			}
 		});
-		btnNewButton_1_3.setBounds(112, 75, 53, 42);
+		btnNewButton_1_3.setBounds(131, 100, 53, 42);
 		contentPane.add(btnNewButton_1_3);
 		
 		JButton btnNewButton_1_4 = new JButton("5");
@@ -106,7 +107,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + "5");
 			}
 		});
-		btnNewButton_1_4.setBounds(64, 120, 50, 42);
+		btnNewButton_1_4.setBounds(71, 153, 50, 42);
 		contentPane.add(btnNewButton_1_4);
 		
 		JButton btnNewButton_1_5 = new JButton("7");
@@ -117,7 +118,7 @@ public class CalculatorGUI extends JFrame {
 			}
 			
 		});
-		btnNewButton_1_5.setBounds(15, 165, 50, 42);
+		btnNewButton_1_5.setBounds(15, 206, 50, 42);
 		contentPane.add(btnNewButton_1_5);
 		
 		JButton btnNewButton_1_6 = new JButton("8");
@@ -127,7 +128,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + "8");
 			}
 		});
-		btnNewButton_1_6.setBounds(64, 165, 50, 42);
+		btnNewButton_1_6.setBounds(71, 206, 50, 42);
 		contentPane.add(btnNewButton_1_6);
 		
 		JButton btnNewButton_1_7 = new JButton("9");
@@ -137,7 +138,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + "9");
 			}
 		});
-		btnNewButton_1_7.setBounds(112, 165, 53, 42);
+		btnNewButton_1_7.setBounds(131, 206, 53, 42);
 		contentPane.add(btnNewButton_1_7);
 		
 		JButton btnNewButton_1_8 = new JButton("0");
@@ -147,7 +148,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + "0");
 			}
 		});
-		btnNewButton_1_8.setBounds(64, 210, 50, 42);
+		btnNewButton_1_8.setBounds(74, 261, 50, 42);
 		contentPane.add(btnNewButton_1_8);
 		
 		JButton btnNewButton_1_9 = new JButton("X");
@@ -158,7 +159,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + " * " );
 			}
 		});
-		btnNewButton_1_9.setBounds(175, 75, 50, 53);
+		btnNewButton_1_9.setBounds(194, 153, 50, 42);
 		contentPane.add(btnNewButton_1_9);
 		
 		JButton btnNewButton_1_10 = new JButton("/");
@@ -169,7 +170,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + " / ");
 			}
 		});
-		btnNewButton_1_10.setBounds(235, 75, 50, 53);
+		btnNewButton_1_10.setBounds(254, 153, 50, 42);
 		contentPane.add(btnNewButton_1_10);
 		
 		JButton btnNewButton_1_11 = new JButton("+");
@@ -180,7 +181,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + " + ");
 			}
 		});
-		btnNewButton_1_11.setBounds(175, 139, 53, 53);
+		btnNewButton_1_11.setBounds(194, 206, 50, 48);
 		contentPane.add(btnNewButton_1_11);
 		
 		JButton btnNewButton_1_5_1 = new JButton(".");
@@ -190,7 +191,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + ".");
 			}
 		});
-		btnNewButton_1_5_1.setBounds(15, 210, 50, 42);
+		btnNewButton_1_5_1.setBounds(15, 261, 50, 42);
 		contentPane.add(btnNewButton_1_5_1);
 		
 		JButton btnNewButton_1_11_1 = new JButton("-");
@@ -201,7 +202,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + " - ");
 			}
 		});
-		btnNewButton_1_11_1.setBounds(235, 139, 50, 53);
+		btnNewButton_1_11_1.setBounds(254, 201, 50, 53);
 		contentPane.add(btnNewButton_1_11_1);
 		
 		JButton btnNewButton_1_11_2 = new JButton("=");
@@ -210,23 +211,28 @@ public class CalculatorGUI extends JFrame {
 		btnNewButton_1_11_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				testCase = Display.getText();
+				Display2.setText(Display.getText());
 				Display.setText(Display.getText() + " = ");
 				
 				
 				CalculatorV5 runEquation = new CalculatorV5();
-				double num = runEquation.run(testCase);
-				Display.removeAll();
-				Display.setText(Display.getText() + num);
+				String num = runEquation.run(testCase);
+				Display.setText(null);
+				Display.setText(num);
 				Display.remove(btnNewButton_1_11_2);
 				
 			}
 		});
-		btnNewButton_1_11_2.setBounds(175, 197, 110, 98);
+		btnNewButton_1_11_2.setBounds(194, 259, 110, 98);
 		contentPane.add(btnNewButton_1_11_2);
 		
 		Display = new JTextField();
+		Display.setBackground(Color.WHITE);
+		Display.setCaretColor(Color.WHITE);
+		Display.setDisabledTextColor(Color.WHITE);
+		Display.setEditable(false);
 		Display.setFont(new Font("Arial", Font.BOLD, 39));
-		Display.setBounds(10, 11, 275, 53);
+		Display.setBounds(10, 35, 294, 54);
 		contentPane.add(Display);
 		Display.setColumns(10);
 		
@@ -234,12 +240,13 @@ public class CalculatorGUI extends JFrame {
 		btnNewButton_1_8_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Display.setText(null);
+				Display2.setText(null);
 
 				
 			}
 		});
 		btnNewButton_1_8_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 18));
-		btnNewButton_1_8_1.setBounds(115, 210, 50, 42);
+		btnNewButton_1_8_1.setBounds(134, 262, 50, 42);
 		contentPane.add(btnNewButton_1_8_1);
 		
 		JButton btnNewButton_1_8_2 = new JButton("(");
@@ -250,7 +257,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + " ( ");
 			}
 		});
-		btnNewButton_1_8_2.setBounds(15, 253, 50, 42);
+		btnNewButton_1_8_2.setBounds(15, 315, 50, 42);
 		contentPane.add(btnNewButton_1_8_2);
 		
 		JButton btnNewButton_1_8_3 = new JButton(")");
@@ -261,7 +268,7 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + " ) ");
 			}
 		});
-		btnNewButton_1_8_3.setBounds(64, 253, 50, 42);
+		btnNewButton_1_8_3.setBounds(74, 315, 50, 42);
 		contentPane.add(btnNewButton_1_8_3);
 		
 		JButton btnNewButton_1_8_4 = new JButton("^");
@@ -272,8 +279,17 @@ public class CalculatorGUI extends JFrame {
 				Display.setText(Display.getText() + " ^ ");
 			}
 		});
-		btnNewButton_1_8_4.setBounds(115, 253, 50, 42);
+		btnNewButton_1_8_4.setBounds(134, 315, 50, 42);
 		contentPane.add(btnNewButton_1_8_4);
+		
+		Display2 = new JTextField();
+		Display2.setBackground(Color.WHITE);
+		Display2.setEditable(false);
+		Display2.setForeground(Color.RED);
+		Display2.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		Display2.setBounds(10, 0, 174, 31);
+		contentPane.add(Display2);
+		Display2.setColumns(10);
 		
 	}
 }
