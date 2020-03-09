@@ -193,6 +193,23 @@ public class InputData
 		}
 		return arr;
 	}
+	public float[] normalizeFloatArray(float[] arr)
+	{
+		float larVal = 0;
+		for(int i = 0; i < arr.length; i++)
+		{
+			if(arr[i] > larVal)
+			{
+				larVal = arr[i];
+			}
+		}
+		larVal = 1/larVal;
+		for(int i = 0; i < arr.length; i++)
+		{
+			arr[i] *= larVal;
+		}
+		return arr;
+	}
 	public void setFile(String loc) throws IOException, FileNotFoundException
 	{
 		reader.close();

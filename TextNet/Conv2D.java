@@ -6,22 +6,21 @@ import engine.Functions;
 
 public class Conv2D extends Layer
 {
-	private static float[] aveWei = null;
+	private static float[] aveWei = null; //kernel that can be used to train while leaving the original kernel untouched during backprop
 	
 	private int stride = 0; //stride length between neurons in vis layer
 	
-	private int lenKer = 0;
-	private int lenKerX = 0; //individual kernel dimensions, they are square so it acts for X and Y
+	private int lenKer = 0; //individual kernel length
+	private int lenKerX = 0; //individual kernel x and y length
 	
 	private int lenValsX = 0; //width of vals
 	private int lenValsY = 0; //height of vals
 	private int lenValsZ = 0; //depth of vals/number of kernels
-	//private int lenValsXY = 0;
 	
-	private int lenValsVisX = 0; //X of vis layer
-	private int lenValsVisY = 0; //Y of vis layer
-	private int lenValsVisZ = 0; //Zth of vis layer/Zth of each kernel
-	private int lenValsVisXY = 0;
+	private int lenValsVisX = 0; //X length of vis layer
+	private int lenValsVisY = 0; //Y length of vis layer
+	private int lenValsVisZ = 0; //Z length of vis layer/length of each kernel
+	private int lenValsVisXY = 0; //img length in vis layer
 	
 	private int jumpValsVisY = 0; //moves down one row
 	private int jumpValsVisXY = 0; //moves down all rows on one img
@@ -34,6 +33,8 @@ public class Conv2D extends Layer
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
+		learnRate = (float)0.000003;
+		
 		layerNum = num; //(layer reference, width, height, depth, vis wid, vis hei, vis dep, kernel width/height, stride)
 		layerVisNum = in.nextInt();
 		lenValsX = in.nextInt();
@@ -97,9 +98,9 @@ public class Conv2D extends Layer
 							}
 							valsVisPos += jumpValsVisY; //moving down to start of next row in kernel
 						}
-						valsVisPos += jumpValsVisZ; //moving back to start of next img in kernel
+						valsVisPos += jumpValsVisZ; //moving to start of next img in kernel
 					}
-					valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]); //sigmoid activation on vals ach
+					valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]); //relu activation on vals ach
 					valsVisPos -= jumpValsVisBack; //moving back to the starting position minus the stride
 					weiPos -= lenKer; //moving weipos back to start
 					valsPos++;
@@ -118,7 +119,7 @@ public class Conv2D extends Layer
 		int aveWeiPos = 0;
 		int stopValsVisX = 0;
 		int stopValsVisY = 0;
-		while(valsPos < endVals)
+		while(valsPos < endVals) //calculating errors
 		{
 			valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]) - valsAch[valsPos];
 			valsPos++;
@@ -130,41 +131,40 @@ public class Conv2D extends Layer
 			{
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
-					aveWeiPos = 0;
 					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
 					{
-						stopValsVisY = valsVisPos + jumpValsVisXY; 
+						stopValsVisY = valsVisPos + jumpValsVisXY; //sets stop based on position in vis layer
 						while(valsVisPos <= stopValsVisY) //iterate through kernel dim
 						{
-							stopValsVisX = valsVisPos + lenKerX;
+							stopValsVisX = valsVisPos + lenKerX; //sets stop based on position in vis layer
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
 								valsErr[valsVisPos] += (valsErr[valsPos]) * weights[weiPos]; //backpropagation of error
-								aveWei[aveWeiPos] += valsErr[valsPos] * valsAch[valsVisPos] * learnRate; //accumuling adjustments to not disturb backpropagation 
+								aveWei[aveWeiPos] += valsErr[valsPos] * valsAch[valsVisPos] * learnRate; //accumulation of adjustments to not disturb backprop
 								valsVisPos++;
 								weiPos++;
 								aveWeiPos++;
 							}
-							valsVisPos += jumpValsVisY;
+							valsVisPos += jumpValsVisY; //jump down one row in kernel in vis layer
 						}
-						valsVisPos += jumpValsVisZ;
+						valsVisPos += jumpValsVisZ; //jump down on img in kernel in vis layer
 					}
-					valsVisPos -= jumpValsVisBack;
-					weiPos -= lenKer;
-					aveWeiPos -= lenKer;
+					valsVisPos -= jumpValsVisBack; //jump back to start - stride
+					weiPos -= lenKer; //jump back to start of kernel
+					aveWeiPos -= lenKer; //jump back to start of kernel
 					valsPos++;
 				}
-				valsVisPos += jumpValsVisStride;
+				valsVisPos += jumpValsVisStride; //jump down one row in vis layer
 			}
 			while(aveWeiPos < lenKer) //iterating through the current kernel
 			{
 				weights[weiPos] += aveWei[aveWeiPos]; //adding adjustments to weights
-				aveWei[aveWeiPos] = 0;
-				weiPos++;
+				aveWei[aveWeiPos] = 0; //resetting ave kernel
+				weiPos++; //this moves weipos to next kernel as well
 				aveWeiPos++;
 			}
-			aveWeiPos -= lenKer;
-			valsVisPos = begValsVis;
+			aveWeiPos -= lenKer; //jumping back to the start of kernel
+			valsVisPos = begValsVis; //resetting back to the start of the the vis layer 
 		}
 	}
 	

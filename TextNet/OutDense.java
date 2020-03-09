@@ -6,14 +6,16 @@ import engine.Functions;
 
 public class OutDense extends Layer
 {
-	private float data[] = null;
-	private int dataNum = 0;
+	private float data[] = null; //training labels for data inputed
+	private int dataNum = 0; //array number to look at
 	
 	public OutDense()
 	{
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
+		learnRate = (float)0.0003;
+		
 		layerNum = num;    //(vis layernum, datanum, len vals, lenvisvals)
 		layerVisNum = in.nextInt();
 		dataNum = in.nextInt();
@@ -55,7 +57,7 @@ public class OutDense extends Layer
 		float aveErr = 0;
 		float valsLar = valsAch[begVals];
 		int larPos = begVals;
-		for(int valsPos = begVals; valsPos < endVals; valsPos++)
+		for(int valsPos = begVals; valsPos < endVals; valsPos++) //calculates error of layer based on training labels
 		{
 			if((int)(data[rndIndex] + 0.5) + begVals != valsPos)
 			{
@@ -76,7 +78,7 @@ public class OutDense extends Layer
 				weiPos++;
 			}
 		}
-		for(int valsPos = begVals; valsPos < endVals; valsPos++)
+		for(int valsPos = begVals; valsPos < endVals; valsPos++) //calculates average error and best guess
 		{
 			aveErr += Math.abs(valsErr[valsPos]);
 			if(valsAch[valsPos] > valsLar)
@@ -85,14 +87,14 @@ public class OutDense extends Layer
 				larPos = valsPos;
 			}
 		}
-		netErr = (netErr * (float)0.99) + (aveErr / lenVals * (float)0.01);
-		if(larPos == (int)(data[rndIndex] + 0.5) + begVals)
+		netErr = (netErr * (float)0.99) + (aveErr / lenVals * (float)0.01); //adds error weighted to running average
+		if(larPos == (int)(data[rndIndex] + 0.5) + begVals) //adds correct guess weighted to running average
 		{
-			netCorr = (netCorr * (float)0.99) + (float)0.01;
+			netAcc = (netAcc * (float)0.99) + (float)0.01;
 		}
 		else
 		{
-			netCorr *= (float)0.99;
+			netAcc *= (float)0.99;
 		}
 		System.out.println((larPos - begVals) + "   " + (int)(data[rndIndex] + 0.5) + "   " + valsLar);
 	}

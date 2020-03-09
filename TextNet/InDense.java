@@ -6,8 +6,8 @@ import engine.Functions;
 
 public class InDense extends Layer
 {
-	private float data[] = null;
-	private int dataNum = 0;
+	private float data[] = null; //training labels for data inputed
+	private int dataNum = 0; //array number to look at
 	
 	public InDense()
 	{

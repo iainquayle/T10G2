@@ -11,6 +11,8 @@ public class Dense extends Layer
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
+		learnRate = (float)0.000006;
+		
 		layerNum = num;          //(vis layer num, len vals, lenvisvals)
 		layerVisNum = in.nextInt();
 		lenVals = in.nextInt();
@@ -38,7 +40,7 @@ public class Dense extends Layer
 				valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos]; //summing the activations of the vis layer mulled by weights
 				weiPos++;
 			}
-			valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]);  //sigmoid activation on value achieve
+			valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]);  //relu activation on value achieve
 		}
 	}
 	public void train() //back pass and train

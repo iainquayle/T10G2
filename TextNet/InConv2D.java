@@ -14,7 +14,6 @@ public class InConv2D extends Layer
 	private int lenValsX = 0; //width of vals
 	private int lenValsY = 0; //height of vals
 	private int lenValsZ = 0; //depth of vals/number of kernels
-	//private int lenValsXY = 0;
 	
 	private int lenValsVisX = 0; //X of vis layer
 	private int lenValsVisY = 0; //Y of vis layer
@@ -27,14 +26,16 @@ public class InConv2D extends Layer
 	private int jumpValsVisBack = 0; //moves back to start of ker + stride
 	private int jumpValsVisStride = 0; //moves vertical stride length
 	
-	float data[] = null;
-	int dataNum = 0;
+	private float data[] = null; //training labels for data inputed
+	private int dataNum = 0; //array number to look at
 	
 	public InConv2D()
 	{
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
+		learnRate = (float)0.000003;
+		
 		layerNum = num; //(layer reference, width, height, depth, vis depth, length weights, kernel width/height, stride)
 		dataNum = in.nextInt();
 		lenValsX = in.nextInt();
@@ -97,19 +98,19 @@ public class InConv2D extends Layer
 								valsVisPos++;
 								weiPos++;
 							}
-							valsVisPos += jumpValsVisY;
+							valsVisPos += jumpValsVisY; //moving down to start of next row in kernel
 						}
-						valsVisPos += jumpValsVisZ;
+						valsVisPos += jumpValsVisZ; //moving to start of next img in kernel
 					}
-					valsAch[valsPos] = Functions.sigmoidZer(valsAch[valsPos]); //sigmoid activation on vals ach
-					valsVisPos -= jumpValsVisBack;
-					weiPos -= lenKer;
+					valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]); //sigmoid activation on vals ach
+					valsVisPos -= jumpValsVisBack; //moving back to the starting position minus the stride
+					weiPos -= lenKer;  //moving weipos back to start
 					valsPos++;
 				}
-				valsVisPos += jumpValsVisStride;
+				valsVisPos += jumpValsVisStride; //moving down a row in the local layer
 			}
-			valsVisPos = begValsVis;
-			weiPos += lenKer;
+			valsVisPos = begValsVis; //moving back to the start of vis layer to start new kernel
+			weiPos += lenKer; //moving to new kernel
 		}
 	}
 	public void train()
@@ -133,28 +134,28 @@ public class InConv2D extends Layer
 				{
 					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
 					{
-						stopValsVisY = valsVisPos + jumpValsVisXY;  
+						stopValsVisY = valsVisPos + jumpValsVisXY; //sets stop based on position in vis layer
 						while(valsVisPos <= stopValsVisY) //iterate through kernel dim
 						{
-							stopValsVisX = valsVisPos + lenKerX;
+							stopValsVisX = valsVisPos + lenKerX; //sets stop based on position in vis layer
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
 								weights[weiPos] += valsErr[valsPos] * data[valsVisPos] * learnRate; //adjusting weights based on ach/rew error
 								valsVisPos++;
 								weiPos++;
 							}
-							valsVisPos += jumpValsVisY;
+							valsVisPos += jumpValsVisY; //jump down one row in kernel in vis layer
 						}
-						valsVisPos += jumpValsVisZ;
+						valsVisPos += jumpValsVisZ; //jump down on img in kernel in vis layer
 					}
-					valsVisPos -= jumpValsVisBack;
-					weiPos -= lenKer;
+					valsVisPos -= jumpValsVisBack; //jump back to start - stride
+					weiPos -= lenKer; //jump back to start of kernel
 					valsPos++;
 				}
-				valsVisPos += jumpValsVisStride;
+				valsVisPos += jumpValsVisStride; //jump down one row in vis layer
 			}
-			valsVisPos = begValsVis;
-			weiPos += lenKer;
+			valsVisPos = begValsVis; //resetting back to the start of the the vis layer 
+			weiPos += lenKer; //moving to next kernel
 		}
 	}
 	

@@ -13,13 +13,13 @@ import engine.Dense;
 import engine.Conv2D;
 import engine.Input;
 import engine.Output;
-import engine.NetThread;
 @SuppressWarnings("unused")
 
 public class TextNet
 {
+	private static Thread thread = Thread.currentThread();
+	
 	private static Layer[] layers = null;
-	private static NetThread[] threads = null;
 	
 	private static String loc = System.getProperty("user.dir") + "\\";
 	private static String netName = null;
@@ -41,6 +41,7 @@ public class TextNet
 			e.printStackTrace();
 		}
 		System.gc();
+		thread.setPriority(Thread.MAX_PRIORITY);
 		
 		print();
 		
@@ -58,21 +59,28 @@ public class TextNet
 	
 	public static void init() throws IOException
 	{
+		//setting thread to highest priority
+		thread.setPriority(Thread.MAX_PRIORITY);
+		
+		//taking input on what training data and architecture to load
 		Scanner com = new Scanner(System.in);
-		System.out.print("Training data name: ");
+		System.out.print("Training data name (must be in csv save, but dont add .csv): ");
 		dataName = com.nextLine();
-		System.out.print("Net config name: ");
+		System.out.print("Net config name (must be in csv save, but dont add .csv): ");
 		netName = com.nextLine();
 		com.close();
 		
+		//loading training data
 		System.out.println("Data");
 		InputData file = new InputData(loc + dataName + "Splits.csv");
 		int[] splits = file.toIntArray();
 		file.setFile(loc + dataName + ".csv");
 		ioPuts = file.toFloatArray2D(splits);
+		ioPuts[1] = file.normalizeFloatArray(ioPuts[1]);               //this is currently just for mnist_train, will make better set up in future
 		lenIoPuts = ioPuts[0].length / splits[0];
 		file.close();
 		
+		//loading and initializing net architecture and weights 
 		System.out.println("Init");
 		int temp = 0;
 		file.setFile(loc + netName + "\\" + netName + ".csv");
@@ -111,6 +119,7 @@ public class TextNet
 			}
 		}
 		temp = 0;
+		//initializing individual layers
 		for(int i = 0; i < lenLayers; i++)
 		{
 			System.out.println("Init layer " + i);
@@ -121,6 +130,7 @@ public class TextNet
 		file.close();
 		com.close();
 	}
+	//saves layers current weights
 	public static void save() throws IOException
 	{
 		System.out.println("Save");
@@ -135,18 +145,16 @@ public class TextNet
 	{
 		long preTime = 0;
 		long curTime = System.currentTimeMillis();
-		for(int i = 0; i < 200000; i++)
+		for(int i = 0; i < 100000; i++)
 		{
 			preTime = curTime;
 			for(int j = 0; j < lenLayers; j++)
 			{
 				layers[j].eval();
-				//System.out.println("Eval " + j + " time " + (curTime - preTime));
 			}
 			for(int j = lenLayers - 1; j >= 0; j--)
 			{
 				layers[j].train();
-				//System.out.println("Train " + j);
 			}
 			curTime = System.currentTimeMillis();
 			layers[0].setRndIndex(rnd.nextInt(lenIoPuts));
@@ -155,6 +163,7 @@ public class TextNet
 		System.out.println(layers[0].errString());
 	}
 	
+	//print out configuration of net
 	public static void print()
 	{
 		String str = "";
