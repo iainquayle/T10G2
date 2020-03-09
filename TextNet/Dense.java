@@ -38,7 +38,7 @@ public class Dense extends Layer
 				valsAch[valsPos] += valsAch[valsVisPos] * weights[weiPos]; //summing the activations of the vis layer mulled by weights
 				weiPos++;
 			}
-			valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]);  //sigmoid activation on value achieve
+			valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]);  //sigmoid activation on value achieve
 		}
 	}
 	public void train() //back pass and train
@@ -46,13 +46,13 @@ public class Dense extends Layer
 		int weiPos = 0;
 		for(int valsPos = begVals; valsPos < endVals; valsPos++)
 		{
-			valsErr[valsPos] = Functions.stepNeg(valsErr[valsPos]) - valsAch[valsPos]; //step applied to Err vals
+			valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]) - valsAch[valsPos]; //step applied to Err vals
 		}
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
-				valsErr[valsVisPos] += valsErr[valsPos] * weights[weiPos]; //backpropagation of error
+				valsErr[valsVisPos] += (valsErr[valsPos]) * weights[weiPos]; //backpropagation of error
 				weights[weiPos] += valsErr[valsPos] * valsAch[valsVisPos] * learnRate; //adjusting weights based on ach/rew error
 				weiPos++;
 			}

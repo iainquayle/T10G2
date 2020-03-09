@@ -65,12 +65,13 @@ public class OutDense extends Layer
 			{
 				valsErr[valsPos] = (float)1 - valsAch[valsPos];
 			}
+			//System.out.print(valsAch[valsPos] + "   ");
 		}
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
-				valsErr[valsVisPos] += valsErr[valsPos] * weights[weiPos]; //backpropagation of error
+				valsErr[valsVisPos] += (valsErr[valsPos]) * weights[weiPos]; //backpropagation of error
 				weights[weiPos] += valsErr[valsPos] * valsAch[valsVisPos] * learnRate; //adjusting weights based on ach/rew error
 				weiPos++;
 			}
@@ -93,6 +94,7 @@ public class OutDense extends Layer
 		{
 			netCorr *= (float)0.99;
 		}
+		System.out.println((larPos - begVals) + "   " + (int)(data[rndIndex] + 0.5) + "   " + valsLar);
 	}
 	
 	public int getLayerType()

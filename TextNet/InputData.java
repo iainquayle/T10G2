@@ -27,6 +27,7 @@ public class InputData
 		char cur = (char)reader.read();
 		boolean neg = false;
 		boolean dec = false;
+		boolean exp = false;
 		boolean num = false;
 		boolean broken = false;
 		while(!broken)
@@ -41,6 +42,18 @@ public class InputData
 			{
 				hold += '.';
 				dec = true;
+				cur = (char)reader.read();
+			}
+			else if(num && !exp && cur == 'E')
+			{
+				hold += 'E';
+				exp = true;
+				cur = (char)reader.read();
+			}
+			else if(exp && hold.charAt(hold.length() - 1) == 'E' && cur == '-')
+			{
+				hold += '-';
+				exp = true;
 				cur = (char)reader.read();
 			}
 			else if(cur >= '0' && cur <= '9')

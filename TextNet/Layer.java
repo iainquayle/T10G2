@@ -24,15 +24,12 @@ public class Layer
 	protected int endValsVis = 0; //ending index of valsVis
 	protected int layerVisNum = 0; //position of vis layer
 	
-	protected static float learnRate = (float)0.06; //learning adjustment rate
+	protected static float learnRate = (float)0.00008; //learning adjustment rate
 	
 	protected static int rndIndex = 0; //random index for io layers picking data from set
 	
 	protected static float netErr = 0; //average error of the net at the outputs layer (weighted 0.01 to the newest value)
 	protected static float netCorr = 0; //average amount of correct guesses (weighted 0.01 to the newest value)
-	
-	protected static float threadSplits = 1; //value for fraction of layer a thread has command of
-	protected static int numThreads = 1; //number of threads working on layers
 	
 	public Layer()
 	{
@@ -70,7 +67,7 @@ public class Layer
 			weights = new float[lenWeis];
 			for(int i = 0; i < lenWeis; i++)
 			{
-				weights[i] = rnd.nextFloat() - (float)(0.5);
+				weights[i] = (rnd.nextFloat() - (float)(0.6));
 			}
 		}
 	}
@@ -80,6 +77,14 @@ public class Layer
 	}
 	public void train() //virtual method
 	{
+	}
+	
+	public void halfWeights()
+	{
+		for(int i = 0; i < lenWeis; i++)
+		{
+			weights[i] /= 2;
+		}
 	}
 	
 	public void setStatRefs(float[] a, float[] r)
@@ -114,6 +119,6 @@ public class Layer
 	}
 	public String errString()
 	{
-		return "Error: " + netErr + "   Correct:" + netCorr; 
+		return "Error: " + netErr + "   Accuracy:" + netCorr; 
 	}
 }

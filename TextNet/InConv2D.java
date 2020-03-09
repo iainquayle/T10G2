@@ -77,7 +77,7 @@ public class InConv2D extends Layer
 		int valsVisPos = begValsVis;
 		int stopValsVisX = 0;
 		int stopValsVisY = 0;
-		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/XY
+		while(valsPos < endVals) //iterate through each weight set/kernel/XY
 		{
 			for(int j = 0; j < lenValsY; j++) //iterate through each row
 			{
@@ -101,7 +101,7 @@ public class InConv2D extends Layer
 						}
 						valsVisPos += jumpValsVisZ;
 					}
-					valsAch[valsPos] = Functions.sigmoid(valsAch[valsPos]); //sigmoid activation on vals ach
+					valsAch[valsPos] = Functions.sigmoidZer(valsAch[valsPos]); //sigmoid activation on vals ach
 					valsVisPos -= jumpValsVisBack;
 					weiPos -= lenKer;
 					valsPos++;
@@ -121,18 +121,16 @@ public class InConv2D extends Layer
 		int stopValsVisY = 0;
 		while(valsPos < endVals)
 		{
-			valsErr[valsPos] = Functions.stepNeg(valsErr[valsPos]) - valsAch[valsPos];
+			valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]);
 			valsPos++;
 		}
 		valsPos = begVals;
-		for(int i = 0; i < lenValsZ; i++) //iterate through each weight set/kernel/XY
+		while(valsPos < endVals) //iterate through each weight set/kernel/XY
 		{
 			for(int j = 0; j < lenValsY; j++) //iterate through each row
 			{
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
-					valsAch[valsPos] = 0;
-					valsErr[valsPos] = 0;
 					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
 					{
 						stopValsVisY = valsVisPos + jumpValsVisXY;  

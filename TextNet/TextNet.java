@@ -120,14 +120,6 @@ public class TextNet
 		layers[0].setStatRefs(new float[temp], new float[temp]);
 		file.close();
 		com.close();
-		try 
-		{
-			Thread.sleep(1000);
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
 	}
 	public static void save() throws IOException
 	{
@@ -143,7 +135,7 @@ public class TextNet
 	{
 		long preTime = 0;
 		long curTime = System.currentTimeMillis();
-		for(int i = 0; i < 10000; i++)
+		for(int i = 0; i < 200000; i++)
 		{
 			preTime = curTime;
 			for(int j = 0; j < lenLayers; j++)
@@ -156,7 +148,7 @@ public class TextNet
 				layers[j].train();
 				//System.out.println("Train " + j);
 			}
-			curTime = System.nanoTime();
+			curTime = System.currentTimeMillis();
 			layers[0].setRndIndex(rnd.nextInt(lenIoPuts));
 			System.out.println(i + "   " + (curTime - preTime));
 		}

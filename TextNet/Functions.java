@@ -27,27 +27,37 @@ public class Functions
 	final public static float leakyRelu(float n)
 	{
 		if(n >= 0)
-			return (float)0.5 * n;
+			return n;
 		else
-			return (float)0.01 * n;
+			return (float)0.001 * n;
 	}
 	final public static float leakyRelu6(float n)
 	{
-		if(n >= 6)
-			return (float)6;
+		if(n >= 1)
+			return (float)0.001 * (n - 6) + 6;
 		else if(n >= 0)
 			return n;
 		else
-			return (float)0.01 * n;
+			return (float)0.001 * n;
 	}
 	final public static float relu6(float n)
 	{
-		if(n >= 6)
-			return (float)6;
-		else if(n >= 0)
-			return n;
+		return clip(6, 0, n);
+	}
+	final public static float clip(float upper, float lower, float n)
+	{
+		if(n >= upper)
+		{
+			return upper;
+		}
+		else if(n <= lower)
+		{
+			return lower;
+		}
 		else
-			return (float)0;
+		{
+			return n;
+		}
 	}
 	final public static float stepNeg(float n)
 	{
