@@ -34,8 +34,6 @@ public class InConv2D extends Layer
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
-		learnRate = (float)0.000003;
-		
 		layerNum = num; //(layer reference, width, height, depth, vis depth, length weights, kernel width/height, stride)
 		dataNum = in.nextInt();
 		lenValsX = in.nextInt();
@@ -122,7 +120,7 @@ public class InConv2D extends Layer
 		int stopValsVisY = 0;
 		while(valsPos < endVals)
 		{
-			valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]);
+			valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]) - valsAch[valsPos];
 			valsPos++;
 		}
 		valsPos = begVals;
