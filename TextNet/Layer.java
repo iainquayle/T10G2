@@ -9,6 +9,20 @@ import java.io.IOException;
 @SuppressWarnings("unused")
 public class Layer 
 {	
+	//Reference for variable naming scheme:
+	//Variables are attempted to be named so that the broadest category they fit into comes first.
+	//len: (length) prefix to all lengths and dimensionalities of arrays.
+	//beg: (beginning) prefix to all starting indexes of layers in the two vals arrays. (also comes in temp form for multiple threads)
+	//end: (ending) prefix to the final indexes +1 of layers in the two vals arrays. (also comes in temp form for multiple threads)
+	//jump: (jump) prefix for any variable that precalculates a jump between locations that is not a standard length in any array.
+	//stop: (stop) prefix for any variable that precalculates a stop index but not the  
+	//vals: (values) title for anything to do with either the achieved or error values arrays.
+	//ach: (achieved) title for anything to do with achieved values array.
+	//err: (error) title for anything to do with error values array.
+	//vis: (visible) title for anything to do with the visible layer, the one that the current layer looks at.
+	//temp: (temporary) suffix for a variable that does the job of another, or holds a precaculated value for only the methods run time.
+	//pos: (position) suffix for a variable that indexs where an algorithm is in an array.
+	
 	protected static float[] valsAch = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
 	protected static float[] valsErr = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
 	protected int lenVals = 0; //total length of values ach/Err
@@ -24,7 +38,7 @@ public class Layer
 	protected int endValsVis = 0; //ending index of valsVis
 	protected int layerVisNum = 0; //position of vis layer in sequence of layers
 	
-	protected float learnRate = (float)0.003; //learning adjustment rate, will be default to value here but can be tuned elsewhere
+	protected float learnRate = (float)0.000005; //learning adjustment rate, will be default to value here but can be tuned elsewhere
 	
 	protected static int rndIndex = 0; //random index for io layers to pick data from in the set
 	
