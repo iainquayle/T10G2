@@ -1,3 +1,5 @@
+package engine;
+
 
 
 import java.util.ArrayList;
@@ -186,9 +188,9 @@ public class CalculatorV5 {
 		}
 	}
 	
-	public String run(String testCase){
+	public String run(String testCase) throws Exception{
 
-		
+		try {
 		CalculatorV5 calc = new CalculatorV5();
 		testCase = testCase.trim();
 		calc.converStrToListNoBrack(testCase);
@@ -227,8 +229,12 @@ public class CalculatorV5 {
 			
 		}
 		return"Invalid";
-		
-		
+
 	}
+		catch(Exception e){
+			return "An exeption occured";
+		}
+	
 	
 } 
+}
