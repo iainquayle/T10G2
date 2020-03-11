@@ -1,5 +1,12 @@
 package engine;
 
+/**
+ * Various methods and activation functions for the neurons
+ * @author Iain Quayle
+ * @documenter Osama Bamatraf
+ *
+ */
+
 public class Functions 
 {
 	final public static float sigmoid(float n)
