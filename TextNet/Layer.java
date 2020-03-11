@@ -7,6 +7,16 @@ import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("unused")
+
+/**
+ * This class manages all the layers and is used to make everything work
+ * 
+ * 
+ * @author Iain Quayle
+ * @Documenter Osama Bamatraf
+ *
+ */
+
 public class Layer 
 {	
 	//Reference for variable naming scheme:
