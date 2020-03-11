@@ -39,6 +39,14 @@ public class Conv2D extends Layer
 	public Conv2D()
 	{
 	}
+	
+	/**
+	 * Initilization method
+	 * learning rate is the weight update steps
+	 * 
+	 * 
+	 */
+	
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num; //(layer reference, width, height, depth, vis wid, vis hei, vis dep, kernel width/height, stride)
@@ -77,6 +85,10 @@ public class Conv2D extends Layer
 			aveWei = new float[lenKer];
 		}
 	}
+	
+	/**
+	 * This method is used to evalaute the weights of the different features of the images
+	 */
 	
 	public void eval()
 	{
@@ -120,6 +132,12 @@ public class Conv2D extends Layer
 			weiPos += lenKer; //moving to new kernel
 		}
 	}
+	
+	/**
+	 * Trains on each image
+	 * 
+	 */
+	
 	public void train()
 	{
 		int valsPos = begVals;
