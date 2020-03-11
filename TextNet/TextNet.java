@@ -15,6 +15,14 @@ import engine.Input;
 import engine.Output;
 @SuppressWarnings("unused")
 
+/**
+ * This is the main class of the neural network which initializes everything and runs the net
+ * 
+ * @author Iain Quayle
+ * @documenter Osama Bamatraf
+ *
+ */
+
 public class TextNet
 {
 	private static Thread thread = Thread.currentThread();
@@ -29,6 +37,11 @@ public class TextNet
 	private static Random rnd = new Random();
 	private static int lenIoPuts = 0;
 	private static int lenLayers = 0;
+	
+	/**
+	 * main method which runs the neural network
+	 * @param args
+	 */
 	
 	public static void main(String[] args) 
 	{
@@ -55,6 +68,20 @@ public class TextNet
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Initializes the neural network
+	 * loads up the training data and the network's architecture and weights
+	 * Data is loaded up from a .csv file which contains the pixel values of the images
+	 * The network architecture is loaded up so that the network would know which layers to run and how to run them
+	 * Initializes the individual layers
+	 * 
+	 * Thread priority is set, this currently wouldn't do much difference since the network currently runs on
+	 * a single thread but it's a place holder for when we implement the multi-threaded version.
+	 * 
+	 * The "System.gc" is there to help with optimization and memory mangment
+	 * @throws IOException
+	 */
 	
 	public static void init() throws IOException
 	{
@@ -131,7 +158,13 @@ public class TextNet
 		com.close();
 		System.gc();
 	}
-	//saves layers current weights
+	
+	/**
+	 * saves layers current weights
+	 * 
+	 * @throws IOException
+	 */
+	
 	public static void save() throws IOException
 	{
 		System.out.println("Save");
@@ -141,6 +174,13 @@ public class TextNet
 			layers[i].save(loc + netName + "\\" + netName);
 		}
 	}
+	
+	/**
+	 * This method is used to run the neural network's layers and puts it in its training mode
+	 * It causes each layer to evaluate the images
+	 * Backpropagates for error in each layer and adjusts the weights (importance of different feautures within the image)
+	 * 
+	 */
 	
 	public static void run()
 	{
@@ -166,7 +206,11 @@ public class TextNet
 		System.out.println(layers[0].errString());
 	}
 	
-	//print out configuration of net
+	/**
+	 * prints out the configuration of the net
+	 */
+	
+	
 	public static void print()
 	{
 		String str = "";
