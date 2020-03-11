@@ -4,6 +4,16 @@ import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
 
+/**
+ * The dense layer is the fully connected layer which  also trains and evaluates
+ * In addition, the dense layer is the fully connected layer which would looks at the visible layer 
+ * and adjusts weight depending on how close the achieved value and error are
+ *
+ * @author Iain Quayle
+ * @Documenter Osama Bamatraf
+ *
+ */
+
 public class Dense extends Layer
 {
 	public Dense()
