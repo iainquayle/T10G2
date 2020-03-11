@@ -42,7 +42,10 @@ public class Dense extends Layer
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
 	}
-	
+	 /**
+	  * This method goes through the visible layer and provides the dot products of the weight and values
+	  * Then goes through the relu
+	  */
 	public void eval()
 	{
 		int weiPos = 0;
