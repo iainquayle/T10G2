@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Parth Patel
+ * @documenter Osama Bamatraf
+ *
+ */
+
 public class CalculatorV5 {
 	private ArrayList<String> formulaSplitAll = new ArrayList<String>();
 	private String[] ArrayForm;
