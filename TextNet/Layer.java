@@ -59,6 +59,11 @@ public class Layer
 	public Layer()
 	{
 	}
+	
+	/**
+	 * initialization method
+	 */
+	
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		System.out.println("Wrong layer");
