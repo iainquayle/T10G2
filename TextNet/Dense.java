@@ -19,6 +19,12 @@ public class Dense extends Layer
 	public Dense()
 	{
 	}
+	
+	/**
+	 * Initializes the dense layer
+	 * 
+	 */
+	
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;          //(vis layer num, len vals, lenvisvals)
