@@ -61,7 +61,13 @@ public class Dense extends Layer
 			valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]);  //relu activation on value achieve
 		}
 	}
-	public void train() //back pass and train
+	
+		/**
+	 * This method trains the layer  and backpropagates the error
+	 * Adjusts the weights
+	 */
+	
+	public void train() 
 	{
 		int weiPos = 0;
 		//float errTemp;
