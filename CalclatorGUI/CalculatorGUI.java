@@ -1,4 +1,4 @@
-
+package engine;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Color;
+import javax.swing.JMenuItem;
 
 public class CalculatorGUI extends JFrame {
 
@@ -22,6 +23,7 @@ public class CalculatorGUI extends JFrame {
 	private JTextField Display;
 	public String testCase;
 	private JTextField Display2;
+
 	/**
 	 * Launch the application.
 	 */
@@ -213,13 +215,19 @@ public class CalculatorGUI extends JFrame {
 				testCase = Display.getText();
 				Display2.setText(Display.getText());
 				Display.setText(Display.getText() + " = ");
-				
-				
 				CalculatorV5 runEquation = new CalculatorV5();
-				String num = runEquation.run(testCase);
-				Display.setText(null);
-				Display.setText(num);
-				Display.remove(btnNewButton_1_11_2);
+				String num;
+				try {
+					num = runEquation.run(testCase);
+					Display.setText(null);
+					Display.setText(num);
+					Display.remove(btnNewButton_1_11_2);
+					
+				} catch (Exception e1) {
+
+					e1.printStackTrace();
+				}
+			
 				
 			}
 		});
@@ -290,6 +298,10 @@ public class CalculatorGUI extends JFrame {
 		Display2.setBounds(10, 0, 174, 31);
 		contentPane.add(Display2);
 		Display2.setColumns(10);
+		
+		JMenuItem menuItem = new JMenuItem("New menu item");
+		menuItem.setBounds(81, 66, 129, 22);
+		contentPane.add(menuItem);
 		
 	}
 }
