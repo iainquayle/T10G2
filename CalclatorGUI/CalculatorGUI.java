@@ -17,6 +17,13 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JMenuItem;
 
+/**
+ * 
+ * @author Parth Patel
+ * @Documenter Osama Bamatraf
+ *
+ */
+
 public class CalculatorGUI extends JFrame {
 
 	private JPanel contentPane;
