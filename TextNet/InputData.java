@@ -7,6 +7,14 @@ import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * 
+ * @author Osama Bamatraf
+ * @Documenter Osama Bamatraf
+ * @Reviewer Iain Quayle
+ *
+ */
+
 public class InputData
 {
 	/**
