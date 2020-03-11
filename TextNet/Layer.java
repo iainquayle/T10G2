@@ -68,6 +68,13 @@ public class Layer
 	{
 		System.out.println("Wrong layer");
 	}
+	
+	/**
+	 * Saves the weights of individual layer
+	 * @param loc  String location of weights
+	 * @throws IOException
+	 */
+	
 	public void save(String loc) throws IOException
 	{
 		if(weights != null)
@@ -82,6 +89,15 @@ public class Layer
 			file.close();
 		}
 	}
+	
+	/**
+	 * This methods check if there is an existing weight file to use
+	 * If there isn't it'll generate a new weight
+	 * @param loc String location of the weights
+	 * @throws IOException
+	 */
+	
+	
 	public void loadWeights(String loc) throws IOException
 	{
 		System.out.print("Weights - ");
@@ -104,12 +120,21 @@ public class Layer
 		System.out.println("loaded");
 	}
 	
-	public void eval() //virtual method
+	/**
+	* The two following methods are virtual methods for the purpose of being used by other classes through inheritance
+	*
+	*/
+	
+	public void eval() 
 	{
 	}
-	public void train() //virtual method
+	public void train() 
 	{
 	}
+	
+	/**
+	 * Method for the purpose of debugging stability of net
+	 */
 	
 	public void printLargest() //for the purpose of debugging stability of net
 	{
@@ -154,7 +179,13 @@ public class Layer
 	{
 		return null;
 	}
-	public String errString() //prints a weighted average of the net error and accuracy calculated by output layers
+	
+	/**
+	 * //prints a weighted average of the net error and accuracy calculated by output layers
+	 * @return error and accuracy rates of the net
+	 */
+	
+	public String errString() 
 	{
 		return "Error: " + netErr + "   Accuracy:" + netAcc; 
 	}
