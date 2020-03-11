@@ -13,8 +13,8 @@ public class OutDense extends Layer
 	{
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
-	{
-		learnRate = (float)0.0003;
+	{	
+		//learnRate = (float)0.000001;
 		
 		layerNum = num;    //(vis layernum, datanum, len vals, lenvisvals)
 		layerVisNum = in.nextInt();

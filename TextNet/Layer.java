@@ -22,6 +22,7 @@ public class Layer
 	//vis: (visible) title for anything to do with the visible layer, the one that the current layer looks at.
 	//temp: (temporary) suffix for a variable that does the job of another, or holds a precaculated value for only the methods run time.
 	//pos: (position) suffix for a variable that indexs where an algorithm is in an array.
+	//num: (number) suffix used to denote the position in an array a layer or thread may hold.
 	
 	protected static float[] valsAch = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
 	protected static float[] valsErr = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
@@ -38,7 +39,7 @@ public class Layer
 	protected int endValsVis = 0; //ending index of valsVis
 	protected int layerVisNum = 0; //position of vis layer in sequence of layers
 	
-	protected float learnRate = (float)0.000005; //learning adjustment rate, will be default to value here but can be tuned elsewhere
+	protected float learnRate = (float)0.00001; //learning adjustment rate, will be default to value here but can be tuned elsewhere
 	
 	protected static int rndIndex = 0; //random index for io layers to pick data from in the set
 	
@@ -68,6 +69,7 @@ public class Layer
 	}
 	public void loadWeights(String loc) throws IOException
 	{
+		System.out.print("Weights - ");
 		File file = new File(loc + "Weights" + layerNum + ".csv");
 		if(file.exists()) //checking if weights for this file have been made already
 		{
@@ -81,9 +83,10 @@ public class Layer
 			weights = new float[lenWeis];
 			for(int i = 0; i < lenWeis; i++)
 			{
-				weights[i] = (rnd.nextFloat() - (float)(0.55)); //slight negative bias seems to result in more stability at start of training for relu
+				weights[i] = (rnd.nextFloat() - (float)(0.51)); //slight negative bias seems to result in more stability at start of training for relu
 			}
 		}
+		System.out.println("loaded");
 	}
 	
 	public void eval() //virtual method

@@ -4,7 +4,7 @@ public class Functions
 {
 	final public static float sigmoid(float n)
 	{
-		n = clip(53822, -53822, n);
+		n = clip((float)1.0E6, (float)-1.0E6, n);
 		return n/(float)Math.sqrt(1 + n * n);
 	}
 	final public static float sigmoidZer(float n)

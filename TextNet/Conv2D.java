@@ -33,8 +33,6 @@ public class Conv2D extends Layer
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
-		learnRate = (float)0.000003;
-		
 		layerNum = num; //(layer reference, width, height, depth, vis wid, vis hei, vis dep, kernel width/height, stride)
 		layerVisNum = in.nextInt();
 		lenValsX = in.nextInt();
@@ -66,7 +64,10 @@ public class Conv2D extends Layer
 		}
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
-		aveWei = new float[lenKer];
+		if(aveWei == null || lenKer > aveWei.length)
+		{
+			aveWei = new float[lenKer];
+		}
 	}
 	
 	public void eval()
@@ -119,8 +120,10 @@ public class Conv2D extends Layer
 		int aveWeiPos = 0;
 		int stopValsVisX = 0;
 		int stopValsVisY = 0;
+		//float errTemp = 0;
 		while(valsPos < endVals) //calculating errors
 		{
+			//valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]);
 			valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]) - valsAch[valsPos];
 			valsPos++;
 		}
@@ -131,6 +134,8 @@ public class Conv2D extends Layer
 			{
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
+					//errTemp = valsErr[valsPos] - valsAch[valsPos];
+					aveWeiPos = 0; //jumping back to the start of kernel
 					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
 					{
 						stopValsVisY = valsVisPos + jumpValsVisXY; //sets stop based on position in vis layer
@@ -139,7 +144,7 @@ public class Conv2D extends Layer
 							stopValsVisX = valsVisPos + lenKerX; //sets stop based on position in vis layer
 							while(valsVisPos < stopValsVisX) //iterate through kernel dim
 							{
-								valsErr[valsVisPos] += (valsErr[valsPos]) * weights[weiPos]; //backpropagation of error
+								valsErr[valsVisPos] += valsErr[valsPos] * weights[weiPos]; //backpropagation of error
 								aveWei[aveWeiPos] += valsErr[valsPos] * valsAch[valsVisPos] * learnRate; //accumulation of adjustments to not disturb backprop
 								valsVisPos++;
 								weiPos++;
@@ -156,6 +161,7 @@ public class Conv2D extends Layer
 				}
 				valsVisPos += jumpValsVisStride; //jump down one row in vis layer
 			}
+			aveWeiPos = 0; //jumping back to the start of kernel
 			while(aveWeiPos < lenKer) //iterating through the current kernel
 			{
 				weights[weiPos] += aveWei[aveWeiPos]; //adding adjustments to weights
@@ -163,7 +169,6 @@ public class Conv2D extends Layer
 				weiPos++; //this moves weipos to next kernel as well
 				aveWeiPos++;
 			}
-			aveWeiPos -= lenKer; //jumping back to the start of kernel
 			valsVisPos = begValsVis; //resetting back to the start of the the vis layer 
 		}
 	}
@@ -174,7 +179,9 @@ public class Conv2D extends Layer
 	}
 	public String toString()
 	{
-		return layerNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + begValsVis + ", " + endValsVis + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + ", " + lenWeis + "\n";
+		return layerNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + begValsVis + ", " + endValsVis + ", " +
+				lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + 
+				lenKerX + ", " + lenWeis + "\n";
 	}
 
 	public int getStride() 

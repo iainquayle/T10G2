@@ -11,9 +11,8 @@ public class Dense extends Layer
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
-		learnRate = (float)0.000006;
-		
 		layerNum = num;          //(vis layer num, len vals, lenvisvals)
+		System.out.println("here");
 		layerVisNum = in.nextInt();
 		lenVals = in.nextInt();
 		lenValsVis = in.nextInt();
@@ -46,15 +45,18 @@ public class Dense extends Layer
 	public void train() //back pass and train
 	{
 		int weiPos = 0;
+		//float errTemp;
 		for(int valsPos = begVals; valsPos < endVals; valsPos++)
 		{
-			valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]) - valsAch[valsPos]; //step applied to Err vals
+			//valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]); //step applied to Err vals
+			valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]) - valsAch[valsPos];
 		}
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
+			//errTemp = valsErr[valsPos] - valsAch[valsPos];
 			for(int valsVisPos = begValsVis; valsVisPos < endValsVis; valsVisPos++) //iterate through vis layer vals
 			{
-				valsErr[valsVisPos] += (valsErr[valsPos]) * weights[weiPos]; //backpropagation of error
+				valsErr[valsVisPos] += valsErr[valsPos] * weights[weiPos]; //backpropagation of error
 				weights[weiPos] += valsErr[valsPos] * valsAch[valsVisPos] * learnRate; //adjusting weights based on ach/rew error
 				weiPos++;
 			}

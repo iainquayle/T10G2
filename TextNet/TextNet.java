@@ -40,7 +40,6 @@ public class TextNet
 		{
 			e.printStackTrace();
 		}
-		System.gc();
 		thread.setPriority(Thread.MAX_PRIORITY);
 		
 		print();
@@ -79,6 +78,7 @@ public class TextNet
 		ioPuts[1] = file.normalizeFloatArray(ioPuts[1]);               //this is currently just for mnist_train, will make better set up in future
 		lenIoPuts = ioPuts[0].length / splits[0];
 		file.close();
+		System.gc();
 		
 		//loading and initializing net architecture and weights 
 		System.out.println("Init");
@@ -129,6 +129,7 @@ public class TextNet
 		layers[0].setStatRefs(new float[temp], new float[temp]);
 		file.close();
 		com.close();
+		System.gc();
 	}
 	//saves layers current weights
 	public static void save() throws IOException
@@ -145,16 +146,18 @@ public class TextNet
 	{
 		long preTime = 0;
 		long curTime = System.currentTimeMillis();
-		for(int i = 0; i < 100000; i++)
+		for(int i = 0; i < 50000; i++)
 		{
 			preTime = curTime;
 			for(int j = 0; j < lenLayers; j++)
 			{
 				layers[j].eval();
+				//System.out.println("Eval " + j);
 			}
 			for(int j = lenLayers - 1; j >= 0; j--)
 			{
 				layers[j].train();
+				//System.out.println("Train " + j);
 			}
 			curTime = System.currentTimeMillis();
 			layers[0].setRndIndex(rnd.nextInt(lenIoPuts));
