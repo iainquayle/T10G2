@@ -62,7 +62,7 @@ public class Dense extends Layer
 		}
 	}
 	
-		/**
+	/**
 	 * This method trains the layer  and backpropagates the error
 	 * Adjusts the weights
 	 */
