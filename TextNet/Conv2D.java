@@ -4,6 +4,14 @@ import java.io.IOException;
 import engine.Layer;
 import engine.Functions;
 
+/**
+ * Conv is the convultional layer that convolves through the images using the kernel
+ * It's another layer which evaluates and trains
+ * @author Iain Quayle
+ * @documenter Osama Bamatraf
+ *
+ */
+
 public class Conv2D extends Layer
 {
 	private static float[] aveWei = null; //kernel that can be used to train while leaving the original kernel untouched during backprop
