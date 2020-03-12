@@ -1,6 +1,7 @@
 package engine;
 
 import java.lang.Thread;
+import java.io.IOException;
 import java.lang.Runnable;
 import java.util.Random;
 
@@ -13,13 +14,19 @@ public class NetThread implements Runnable
 	private int lenThreads = 0;
 	private int threadNum = 0;
 	
+	private static String loc = null;
+	private static String netName = null;
+	
 	private static Random rnd = new Random();
 	
-	private static int epoch = 0;
+	private int epoch = 0;
+	private static int stop = 0;
 	
 	private static volatile boolean[] states = null;
 	private static volatile boolean run = true;
-	private static volatile boolean exit = false;
+	private static volatile boolean relaySave = false;
+	private static boolean exit = false;
+	private static boolean save = false;
 	
 	private static long interTime = 0;
 	private static long preTime = 0;
@@ -52,18 +59,37 @@ public class NetThread implements Runnable
 				layers[j].train(threadNum);
 				cons();
 			}
+			epoch++;
 			if(threadNum == 0)
 			{
 				layers[0].setRndIndex(rnd.nextInt());
-				epoch++;
+				if(epoch == stop)
+				{
+					run = false;
+					relaySave = true;
+				}
 				if(exit)
 				{
 					run = false;
+				}
+				if(save)
+				{
+					relaySave = true;
+					save = false;
 				}
 				interTime = System.currentTimeMillis() - preTime;
 				preTime = System.currentTimeMillis();
 			}
 			cons();
+			if(relaySave)
+			{
+				save();
+				if(threadNum == 0)
+				{
+					relaySave = false;
+				}
+				cons();
+			}
 		}
 	}
 	
@@ -81,15 +107,34 @@ public class NetThread implements Runnable
 		}
 	}
 	
+	private void save()
+	{
+		for(int i = threadNum; i < lenLayers; i += lenThreads)
+		{
+			try 
+			{
+				layers[i].save(loc + "//" + netName);
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void setStatics(Layer[] l, int lenl, int lent)
 	{
 		layers = l;
 		lenLayers = lenl;
 		lenThreads = lent;
 	}
-	public void exit()
+	public void setExit()
 	{
 		exit = true;
+	}
+	public void setSave()
+	{
+		save = true;
 	}
 	public int getEpoch()
 	{
@@ -99,7 +144,7 @@ public class NetThread implements Runnable
 	{
 		return states[threadNum];
 	}
-	public long getTime()
+	public long getInterTime()
 	{
 		return interTime;
 	}

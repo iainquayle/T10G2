@@ -39,7 +39,7 @@ public class Layer
 	protected int endValsVis = 0; //ending index of valsVis
 	protected int layerVisNum = 0; //position of vis layer
 	
-	protected float learnRate = (float)0.0001; //learning adjustment rate
+	protected static float learnRate = (float)0.0001; //learning adjustment rate
 	
 	protected static int rndIndex = 0; //random index for io layers picking data from set
 	
@@ -139,6 +139,10 @@ public class Layer
 	{
 		rndIndex = i;
 	}
+	public void setLearnRate(float n)
+	{
+		learnRate = n;
+	}
 	public int getLayerType()
 	{
 		return -1;
@@ -150,6 +154,10 @@ public class Layer
 	public int getBegVals()
 	{
 		return begVals;
+	}
+	public float getLearnRate()
+	{
+		return learnRate;
 	}
 	
 	public String toString()

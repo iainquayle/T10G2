@@ -154,11 +154,43 @@ public class TextNet
 		String command = null;
 		while(!exit)
 		{
-			System.out.print("error, time, epoch, setLearn x, save, saveExit, exit");
+			System.out.print("error, interTime, epoch, setLearn, save, saveExit, exit");
 			command = in.nextLine();
 			if(command.equals("error"))
 			{
 				System.out.println(layers[0].errString());
+			}
+			else if(command.equals("time"))
+			{
+				System.out.println(threads[0].getInterTime());
+			}
+			else if(command.equals("epoch"))
+			{
+				for(int i = 0; i < lenThreads; i++)
+				{
+					System.out.print(threads[i].getEpoch() + "   ");
+					System.out.print('\n');
+				}
+			}
+			else if(command.equals("setLearn"))
+			{
+				System.out.println("Current rate: " + layers[0].getLearnRate() + "   New rate: ");
+				layers[0].setLearnRate(in.nextFloat());
+			}
+			else if(command.equals("save"))
+			{
+				threads[0].setSave();
+			}
+			else if(command.equals("saveExit"))
+			{
+				threads[0].setSave();
+				exit = true;
+				threads[0].setExit();
+			}
+			else if(command.equals("exit"))
+			{
+				exit = true;
+				threads[0].setExit();
 			}
 			else
 			{
