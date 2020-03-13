@@ -20,12 +20,12 @@ How to run using an IDE:
 How to run the calculator using the command line:
 
 1- Open your command line
-2- Use the command "cd location of CalculatorGUI.java"* to move to the directory where you saved the code
-3- Compile the code using the command "javac CalculatorGUI.java"
-4- Run the code by using the command "java CalculatorGUI"
+2- Use the command "cd location of CalculatorGUI"* to move to the directory CalculatorGUI
+3- Compile the code using the command "javac *.java"
+4- Run the code by using the command "java engine.CalculatorGUI"
 5- Follow on-screen instructions
 
-*Do not simply write "location of Calculator.java", write the directory of your Calculator.java file.
+*Do not simply write "location of CalculatorGUI", write the directory of your Calculator.java file.
 
 
 How to train the Neural Netwrok using an IDE*:
