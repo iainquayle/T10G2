@@ -73,7 +73,7 @@ public class Conv2D extends Layer
 	
 	public void eval(int threadNum)
 	{
-		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsZ + (float)0.5);
+		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsZ + (float)0.5) * lenValsXY;
 		int weiPos = (int)(threadSplits * threadNum * lenValsZ + (float)0.5) * lenKer;
 		int valsPos = begVals + (int)(threadSplits * threadNum * lenValsZ + (float)0.5) * lenValsXY;
 		int valsVisPos = begValsVis;

@@ -75,7 +75,7 @@ public class InConv2D extends Layer
 	{
 		begValsVis = rndIndex * lenValsVis;  //sets the beg val for the data
 		endValsVis = begValsVis + lenValsVis;
-		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsZ + (float)0.5);
+		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsZ + (float)0.5)  * lenValsXY;
 		int weiPos = (int)(threadSplits * threadNum * lenValsZ + (float)0.5) * lenKer;
 		int valsPos = begVals + (int)(threadSplits * threadNum * lenValsZ + (float)0.5) * lenValsXY;
 		int valsVisPos = begValsVis;
