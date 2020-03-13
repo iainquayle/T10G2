@@ -51,7 +51,7 @@ public class InDense extends Layer
 	{
 		int begValsVisTemp = begValsVis + (int)(threadSplits * threadNum * lenValsVis);
 		int endValsVisTemp = begValsVis + (int)(threadSplits * (threadNum + 1) * lenValsVis);
-		int weiPos = begValsVisTemp * lenValsVis;
+		int weiPos = begValsVisTemp - begValsVis;
 		int jumpWei = lenValsVis - (endValsVisTemp - begValsVisTemp);
 		
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
