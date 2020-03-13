@@ -1,16 +1,11 @@
 # T10G2
 CalcNet
-TextNet for the purpose of training a net to convert img to text. TextNet is starting single threaded, but will hopefully be multi to help facilitate better training.
-CalcNet will be the merger of TextNet and a Calculator 
+Currently CalcNet is composed of TextNet and CalculatorGUI which are going to be connected to each other and the soon to be implemented image processing.
 
-CalcNet
-packages:
- textNet
- calculator
- gui
+The following are insturctions on how to run the calculator and how train the neural network:
 
 
-How to run using an IDE:
+How to run the calculator using an IDE:
 1- Create a new folder in "CalculatorGUI" named "engine" and place everything that's inside "CalculatorGUI" into "engine"
 1- Open CalculatorGUI.java in your preferred IDE (Example: Eclipse)
 2- Compile and run the code on your preferred IDE*
