@@ -2,16 +2,14 @@ package engine;
 
 import java.lang.Thread;
 import java.io.IOException;
-import java.lang.Runnable;
 import java.util.Random;
 
-public class NetThread implements Runnable
+public class NetThread extends Thread
 {
-	private Layer[] layers = null;
-	private int lenLayers = 0;
+	private static Layer[] layers = null;
+	private static int lenLayers = 0;
 	
-	private Thread thread = null;
-	private int lenThreads = 0;
+	private static int lenThreads = 0;
 	private int threadNum = 0;
 	
 	private static String loc = null;
@@ -19,10 +17,10 @@ public class NetThread implements Runnable
 	
 	private static Random rnd = new Random();
 	
-	private int epoch = 0;
-	private static int stop = 0;
+	private static int epoch = 0;
+	private static int stop = 10000;
 	
-	private static volatile boolean[] states = null;
+	private static volatile int[] consIndex = null;
 	private static volatile boolean run = true;
 	private static volatile boolean relaySave = false;
 	private static boolean exit = false;
@@ -31,20 +29,19 @@ public class NetThread implements Runnable
 	private static long interTime = 0;
 	private static long preTime = 0;
 	
-	public NetThread(int n)
+	public NetThread(int n, Layer[] l, int[] c, int lenl, int lent)
 	{
 		threadNum = n;
-		thread = new Thread();
-		thread.setPriority(Thread.MAX_PRIORITY);
+		consIndex = c;
+		layers = l;
+		lenLayers = lenl;
+		lenThreads = lent;
 	}
 	
-	public void start() 
-	{
-		thread.run();
-	}
 	@Override
 	public void run() 
 	{
+		System.out.println("run");
 		while(run)
 		{
 			for(int j = 0; j < lenLayers; j++)
@@ -59,26 +56,30 @@ public class NetThread implements Runnable
 				layers[j].train(threadNum);
 				cons();
 			}
-			epoch++;
 			if(threadNum == 0)
 			{
 				layers[0].setRndIndex(rnd.nextInt());
+				epoch++;
 				if(epoch == stop)
 				{
 					run = false;
 					relaySave = true;
+					System.out.println("saving and exiting...");
 				}
 				if(exit)
 				{
 					run = false;
+					System.out.println("exiting...");
 				}
 				if(save)
 				{
 					relaySave = true;
 					save = false;
+					System.out.println("saving...");
 				}
 				interTime = System.currentTimeMillis() - preTime;
 				preTime = System.currentTimeMillis();
+				System.out.println(interTime);
 			}
 			cons();
 			if(relaySave)
@@ -96,11 +97,11 @@ public class NetThread implements Runnable
 	private void cons()
 	{
 		int i = 0;
-		states[threadNum] = !states[threadNum]; //should make a buffered state set up
+		consIndex[threadNum]++; //should make a buffered state set up
 		while(i != lenThreads)
 		{
 			i = 0;
-			while(i < lenThreads && states[i] == states[threadNum])
+			while(i == threadNum || (i < lenThreads && consIndex[i] >= consIndex[threadNum]))
 			{
 				i++;
 			}
@@ -122,12 +123,6 @@ public class NetThread implements Runnable
 		}
 	}
 	
-	public void setStatics(Layer[] l, int lenl, int lent)
-	{
-		layers = l;
-		lenLayers = lenl;
-		lenThreads = lent;
-	}
 	public void setExit()
 	{
 		exit = true;
@@ -140,9 +135,9 @@ public class NetThread implements Runnable
 	{
 		return epoch;
 	}
-	public boolean getState()
+	public int getConsIndex()
 	{
-		return states[threadNum];
+		return consIndex[threadNum];
 	}
 	public long getInterTime()
 	{

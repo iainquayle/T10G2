@@ -19,7 +19,8 @@ public class TextNet
 	private static Thread thisThread = Thread.currentThread();
 	
 	private static Layer[] layers = null;
-	private static NetThread[] threads = null;
+	private static Thread[] threads = null;
+	private static NetThread mainNetThread = null;
 	private static int lenThreads = 0;
 	private static boolean exit = false;
 	
@@ -46,16 +47,16 @@ public class TextNet
 		thisThread.setPriority(Thread.MIN_PRIORITY);
 		
 		run();
-		command();
-		
-		try 
+		while(true)
 		{
-			save();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		//command();
 	}
 	
 	private static void init() throws IOException
@@ -65,7 +66,7 @@ public class TextNet
 		dataName = com.nextLine();
 		System.out.print("Net config name: ");
 		netName = com.nextLine();
-		System.out.print("Number of threads to run (number of cores suggested)(> 0):");
+		System.out.print("Number of threads to run (number of cores suggested)(> 0): ");
 		lenThreads = com.nextInt();
 		com.close();
 		
@@ -126,18 +127,11 @@ public class TextNet
 		com.close();
 		
 		threads = new NetThread[lenThreads];
-		for(int i = 0; i < lenThreads; i++)
+		int[] arr = new int[lenThreads];
+		for(int i = lenThreads - 1; i >= 0; i--)
 		{
-			threads[i] = new NetThread(i);
-		}
-	}
-	private static void save() throws IOException
-	{
-		System.out.println("Save");
-		for(int i = 0; i < lenLayers; i++)
-		{
-			System.out.println("Save Layer" + i);
-			layers[i].save(loc + netName + "\\" + netName);
+			mainNetThread = new NetThread(i, layers, arr, lenLayers, lenThreads);
+			threads[i] = mainNetThread;
 		}
 	}
 	
@@ -145,7 +139,7 @@ public class TextNet
 	{
 		for(int i = 0; i < lenThreads; i++)
 		{
-			threads[i].run();
+			threads[i].start();
 		}
 	}
 	private static void command()
@@ -154,7 +148,7 @@ public class TextNet
 		String command = null;
 		while(!exit)
 		{
-			System.out.print("error, interTime, epoch, setLearn, save, saveExit, exit");
+			System.out.print("error, interTime, epoch, setLearn, setStop, save, saveExit, exit:   ");
 			command = in.nextLine();
 			if(command.equals("error"))
 			{
@@ -162,15 +156,11 @@ public class TextNet
 			}
 			else if(command.equals("time"))
 			{
-				System.out.println(threads[0].getInterTime());
+				System.out.println(mainNetThread.getInterTime());
 			}
 			else if(command.equals("epoch"))
 			{
-				for(int i = 0; i < lenThreads; i++)
-				{
-					System.out.print(threads[i].getEpoch() + "   ");
-					System.out.print('\n');
-				}
+				System.out.print(mainNetThread.getEpoch());
 			}
 			else if(command.equals("setLearn"))
 			{
@@ -179,18 +169,18 @@ public class TextNet
 			}
 			else if(command.equals("save"))
 			{
-				threads[0].setSave();
+				mainNetThread.setSave();
 			}
 			else if(command.equals("saveExit"))
 			{
-				threads[0].setSave();
+				mainNetThread.setSave();
 				exit = true;
-				threads[0].setExit();
+				mainNetThread.setExit();
 			}
 			else if(command.equals("exit"))
 			{
 				exit = true;
-				threads[0].setExit();
+				mainNetThread.setExit();
 			}
 			else
 			{
