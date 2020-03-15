@@ -24,7 +24,7 @@ public class ImgResize {
 		imgData = img;
 		
 	}
-
+// will probably change this since its awful
  public byte[] reSize() throws IOException {
 	 
 	 ByteArrayInputStream inImg = new ByteArrayInputStream(imgData);
@@ -40,6 +40,12 @@ public class ImgResize {
 
      return outImg.toByteArray();
 	 
+	 
+ }
+ 
+ public byte[] getHitBox {
+	 
+	 //TODO
 	 
  }
  
