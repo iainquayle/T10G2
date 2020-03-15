@@ -24,7 +24,8 @@ public class ImgResize {
 		imgData = img;
 		
 	}
-// will probably change this since its awful
+// will probably change this since its awful and is just for testing purposes
+	// this doesn't work atm anymore I broke something... oops
  public byte[] reSize() throws IOException {
 	 
 	 ByteArrayInputStream inImg = new ByteArrayInputStream(imgData);
