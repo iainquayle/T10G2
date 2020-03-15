@@ -18,7 +18,7 @@ public class NetThread extends Thread
 	private static Random rnd = new Random();
 	
 	private static int epoch = 0;
-	private static int stop = 10000;
+	private static int stop = -1;
 	
 	private static volatile int[] consIndex = null;
 	private static volatile boolean run = true;
@@ -41,7 +41,6 @@ public class NetThread extends Thread
 	@Override
 	public void run() 
 	{
-		System.out.println("run");
 		while(run)
 		{
 			for(int j = 0; j < lenLayers; j++)
@@ -49,7 +48,7 @@ public class NetThread extends Thread
 				layers[j].eval(threadNum);
 				cons();
 			}
-			for(int j = lenLayers - 1; j >= 0; j++)
+			for(int j = lenLayers - 1; j >= 0; j--)
 			{
 				layers[j].error(threadNum);
 				cons();
