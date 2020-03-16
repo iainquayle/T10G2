@@ -113,6 +113,9 @@ public class MaxPool extends Layer
 			valsVisPos = begValsVis; //moving back to the start of vis layer to start new kernel
 		}
 	}
+	public void error(int threadNum)
+	{
+	}
 	public void train(int threadNum)
 	{
 		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsZ + (float)0.5) * lenValsXY; //these can be changed to a more accurate split later
