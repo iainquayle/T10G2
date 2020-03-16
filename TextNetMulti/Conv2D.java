@@ -68,7 +68,10 @@ public class Conv2D extends Layer
 		}
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
-		aveWei = new float[lenKer];
+		if(aveWei == null || lenKer > aveWei.length)
+		{
+			aveWei = new float[lenKer];
+		}
 	}
 	
 	public void eval(int threadNum)
