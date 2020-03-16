@@ -105,7 +105,7 @@ public class InConv2D extends Layer
 						}
 						valsVisPos += jumpValsVisZ;
 					}
-					valsAch[valsPos] = Functions.sigmoidZer(valsAch[valsPos]); //sigmoid activation on vals ach
+					valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]); //sigmoid activation on vals ach
 					valsVisPos -= jumpValsVisBack;
 					weiPos -= lenKer;
 					valsPos++;

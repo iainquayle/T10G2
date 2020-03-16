@@ -13,13 +13,13 @@ public class NetThread extends Thread
 	private static int lenThreads = 0;
 	private int threadNum = 0;
 	
-	private static String loc = null; //intialize this
+	private static String loc = null;
 	private static String netName = null;
 	
 	private static Random rnd = new Random();
 	
 	private static int epoch = 0;
-	private static int stop = 100;
+	private static int stop = -1;
 	
 	private static volatile int[] consIndex = null;
 	private static volatile boolean run = true;
@@ -30,8 +30,10 @@ public class NetThread extends Thread
 	private static long interTime = 0;
 	private static long preTime = 0;
 	
-	public NetThread(int n, Layer[] l, int[] c, int lenl, int lent, int lenio)
+	public NetThread(String locIn, String net, int n, Layer[] l, int[] c, int lenl, int lent, int lenio)
 	{
+		loc = locIn;
+		netName = net;
 		threadNum = n;
 		consIndex = c;
 		layers = l;
@@ -64,7 +66,7 @@ public class NetThread extends Thread
 				if(epoch == stop)
 				{
 					run = false;
-					//relaySave = true;
+					relaySave = true;
 					System.out.println(layers[0].errString());
 					System.out.println("saving and exiting...");
 				}
@@ -81,7 +83,6 @@ public class NetThread extends Thread
 				}
 				interTime = System.nanoTime() - preTime;
 				preTime = System.nanoTime();
-				System.out.println(epoch + "   " + interTime);
 			}
 			cons();
 			if(relaySave)
@@ -116,12 +117,13 @@ public class NetThread extends Thread
 		{
 			try 
 			{
-				layers[i].save(loc + "//" + netName);
+				layers[i].save(loc + "//" + netName + "//" + netName);
 			} 
 			catch (IOException e) 
 			{
 				e.printStackTrace();
 			}
+			System.out.println("Layer " + i + " saved");
 		}
 	}
 	

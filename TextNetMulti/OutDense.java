@@ -30,10 +30,6 @@ public class OutDense extends Layer
 		endValsVis = begValsVis + lenValsVis;
 		data = io[dataNum];
 	}
-	public void save(String loc) throws IOException
-	{
-		super.save(loc);
-	}
 	
 	public void eval(int threadNum)
 	{
@@ -76,14 +72,14 @@ public class OutDense extends Layer
 					valsLar = valsAch[valsPos];
 					larPos = valsPos;
 				}
-				netErr = (netErr * (float)0.99) + (aveErr / lenVals * (float)0.01);
+				netErr = (netErr * (float)0.999) + (aveErr / lenVals * (float)0.001);
 				if(larPos == (int)(data[rndIndex] + 0.5) + begVals)
 				{
-					netAcc = (netAcc * (float)0.99) + (float)0.01;
+					netAcc = (netAcc * (float)0.999) + (float)0.001;
 				}
 				else
 				{
-					netAcc *= (float)0.99;
+					netAcc *= (float)0.999;
 				}
 			}
 		}

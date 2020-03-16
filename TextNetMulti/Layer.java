@@ -39,7 +39,7 @@ public abstract class Layer
 	protected int endValsVis = 0; //ending index of valsVis
 	protected int layerVisNum = 0; //position of vis layer
 	
-	protected static float learnRate = (float)0.0001; //learning adjustment rate
+	protected static float learnRate = (float)0.000005; //learning adjustment rate
 	
 	protected static int rndIndex = 0; //random index for io layers picking data from set
 	
@@ -84,7 +84,7 @@ public abstract class Layer
 			weights = new float[lenWeis];
 			for(int i = 0; i < lenWeis; i++)
 			{
-				weights[i] = rnd.nextFloat() - (float)(0.52);
+				weights[i] = rnd.nextFloat() - (float)(0.55); //slight negative bias seems to result in more stability at start of training for relu
 			}
 		}
 	}

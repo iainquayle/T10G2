@@ -67,6 +67,9 @@ public class MaxPool extends Layer
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
 	}
+	public void save(String loc) throws IOException
+	{
+	}
 	
 	public void eval(int threadNum)
 	{
@@ -112,10 +115,10 @@ public class MaxPool extends Layer
 	}
 	public void train(int threadNum)
 	{
-		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsY * lenValsZ + (float)0.5) * lenValsX;
-		int endValsVisTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsVisY * lenValsVisZ + (float)0.5) * lenValsVisX;
-		int valsPos = begVals + (int)(threadSplits * threadNum * lenValsY * lenValsZ + (float)0.5) * lenValsX;
-		int valsVisPos = begVals + (int)(threadSplits * threadNum * lenValsVisY * lenValsVisZ + (float)0.5) * lenValsVisX;
+		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsZ + (float)0.5) * lenValsXY; //these can be changed to a more accurate split later
+		int valsPos = begVals + (int)(threadSplits * threadNum * lenValsZ + (float)0.5) * lenValsXY;
+		int endValsVisTemp = begValsVis + (int)(threadSplits * (threadNum + 1) * lenValsVisZ + (float)0.5) * lenValsVisXY;
+		int valsVisPos = begValsVis + (int)(threadSplits * threadNum * lenValsVisZ + (float)0.5) * lenValsVisXY;
 		while(valsPos < endValsTemp)
 		{
 			valsErr[larIndex[valsPos - begVals]] = valsErr[valsPos];

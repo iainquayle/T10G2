@@ -56,13 +56,15 @@ public class TextNet
 	
 	private static void init() throws IOException
 	{
-		System.out.print("Training data name: ");
+		int temp = 0; //use can be for anything, be careful
+		
+		System.out.println("Running Text Net Multi training enviroment.");
+		System.out.print("Training data name (must be in csv save, but dont add .csv): ");
 		dataName = com.nextLine();
-		System.out.print("Net config name: ");
+		System.out.print("Net config name (must be in csv save, but dont add .csv): ");
 		netName = com.nextLine();
 		System.out.print("Number of threads to run (1/2 num of cores suggested)(> 0): ");
 		lenThreads = com.nextInt();
-		com.close();
 		
 		System.out.println("Data");
 		InputData file = new InputData(loc + dataName + "Splits.csv");
@@ -75,7 +77,6 @@ public class TextNet
 		System.gc();
 		
 		System.out.println("Init");
-		int temp = 0;
 		file.setFile(loc + netName + "\\" + netName + ".csv");
 		lenLayers = file.nextInt();
 		layers = new Layer[lenLayers];
@@ -92,7 +93,7 @@ public class TextNet
 			}
 			else if(temp == 2)
 			{
-				layers[i] = new Input();
+				//layers[i] = new Input();
 			}
 			else if(temp == 3)
 			{
@@ -104,11 +105,15 @@ public class TextNet
 			}
 			else if(temp == 5)
 			{
-				layers[i] = new Output();
+				//layers[i] = new Output();
 			}
 			else if(temp == 6)
 			{
 				layers[i] = new OutDense();
+			}
+			else if(temp == 7)
+			{
+				layers[i] = new MaxPool();
 			}
 		}
 		temp = 0;
@@ -125,8 +130,8 @@ public class TextNet
 		int[] arr = new int[lenThreads];
 		for(int i = lenThreads - 1; i >= 0; i--)
 		{
-			mainNetThread = new NetThread(i, layers, arr, lenLayers, lenThreads, lenIoPuts);
-			threads[i] = mainNetThread;
+			mainNetThread = new NetThread(loc, netName, i, layers, arr, lenLayers, lenThreads, lenIoPuts); 
+			threads[i] = mainNetThread; //the new object is set to main thread so when the last one is created, the zeroth object is referenced
 		}
 	}
 	
@@ -142,13 +147,13 @@ public class TextNet
 		String command = null;
 		while(!exit)
 		{
-			System.out.print("error, interTime, epoch, setLearn, setStop, save, saveExit, exit:   ");
+			System.out.print("\nerror, interTime, epoch, setLearn, setStop, save, saveExit, exit: ");
 			command = com.nextLine();
 			if(command.equals("error"))
 			{
 				System.out.println(layers[0].errString());
 			}
-			else if(command.equals("time"))
+			else if(command.equals("interTime"))
 			{
 				System.out.println(mainNetThread.getInterTime());
 			}
@@ -168,13 +173,13 @@ public class TextNet
 			else if(command.equals("saveExit"))
 			{
 				mainNetThread.setSave();
-				exit = true;
 				mainNetThread.setExit();
+				exit = true;
 			}
 			else if(command.equals("exit"))
 			{
-				exit = true;
 				mainNetThread.setExit();
+				exit = true;
 			}
 			else
 			{
