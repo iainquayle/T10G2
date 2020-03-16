@@ -60,7 +60,7 @@ public class TextNet
 		dataName = com.nextLine();
 		System.out.print("Net config name: ");
 		netName = com.nextLine();
-		System.out.print("Number of threads to run (number of cores suggested)(> 0): ");
+		System.out.print("Number of threads to run (1/2 num of cores suggested)(> 0): ");
 		lenThreads = com.nextInt();
 		com.close();
 		

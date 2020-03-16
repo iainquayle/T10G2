@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("unused")
-public class Layer 
+public abstract class Layer 
 {	
 	//Reference for variable naming scheme:
 	//Variables are attempted to be named so that the broadest category they fit into comes first.
@@ -24,14 +24,14 @@ public class Layer
 	//pos: (position) suffix for a variable that indexs where an algorithm is in an array.
 	//num: (number) suffix used to denote the position in an array a layer or thread may hold.
 	
-	protected static float[] valsAch = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
-	protected static float[] valsErr = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
+	protected  static float[] valsAch = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
+	protected  static float[] valsErr = null; //vals ref acts for both the loc layer and vis layer, judge what it is being used for by the indexing var
 	protected int lenVals = 0; //total length of values ach/Err
 	protected int begVals = 0; //beginning index of vals
 	protected int endVals = 0; //ending index of vals
 	protected int layerNum = 0; //position in net
 	
-	protected float[] weights;
+	protected  float[] weights;
 	protected int lenWeis; //total weights length
 	
 	protected int lenValsVis = 0; //total length of values ach/Err of vis layer
@@ -54,7 +54,6 @@ public class Layer
 	}
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
-		System.out.println("Wrong layer");
 	}
 	public void save(String loc) throws IOException
 	{
@@ -85,7 +84,7 @@ public class Layer
 			weights = new float[lenWeis];
 			for(int i = 0; i < lenWeis; i++)
 			{
-				weights[i] = rnd.nextFloat() - (float)(0.5);
+				weights[i] = rnd.nextFloat() - (float)(0.52);
 			}
 		}
 	}

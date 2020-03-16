@@ -82,6 +82,8 @@ public class Conv2D extends Layer
 		int valsVisPos = begValsVis;
 		int stopValsVisX = 0;
 		int stopValsVisY = 0;
+		//float valTemp = 0;
+		
 		while(valsPos < endValsTemp) //iterate through each weight set/kernel/XY
 		{
 			for(int j = 0; j < lenValsY; j++) //iterate through each row
@@ -131,14 +133,14 @@ public class Conv2D extends Layer
 		int aveWeiPos = weiPos;
 		int stopValsVisX = 0;
 		int stopValsVisY = 0;
-		//float errTemp;
+		//float valTemp = 0;
+		
 		while(valsPos < endVals) //iterate through each weight set/kernel/XY
 		{
 			for(int j = 0; j < lenValsY; j++) //iterate through each row
 			{
 				for(int k = 0; k < lenValsX; k++) //iterate through each col
 				{
-					//errTemp = valsErr[valsPos] - valsAch[valsPos];
 					while(valsVisPos < endValsVisTemp) //iterate through each XY in the vis layer 
 					{
 						stopValsVisY = valsVisPos + jumpValsVisXY; 
@@ -164,7 +166,7 @@ public class Conv2D extends Layer
 				}
 				valsVisPos += jumpValsVisStride;
 			}
-			while(aveWeiPos < jumpKerBackTemp) //iterating through the current kernel   //needs work here
+			while(aveWeiPos < jumpKerBackTemp) //iterating through the current kernel
 			{
 				weights[weiPos] += aveWei[aveWeiPos]; //adding adjustments to weights
 				aveWei[aveWeiPos] = 0;

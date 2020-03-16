@@ -8,17 +8,18 @@ public class NetThread extends Thread
 {
 	private static Layer[] layers = null;
 	private static int lenLayers = 0;
+	private static int lenIoPuts = 0;
 	
 	private static int lenThreads = 0;
 	private int threadNum = 0;
 	
-	private static String loc = null;
+	private static String loc = null; //intialize this
 	private static String netName = null;
 	
 	private static Random rnd = new Random();
 	
 	private static int epoch = 0;
-	private static int stop = -1;
+	private static int stop = 100;
 	
 	private static volatile int[] consIndex = null;
 	private static volatile boolean run = true;
@@ -29,13 +30,14 @@ public class NetThread extends Thread
 	private static long interTime = 0;
 	private static long preTime = 0;
 	
-	public NetThread(int n, Layer[] l, int[] c, int lenl, int lent)
+	public NetThread(int n, Layer[] l, int[] c, int lenl, int lent, int lenio)
 	{
 		threadNum = n;
 		consIndex = c;
 		layers = l;
 		lenLayers = lenl;
 		lenThreads = lent;
+		lenIoPuts = lenio;
 	}
 	
 	@Override
@@ -57,12 +59,13 @@ public class NetThread extends Thread
 			}
 			if(threadNum == 0)
 			{
-				layers[0].setRndIndex(rnd.nextInt());
+				layers[0].setRndIndex(rnd.nextInt(lenIoPuts));
 				epoch++;
 				if(epoch == stop)
 				{
 					run = false;
-					relaySave = true;
+					//relaySave = true;
+					System.out.println(layers[0].errString());
 					System.out.println("saving and exiting...");
 				}
 				if(exit)
@@ -76,9 +79,9 @@ public class NetThread extends Thread
 					save = false;
 					System.out.println("saving...");
 				}
-				interTime = System.currentTimeMillis() - preTime;
-				preTime = System.currentTimeMillis();
-				System.out.println(interTime);
+				interTime = System.nanoTime() - preTime;
+				preTime = System.nanoTime();
+				System.out.println(epoch + "   " + interTime);
 			}
 			cons();
 			if(relaySave)
@@ -96,7 +99,7 @@ public class NetThread extends Thread
 	private void cons()
 	{
 		int i = 0;
-		consIndex[threadNum]++; //should make a buffered state set up
+		consIndex[threadNum]++;
 		while(i != lenThreads)
 		{
 			i = 0;

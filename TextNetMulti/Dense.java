@@ -31,6 +31,7 @@ public class Dense extends Layer
 		int begValsTemp = begVals + (int)(threadSplits * threadNum * lenVals + (float)0.5);
 		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenVals + (float)0.5);
 		int weiPos = (begValsTemp - begVals) * lenValsVis;
+		//float valTemp = 0;
 		
 		for(int valsPos = begValsTemp; valsPos < endValsTemp; valsPos++) //iterate through the vals
 		{
@@ -50,6 +51,7 @@ public class Dense extends Layer
 		int endValsVisTemp = begValsVis + (int)(threadSplits * (threadNum + 1) * lenValsVis + (float)0.5);
 		int weiPos = begValsVisTemp - begValsVis;
 		int jumpWei = lenValsVis - (endValsVisTemp - begValsVisTemp);
+		//float valTemp = 0;
 		
 		for(int valsPos = begVals; valsPos < endVals; valsPos++) //iterate through vals
 		{
