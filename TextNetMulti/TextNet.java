@@ -18,7 +18,11 @@ public class TextNet
 {
 	private static Thread thisThread = Thread.currentThread();
 	
+	private static Scanner com = new Scanner(System.in);
+	
 	private static Layer[] layers = null;
+	private static int lenLayers = 0;
+	
 	private static Thread[] threads = null;
 	private static NetThread mainNetThread = null;
 	private static int lenThreads = 0;
@@ -30,7 +34,6 @@ public class TextNet
 	
 	private static float[][] ioPuts = null;
 	private static int lenIoPuts = 0;
-	private static int lenLayers = 0;
 	
 	public static void main(String[] args) 
 	{
@@ -47,21 +50,12 @@ public class TextNet
 		thisThread.setPriority(Thread.MIN_PRIORITY);
 		
 		run();
-		while(true)
-		{
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		//command();
+
+		command();
 	}
 	
 	private static void init() throws IOException
 	{
-		Scanner com = new Scanner(System.in);
 		System.out.print("Training data name: ");
 		dataName = com.nextLine();
 		System.out.print("Net config name: ");
@@ -75,8 +69,10 @@ public class TextNet
 		int[] splits = file.toIntArray();
 		file.setFile(loc + dataName + ".csv");
 		ioPuts = file.toFloatArray2D(splits);
+		ioPuts[1] = file.normalizeFloatArray(ioPuts[1]);               //this is currently just for mnist_train, will make better set up in future
 		lenIoPuts = ioPuts[0].length / splits[0];
 		file.close();
+		System.gc();
 		
 		System.out.println("Init");
 		int temp = 0;
@@ -124,13 +120,12 @@ public class TextNet
 		}
 		layers[0].setStatics(new float[temp], new float[temp], lenThreads);
 		file.close();
-		com.close();
 		
 		threads = new NetThread[lenThreads];
 		int[] arr = new int[lenThreads];
 		for(int i = lenThreads - 1; i >= 0; i--)
 		{
-			mainNetThread = new NetThread(i, layers, arr, lenLayers, lenThreads);
+			mainNetThread = new NetThread(i, layers, arr, lenLayers, lenThreads, lenIoPuts);
 			threads[i] = mainNetThread;
 		}
 	}
@@ -144,12 +139,11 @@ public class TextNet
 	}
 	private static void command()
 	{
-		Scanner in = new Scanner(System.in);
 		String command = null;
 		while(!exit)
 		{
 			System.out.print("error, interTime, epoch, setLearn, setStop, save, saveExit, exit:   ");
-			command = in.nextLine();
+			command = com.nextLine();
 			if(command.equals("error"))
 			{
 				System.out.println(layers[0].errString());
@@ -165,7 +159,7 @@ public class TextNet
 			else if(command.equals("setLearn"))
 			{
 				System.out.println("Current rate: " + layers[0].getLearnRate() + "   New rate: ");
-				layers[0].setLearnRate(in.nextFloat());
+				layers[0].setLearnRate(com.nextFloat());
 			}
 			else if(command.equals("save"))
 			{
@@ -187,7 +181,6 @@ public class TextNet
 				System.out.println();
 			}
 		}
-		in.close();
 	}
 	
 	public static void print()
