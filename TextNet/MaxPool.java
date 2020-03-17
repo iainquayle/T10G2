@@ -23,7 +23,6 @@ public class MaxPool extends Layer
 	
 	private int jumpValsVisY = 0; //moves down one row
 	private int jumpValsVisXY = 0; //moves down all rows on one img
-	private int jumpValsVisZ = 0; //moves down one img
 	private int jumpValsVisBack = 0; //moves back to start of ker + stride
 	private int jumpValsVisStride = 0; //moves vertical stride length
 	
@@ -47,13 +46,11 @@ public class MaxPool extends Layer
 		lenValsVis = lenValsVisX * lenValsVisY * lenValsVisZ;
 		lenWeis = lenKerX * lenKerX * lenValsZ * lenValsVisZ;
 		lenValsVisXY = lenValsVisX * lenValsVisY;
-		lenKer = lenKerX * lenKerX * lenValsVisZ;
 		
 		jumpValsVisY = lenValsVisX - lenKerX;
 		jumpValsVisXY = lenValsVisX * (lenKerX - 1);
-		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
-		jumpValsVisBack = lenValsVisXY * lenValsVisZ - stride;
-		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
+		jumpValsVisBack = lenValsVisX * lenKerX - stride;
+		jumpValsVisStride = lenValsVisX * (stride - 1) + (lenValsVisX - (lenValsX * stride));
 		
 		larIndex = new int[lenVals];
 		
@@ -70,41 +67,33 @@ public class MaxPool extends Layer
 	{
 		int valsPos = begVals;
 		int valsVisPos = begValsVis;
+		int stopValsX = 0;
 		int stopValsVisX = 0;
 		int stopValsVisY = 0;
-		while(valsPos < endVals) //iterate through each weight set/kernel/XY
+		while(valsPos < endVals)
 		{
-			for(int j = 0; j < lenValsY; j++) //iterate through each row
+			stopValsX = valsPos + lenValsX;
+			while(valsPos < stopValsX)
 			{
-				for(int k = 0; k < lenValsX; k++) //iterate through each col
+				stopValsVisY = valsVisPos + jumpValsVisXY;
+				while(valsVisPos < stopValsVisY)
 				{
-					valsAch[valsPos] = 0;
-					valsErr[valsPos] = 0; 
-					while(valsVisPos < endValsVis) //iterate through each XY in the vis layer 
+					stopValsVisX = valsVisPos + lenKerX;
+					while(valsVisPos < stopValsVisX)
 					{
-						stopValsVisY = valsVisPos + jumpValsVisXY;  
-						while(valsVisPos <= stopValsVisY) //iterate through kernel dim
+						if(valsAch[valsVisPos] > valsAch[valsPos])
 						{
-							stopValsVisX = valsVisPos + lenKerX;
-							while(valsVisPos < stopValsVisX) //iterate through kernel dim
-							{
-								if(valsAch[valsVisPos] > valsAch[valsPos])
-								{
-									valsAch[valsPos] = valsAch[valsVisPos];
-									larIndex[valsPos - begVals] = valsVisPos;
-								}
-								valsVisPos++;
-							}
-							valsVisPos += jumpValsVisY; //moving down to start of next row in kernel
+							valsAch[valsPos] = valsAch[valsVisPos];
+							larIndex[valsPos - begVals] = valsVisPos;
 						}
-						valsVisPos += jumpValsVisZ; //moving to start of next img in kernel
+						valsVisPos++;
 					}
-					valsVisPos -= jumpValsVisBack; //moving back to the starting position minus the stride
-					valsPos++;
+					valsVisPos += jumpValsVisY;
 				}
-				valsVisPos += jumpValsVisStride; //moving down a row in the local layer
+				valsVisPos -= jumpValsVisBack;
+				valsPos++;
 			}
-			valsVisPos = begValsVis; //moving back to the start of vis layer to start new kernel
+			valsVisPos += jumpValsVisStride;
 		}
 	}
 	public void train()
