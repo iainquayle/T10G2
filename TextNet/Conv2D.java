@@ -70,7 +70,7 @@ public class Conv2D extends Layer
 		jumpValsVisXY = lenValsVisX * (lenKerX - 1);
 		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
 		jumpValsVisBack = lenValsVisXY * lenValsVisZ - stride;
-		jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
+		jumpValsVisStride = lenValsVisX * (stride - 1) + (lenValsVisX - (lenValsX * stride));
 		
 		super.loadWeights(loc);
 		if(num != 0)
