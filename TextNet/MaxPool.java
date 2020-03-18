@@ -75,6 +75,8 @@ public class MaxPool extends Layer
 			stopValsX = valsPos + lenValsX;
 			while(valsPos < stopValsX)
 			{
+				valsAch[valsPos] = valsAch[valsVisPos];
+				valsErr[valsPos] = 0;
 				stopValsVisY = valsVisPos + jumpValsVisXY;
 				while(valsVisPos < stopValsVisY)
 				{
