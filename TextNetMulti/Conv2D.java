@@ -59,6 +59,7 @@ public class Conv2D extends Layer
 		jumpValsVisZ = lenValsVisXY - jumpValsVisXY - jumpValsVisY - lenKerX;
 		jumpValsVisBack = lenValsVisXY * lenValsVisZ - stride;
 		jumpValsVisStride = lenValsVisX * (stride - 1) + (lenValsVisX - (lenValsX * stride));
+		//jumpValsVisStride = lenValsVisX * (stride - 1) - stride;
 		
 		super.loadWeights(loc);
 		if(num != 0)
@@ -125,12 +126,13 @@ public class Conv2D extends Layer
 		int endValsVisTemp = (int)(threadSplits * (threadNum + 1) * lenValsVisZ + (float)0.5);
 		int jumpValsVisBackTemp = lenValsVisXY * (endValsVisTemp - begValsVisTemp) - stride;
 		int jumpKerBackTemp = lenKerXY * (endValsVisTemp - begValsVisTemp);
+		int endAveWeiTemp = endValsVisTemp * lenKerXY;
 		int weiPos = begValsVisTemp * lenKerXY;
+		int aveWeiPos = weiPos;
 		begValsVisTemp = begValsVisTemp * lenValsVisXY + begValsVis;
 		endValsVisTemp = endValsVisTemp * lenValsVisXY + begValsVis;
 		int valsVisPos = begValsVisTemp;
 		int valsPos = begVals;
-		int aveWeiPos = weiPos;
 		int stopValsVisX = 0;
 		int stopValsVisY = 0;
 		//float valTemp = 0;
@@ -166,7 +168,7 @@ public class Conv2D extends Layer
 				}
 				valsVisPos += jumpValsVisStride;
 			}
-			while(aveWeiPos < jumpKerBackTemp) //iterating through the current kernel
+			while(aveWeiPos < endAveWeiTemp) //iterating through the current kernel
 			{
 				weights[weiPos] += aveWei[aveWeiPos]; //adding adjustments to weights
 				aveWei[aveWeiPos] = 0;
