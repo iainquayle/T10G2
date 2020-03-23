@@ -1,31 +1,17 @@
 package engine;
 
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-
-/**
- * 
- * @author Parth Patel
- * @documenter Osama Bamatraf
- *
- */
 
 public class CalculatorV5 {
 	private ArrayList<String> formulaSplitAll = new ArrayList<String>();
 	private String[] ArrayForm;
 	private ArrayList<String> formulaSplitInBrackets = new ArrayList<String>();
-//	private ArrayList<String> formulaSplitOutBrackets = new ArrayList<String>();
+
 	public int counter = 0;
 	
-//	public CalculatorV4() {
-//		super();
-//		this.testCase = super.testCase;
-//		
-//	}
-	
+
 	public  ArrayList<String> converStrToListNoBrack(String testCase){
 		// create an array of the equation that is in a string format and split by the spaces
 		ArrayForm = testCase.split(" ");
@@ -37,7 +23,7 @@ public class CalculatorV5 {
 			{
 				counter = counter + 1;
 			}
-//			
+			
 		
 		}
 		formulaSplitAll.removeAll(Arrays.asList("", null));
@@ -48,7 +34,7 @@ public class CalculatorV5 {
 		
 		
 		while (counter != 0) {
-			int indexOfOpen = formulaSplitAll.indexOf("(");;
+			int indexOfOpen = formulaSplitAll.lastIndexOf("(");
 			int indexOfClose = formulaSplitAll.indexOf(")");
 			System.out.println(indexOfOpen);
 			System.out.println(indexOfClose);
@@ -199,10 +185,10 @@ public class CalculatorV5 {
 
 		try {
 		CalculatorV5 calc = new CalculatorV5();
+
 		testCase = testCase.trim();
 		calc.converStrToListNoBrack(testCase);
 		
-//		System.out.println(calc.counter);
 		//look for if the formulaSplitAll array list has any brackets operator, and if it does, carry out the function with the brackets 
 		for (int i = 0; i <= calc.formulaSplitAll.size() - 1 ; i ++ ) {
 			while (calc.formulaSplitAll.contains("(")) {
@@ -224,7 +210,7 @@ public class CalculatorV5 {
 				num2 = (int) num;
 				String num_dis = Integer.toString(num2);
 				return num_dis;
-//				System.out.println("Final answer: " + num2);
+
 				
 			}
 			else {
@@ -233,15 +219,13 @@ public class CalculatorV5 {
 				
 			}
 			
-			
 		}
 		return"Invalid";
 
 	}
 		catch(Exception e){
-			return "An exeption occured";
+			return "Invalid";
 		}
-	
 	
 } 
 }
