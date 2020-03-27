@@ -126,7 +126,10 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 								}
 								
 								}
-								
+								else {
+									formulaSplitInBrack.remove("(");
+									formulaSplitInBrack.remove(")");
+								}
 
 							}
 							System.out.println("-------formslpit: " + formulaSplitInBrack);
