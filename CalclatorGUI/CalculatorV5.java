@@ -1,5 +1,7 @@
 package engine;
 
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -8,103 +10,146 @@ public class CalculatorV5 {
 	private ArrayList<String> formulaSplitAll = new ArrayList<String>();
 	private String[] ArrayForm;
 	private ArrayList<String> formulaSplitInBrackets = new ArrayList<String>();
-
+//	private ArrayList<String> formulaSplitOutBrackets = new ArrayList<String>();
 	public int counter = 0;
 	
-
+//	public CalculatorV4() {
+//		super();
+//		this.testCase = super.testCase;
+//		
+//	}
+	
 	public  ArrayList<String> converStrToListNoBrack(String testCase){
 		// create an array of the equation that is in a string format and split by the spaces
 		ArrayForm = testCase.split(" ");
 		//add all elements from the array to an array list
 		for (int i = 0; i < ArrayForm.length; i++ ) {
 			formulaSplitAll.add(ArrayForm[i]);
+			formulaSplitInBrackets.add(ArrayForm[i]);
 
 			if (formulaSplitAll.get(i).equals("("))
 			{
 				counter = counter + 1;
 			}
-			
-		
 		}
+		
+		for (int i = 0 ; i < formulaSplitAll.size() ; i ++) {
+			if (i + 1 < formulaSplitAll.size() ) {
+				if (formulaSplitAll.get(i).equals(" ") && formulaSplitAll.get(i + 1).equals(" ")) {
+					formulaSplitAll.remove(i);
+				}
+			}
+		}
+		
+		for (int i = 0 ; i < formulaSplitInBrackets.size() ; i ++) {
+			if (i + 1 < formulaSplitInBrackets.size() ) {
+				if (formulaSplitInBrackets.get(i).equals(" ") && formulaSplitInBrackets.get(i + 1).equals(" ")) {
+					formulaSplitInBrackets.remove(i);
+				}
+			}
+		}
+		
 		formulaSplitAll.removeAll(Arrays.asList("", null));
+		formulaSplitInBrackets.removeAll(Arrays.asList("", null));
+		System.out.println("form-sp" + formulaSplitAll);
 		return formulaSplitAll;
 	}
 	
-	public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplitAll) {
+public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplitInBrack) {
 		
-		
-		while (counter != 0) {
-			int indexOfOpen = formulaSplitAll.lastIndexOf("(");
-			int indexOfClose = formulaSplitAll.indexOf(")");
-			System.out.println(indexOfOpen);
-			System.out.println(indexOfClose);
-			formulaSplitInBrackets.clear();
-			
-			//add elements stored in the brackets from the "formulaSplitAll" array list into "formulaSplitInBrackets" 
-			for (int i= indexOfOpen ; i< indexOfClose + 1; i++ ) {
-				formulaSplitInBrackets.add(formulaSplitAll.get(i));
-			}
-			System.out.println(formulaSplitAll);
-			System.out.println(formulaSplitInBrackets);
-			// do the necessary calculations of the equations 
-			division(formulaSplitInBrackets);
-			multiplication(formulaSplitInBrackets);
-			addition(formulaSplitInBrackets);
-			subtraction(formulaSplitInBrackets);
-			System.out.println(formulaSplitInBrackets);
-		
+		int count = 0 ;
+		int indexOfOpen = 0;
+		int indexOfClose = 0;
 
-			// clear out the equation stored in the brackets in the formulaSplitAll array list 
-			formulaSplitAll.subList(indexOfOpen, indexOfClose +1 ).clear();
 
-			// from the formulaSplitInBrackets, the calculated value from the brackets is added to the formulaSplitAll list
-
-			formulaSplitInBrackets.remove("(");
-			formulaSplitInBrackets.remove(")");
-			System.out.println(formulaSplitInBrackets);
-			System.out.println(formulaSplitAll);
-			
-			for (int j = 0 ; j <= formulaSplitInBrackets.size() - 1; j ++) {
-				formulaSplitAll.add(indexOfOpen , formulaSplitInBrackets.get(j));;
-			}
-			
-			System.out.println(formulaSplitAll);
-			System.out.println(indexOfOpen);
-			System.out.println("size" + formulaSplitAll.size());
-			for (int j = 0; j <= formulaSplitAll.size() - 1 ; j++) {
-				if (indexOfOpen > 0 ) {
-					if (!formulaSplitAll.get(indexOfOpen - 1).equals("+") && 
-							!formulaSplitAll.get(indexOfOpen - 1).equals("/") &&
-							!formulaSplitAll.get(indexOfOpen - 1).equals("*") && 
-							!formulaSplitAll.get(indexOfOpen - 1).equals("-") && 
-							!formulaSplitAll.get((indexOfOpen) - 1).equals("^")){
-						double numInBrack = Double.parseDouble(formulaSplitAll.get(indexOfOpen));
-						System.out.println(numInBrack);
-						double numOutBrack = Double.parseDouble(formulaSplitAll.get(indexOfOpen - 1));
-						numOutBrack = numInBrack * numOutBrack;
-						System.out.println(numOutBrack);
-						String changes = Double.toString(numOutBrack);
-						System.out.println(formulaSplitAll);
-						formulaSplitAll.subList(indexOfOpen - 1, indexOfOpen + 1).clear();
-						formulaSplitAll.add(indexOfOpen - 1, changes);
-						System.out.println(formulaSplitAll);
-						indexOfOpen = 0;
-					}
+		if (formulaSplitInBrack.contains("(")) {
+	
+			indexOfOpen = formulaSplitInBrack.indexOf("(");
+			for(int i = 0 ; i < formulaSplitInBrack.size(); i ++) {
+				if (formulaSplitInBrack.get(i).equals("(")) {
+					count++;
 				}
+				if(formulaSplitInBrack.get(i).equals(")")) {
+					count--;
+					
+					if (count == 0) {
+						indexOfClose = i;
+						System.out.println("indexOpen: " + indexOfOpen);
+						System.out.println("indexClose: " + indexOfClose);
+						
+
+
+						ArrayList<String> sibling = new ArrayList<String>(formulaSplitInBrack.subList(indexOfOpen + 1 , indexOfClose));
+						System.out.println("sibling-: " + sibling);
+						System.out.println("splitIn: " + formulaSplitInBrack);
+						while(sibling.contains("(")) {
+
+
+							converStrToListWithBrack(sibling);	
+						}
+							
+						
+							System.out.println("sibling--: " + sibling);
+							System.out.println("m: " + formulaSplitInBrack);
+							System.out.println("indexOpen2: " + indexOfOpen);
+							System.out.println("indexClose2: " + indexOfClose);
+							division(sibling);
+							multiplication(sibling);
+							addition(sibling);
+							subtraction(sibling);
+							int indClose = indexOfClose;
+							int indOpen = indexOfOpen;
+							System.out.println("element: " + indClose);
+							System.out.println("indOpen: " + indOpen);
+							System.out.println("indClose: " + indClose);
+							
+							formulaSplitInBrack.subList(indOpen + 1, indClose).clear();
+							System.out.println("new formula: " + formulaSplitInBrack);
+							formulaSplitInBrack.addAll(indOpen + 1, sibling);
+							System.out.println("new formula2: " + formulaSplitInBrack);
+
+							System.out.println("m: " + formulaSplitInBrack);
+							System.out.println("sibling---: " + sibling);
+					
+							
+							if (sibling.size() == 1 ) {
+								if( indexOfOpen > 0) {
+								if(!formulaSplitInBrack.get(indOpen - 1).equals("*") &&
+										!formulaSplitInBrack.get(indOpen - 1).equals("-") &&
+										!formulaSplitInBrack.get(indOpen - 1).equals("+") &&
+										!formulaSplitInBrack.get(indOpen - 1).equals("/") &&
+										!formulaSplitInBrack.get(indOpen - 1).equals("^")) {
+									double numInBrack = Double.parseDouble(formulaSplitInBrack.get(indOpen - 1));
+									double numOutBrack = Double.parseDouble(formulaSplitInBrack.get(indOpen + 1));
+									numOutBrack = numInBrack * numOutBrack;
+									String changes = Double.toString(numOutBrack);
+									formulaSplitInBrack.subList(indOpen - 1, indOpen + 3).clear();
+									formulaSplitInBrack.add(indexOfOpen - 1, changes);
+									System.out.println("-------formslpit: " + formulaSplitInBrack);
+								}
+								}
+
+							}
+							formulaSplitInBrack.remove("(");
+							formulaSplitInBrack.remove(")");
+
+						}
+	
+				}
+				}
+			if (!formulaSplitInBrack.contains("(")) {
+				division(formulaSplitInBrack);
+				multiplication(formulaSplitInBrack);
+				addition(formulaSplitInBrack);
+				subtraction(formulaSplitInBrack);
 			}
+					
+				}
 
-			// if there is a number before the opening brackets, it multiplies the number with the calculated value in brackets 
-			// e.g if equation is ; 2(2), output will be 4 ( multiples 2 by 2 )			
-			// remove the opening and closing brackets symbol
-
-			System.out.println(formulaSplitAll);
-			counter = counter - 1;
-
-			
-		}
-		return formulaSplitAll;
+		return formulaSplitInBrack;
 	}
-
+			
+			
 	
 	// from the order BIDMAS, it looks for the division symbol and divides the numbers before and after the "/" symbol
 	public void division(ArrayList<String> m) {
@@ -185,16 +230,26 @@ public class CalculatorV5 {
 
 		try {
 		CalculatorV5 calc = new CalculatorV5();
-
 		testCase = testCase.trim();
 		calc.converStrToListNoBrack(testCase);
 		
-		//look for if the formulaSplitAll array list has any brackets operator, and if it does, carry out the function with the brackets 
-		for (int i = 0; i <= calc.formulaSplitAll.size() - 1 ; i ++ ) {
-			while (calc.formulaSplitAll.contains("(")) {
-				calc.converStrToListWithBrack(calc.formulaSplitAll);
+
+		if(calc.formulaSplitInBrackets.contains("(")) {
+			calc.formulaSplitAll.clear();
+			while (calc.formulaSplitInBrackets.contains("(")) {
+				System.out.println("-------------------------------");
+				calc.converStrToListWithBrack(calc.formulaSplitInBrackets);
+//				System.out.println("calcForm: "+ calc.formulaSplitInBrackets);
+				
+				
 			}
 		}
+		
+		if(calc.formulaSplitInBrackets.size() == 1) {
+			for(String b : calc.formulaSplitInBrackets)
+			calc.formulaSplitAll.add(b);
+		}
+		System.out.println("formulaSplitAll: " +calc.formulaSplitAll);
 		calc.power(calc.formulaSplitAll);
 		calc.division(calc.formulaSplitAll);
 		calc.multiplication(calc.formulaSplitAll);
@@ -219,6 +274,7 @@ public class CalculatorV5 {
 				
 			}
 			
+			
 		}
 		return"Invalid";
 
@@ -226,6 +282,6 @@ public class CalculatorV5 {
 		catch(Exception e){
 			return "Invalid";
 		}
-	
+
 } 
 }
