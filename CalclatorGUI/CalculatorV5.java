@@ -62,8 +62,8 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 		int indexOfClose = 0;
 
 
-		if (formulaSplitInBrack.contains("(")) {
-	
+		while(formulaSplitInBrack.contains("(")) {
+			
 			indexOfOpen = formulaSplitInBrack.indexOf("(");
 			for(int i = 0 ; i < formulaSplitInBrack.size(); i ++) {
 				if (formulaSplitInBrack.get(i).equals("(")) {
@@ -82,13 +82,9 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 						ArrayList<String> sibling = new ArrayList<String>(formulaSplitInBrack.subList(indexOfOpen + 1 , indexOfClose));
 						System.out.println("sibling-: " + sibling);
 						System.out.println("splitIn: " + formulaSplitInBrack);
-						while(sibling.contains("(")) {
-
-
+						if(sibling.contains("(")) {
 							converStrToListWithBrack(sibling);	
 						}
-							
-						
 							System.out.println("sibling--: " + sibling);
 							System.out.println("m: " + formulaSplitInBrack);
 							System.out.println("indexOpen2: " + indexOfOpen);
@@ -99,9 +95,9 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 							subtraction(sibling);
 							int indClose = indexOfClose;
 							int indOpen = indexOfOpen;
-							System.out.println("element: " + indClose);
-							System.out.println("indOpen: " + indOpen);
-							System.out.println("indClose: " + indClose);
+							System.out.println("sibling--: " + sibling);
+//							System.out.println("indOpen: " + indOpen);
+//							System.out.println("indClose: " + indClose);
 							
 							formulaSplitInBrack.subList(indOpen + 1, indClose).clear();
 							System.out.println("new formula: " + formulaSplitInBrack);
@@ -125,30 +121,41 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 									String changes = Double.toString(numOutBrack);
 									formulaSplitInBrack.subList(indOpen - 1, indOpen + 3).clear();
 									formulaSplitInBrack.add(indexOfOpen - 1, changes);
-									System.out.println("-------formslpit: " + formulaSplitInBrack);
+								
+									
 								}
+								
 								}
+								
 
 							}
-							formulaSplitInBrack.remove("(");
-							formulaSplitInBrack.remove(")");
+							System.out.println("-------formslpit: " + formulaSplitInBrack);
+							if(formulaSplitInBrack.contains("(")) {
+								 converStrToListWithBrack(formulaSplitInBrack);
+							}
 
 						}
 	
 				}
 				}
-			if (!formulaSplitInBrack.contains("(")) {
-				division(formulaSplitInBrack);
-				multiplication(formulaSplitInBrack);
-				addition(formulaSplitInBrack);
-				subtraction(formulaSplitInBrack);
-			}
-					
+			
+			System.out.println("this: " + formulaSplitInBrack);
+
 				}
+		
+
+		if (!formulaSplitInBrack.contains("(")) {
+			division(formulaSplitInBrack);
+			multiplication(formulaSplitInBrack);
+			addition(formulaSplitInBrack);
+			subtraction(formulaSplitInBrack);
+		}
+		
 
 		return formulaSplitInBrack;
 	}
 			
+	
 			
 	
 	// from the order BIDMAS, it looks for the division symbol and divides the numbers before and after the "/" symbol
