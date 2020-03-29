@@ -17,6 +17,8 @@ import javax.imageio.*;
 /**
  * stupid dumb class work you stupid idiot.
  * work in progress
+ * 
+ * The current state of this code is similar to a dysfuctional alien family trying to pretend to be humans.
  * @author Osama Bamatraf
  *
  */
@@ -27,7 +29,7 @@ public class ImgResize {
   static   String outImgPath2 = "C:\\Users\\owahe\\eclipse-workspace\\ImgProcessing\\src\\UntitledCrop.png";
   static  int reqWidth = 28;
   static  int reqHeight = 28;
-  static  int reqX1;
+   static  int reqX1;
    static int reqX2;
    static int reqY1;
    static int reqY2;
@@ -49,7 +51,17 @@ public class ImgResize {
 	 */
 	
 	// this is a mess that is still under construction
-	public static  int[] imgScanTopToBot(String inImgPath, int i, int j, int h, int w) throws IOException {
+	/**
+	 * I don't even know at this point but this apparentltly scans the image from left to right 
+	 * in order to find the first black pixel
+	 * @param inImgPath
+	 * @param h
+	 * @param w
+	 * @return
+	 * @throws IOException
+	 */
+   
+   public static  int[] imgScanLeftToRight(String inImgPath, int h, int w) throws IOException {
 		
 		File inFile = new File(inImgPath);
 		BufferedImage inImg = ImageIO.read(inFile);
@@ -59,25 +71,21 @@ public class ImgResize {
 		
 		
 		
-		for(int y= i; y < h; y++){
-            for(int x = j; x < w; x++){
-               
-                Color c = new Color(inImg.getRGB(x, y));
-                int r = c.getRed();
-                int g = c.getGreen();
-                int b = c.getBlue();
+		for(int x = 0; x < w; x++)	{
+			for(int y= 0; y < h; y++){
+				
+                Color c = new Color (inImg.getRGB(x,y));
+                int check = c.getRed();
                 
-                
-                if((r == 0) && (g == 0) && (b == 0)){
+                if(check ==0){
                 	reqX = x;
                 	reqY = y;
                     
                     break;
-                }else {
-                	continue;
                 }
             }
 		}
+		
 		int[] coor = {reqX, reqY};
 		
 		return coor;
@@ -107,8 +115,15 @@ public class ImgResize {
 		} */
        
 	}
-	
-	public static int[] imgScanBotToTop(String inImgPath, int i, int j, int h, int w) throws IOException {
+	/**
+	 * Same genius observation as the previous one
+	 * @param inImgPath
+	 * @param h
+	 * @param w
+	 * @return
+	 * @throws IOException
+	 */
+	public static int[] imgScanRightToLeft(String inImgPath, int h, int w) throws IOException {
 		
 		File inFile = new File(inImgPath);
 		BufferedImage inImg = ImageIO.read(inFile);
@@ -118,15 +133,14 @@ public class ImgResize {
 		
 		
 		
-		for(int height= h; height > i; height--){
-            for(int width = w; width> j; width--){
-               
-                Color c = new Color(inImg.getRGB(width, height));
-                int r = c.getRed();
-                int g = c.getGreen();
-                int b = c.getBlue();
+		for(int width = w; width> 0; width =width -1){
+			for(int height= h; height > 0; height= height -1)  {
+              // System.out.println(height);
+              // System.out.println(width);
+            	Color c = new Color (inImg.getRGB(width,height));
+                int check = c.getBlue();
                 
-                if((r < 10) && (g < 10) && (b < 10)){
+                if(check <100){
                 	reqX = width;
                 	reqY = height;
                     
@@ -142,8 +156,13 @@ public class ImgResize {
 		
 		
 	}
-	
-	public static void getHitBox(String inImgPath) throws IOException {
+	/**
+	 * Don't even question this
+	 * @param inImgPath
+	 * @return
+	 * @throws IOException
+	 */
+	public static int getreqX1(String inImgPath) throws IOException {
 		
 		File inFile = new File(inImgPath);
 		BufferedImage inImg = ImageIO.read(inFile);
@@ -151,18 +170,63 @@ public class ImgResize {
 		int y = 0;
 		int h = inImg.getHeight();
 		int w  = inImg.getWidth();
-		int [] coordinates;
-		coordinates = imgScanTopToBot(inImgPath, x, y, h, w);
-		reqX1 = coordinates[0];
-		reqY1 = coordinates[1];
 		
-		coordinates = imgScanBotToTop(inImgPath, x, y, h, w);
-		reqX2 = coordinates[0];
-		reqY2 = coordinates[1];
+		int [] coordinates =imgScanLeftToRight(inImgPath, h, w);
+		return coordinates[0];
+		
+		
 		
 		
 		
 	}
+	//don't question
+public static int getreqY1(String inImgPath) throws IOException {
+		
+		File inFile = new File(inImgPath);
+		BufferedImage inImg = ImageIO.read(inFile);
+		int x = 0;
+		int y = 0;
+		int h = inImg.getHeight();
+		int w  = inImg.getWidth();
+		
+		int [] coordinates =imgScanLeftToRight(inImgPath, h, w);
+		return coordinates [1];
+		
+		
+		
+	}
+//don't question
+public static int getreqX2(String inImgPath) throws IOException {
+	
+	File inFile = new File(inImgPath);
+	BufferedImage inImg = ImageIO.read(inFile);
+
+	int h = inImg.getHeight()-1;
+	int w  = inImg.getWidth()-1;
+	
+	
+	int [] coordinates2 = imgScanRightToLeft(inImgPath, h, w);
+	return coordinates2 [0];
+	
+	
+}
+
+// I said don't question this will all be gone by the time this is all fully functional
+public static int getreqY2(String inImgPath) throws IOException {
+	
+	File inFile = new File(inImgPath);
+	BufferedImage inImg = ImageIO.read(inFile);
+
+	int h = inImg.getHeight()-1;
+	int w  = inImg.getWidth()-1;
+	
+	
+	int [] coordinates2 = imgScanRightToLeft(inImgPath, h, w);
+	return coordinates2 [1];
+	
+	
+}
+	//hahahahahahaha *cries*
 	public static void cropImg(String inImgPath, String outImgPath, int x1, int x2, int y1, int y2 ) throws IOException {
 		File inFile = new File(inImgPath);
 		BufferedImage inImg = ImageIO.read(inFile);
@@ -206,6 +270,7 @@ public class ImgResize {
  * 
  * Also YAY it works.
  */
+	// I love you resize. Will you marry me?
 	public static void resize(String inImgPath, String outImgPath, int reqWidth, int reqHeight) throws IOException {
 		File inFile = new File(inImgPath);
 		BufferedImage inImg = ImageIO.read(inFile);
@@ -256,10 +321,19 @@ public class ImgResize {
 	       
 	 
 	        try {
+	        	
+	        	reqX1 = getreqX1(inImgPath);
+	        	reqX2 = getreqX2(inImgPath);
+	        	reqY1 = getreqY1(inImgPath);
+	        	reqY2 = getreqY2(inImgPath);
 	        	System.out.println(reqX1);
 	    		System.out.println(reqX2);
 	    		System.out.println(reqY1);
-	    		System.out.println(reqY2);
+	   	System.out.println(reqY2);
+	    		
+	    		File inFile = new File(inImgPath);
+	    		BufferedImage inImg = ImageIO.read(inFile);
+	    		//System.out.println(inImg.getHeight());
 	            
 	            ImgResize.resize(inImgPath, outImgPath1, reqWidth, reqHeight);
 	            ImgResize.cropImg(inImgPath,outImgPath2, reqX1,reqX2, reqY1, reqY2);
