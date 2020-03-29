@@ -22,8 +22,26 @@ import javax.imageio.*;
  */
 public class ImgResize {
 	
-	
-	/**
+	static String inImgPath = "C:\\Users\\owahe\\eclipse-workspace\\ImgProcessing\\src\\Untitled.png";
+   static  String outImgPath1 = "C:\\Users\\owahe\\eclipse-workspace\\ImgProcessing\\src\\UntitledResize.png";
+  static   String outImgPath2 = "C:\\Users\\owahe\\eclipse-workspace\\ImgProcessing\\src\\UntitledCrop.png";
+  static  int reqWidth = 28;
+  static  int reqHeight = 28;
+  static  int reqX1;
+   static int reqX2;
+   static int reqY1;
+   static int reqY2;
+    /**
+    static BufferedImage inImg;
+    public ImgResize() throws IOException {
+    	
+        
+		
+    	
+    }
+    */
+    
+    /**
 	 * 
 	 * @param inImgPath
 	 * @return
@@ -31,26 +49,28 @@ public class ImgResize {
 	 */
 	
 	// this is a mess that is still under construction
-	public int getHitbox(String inImgPath) throws IOException {
-		File inFile = new File(inImgPath);
-        
-		BufferedImage inImg = ImageIO.read(inFile);
+	public static  int[] imgScanTopToBot(String inImgPath, int i, int j, int h, int w) throws IOException {
 		
-		int reqX1=0;
-		int reqY1=0;
-		int reqX2=0;
-		int reqY2=0;
-		for(int y = 0; y < inImg.getHeight(); y++){
-            for(int x = 0; x < inImg.getWidth(); x++){
+		File inFile = new File(inImgPath);
+		BufferedImage inImg = ImageIO.read(inFile);
+		int reqX=0;
+		int reqY=0;
+		
+		
+		
+		
+		for(int y= i; y < h; y++){
+            for(int x = j; x < w; x++){
                
                 Color c = new Color(inImg.getRGB(x, y));
                 int r = c.getRed();
                 int g = c.getGreen();
                 int b = c.getBlue();
                 
+                
                 if((r == 0) && (g == 0) && (b == 0)){
-                	reqX1 = x;
-                	reqY1 = y;
+                	reqX = x;
+                	reqY = y;
                     
                     break;
                 }else {
@@ -58,7 +78,14 @@ public class ImgResize {
                 }
             }
 		}
-               
+		int[] coor = {reqX, reqY};
+		
+		return coor;
+		
+		
+		
+		
+               /**
         		 for(int y2 = inImg.getHeight(); y2 >0 ; y2--){
         			 for(int x2 = inImg.getWidth(); x2 >0 ; x2--)  {
                        
@@ -77,13 +104,82 @@ public class ImgResize {
                         }
                        
                 }
-		}
-         return 0;
-        		
+		} */
+       
 	}
 	
+	public static int[] imgScanBotToTop(String inImgPath, int i, int j, int h, int w) throws IOException {
 		
-        
+		File inFile = new File(inImgPath);
+		BufferedImage inImg = ImageIO.read(inFile);
+		int reqX=0;
+		int reqY=0;
+		
+		
+		
+		
+		for(int height= h; height > i; height--){
+            for(int width = w; width> j; width--){
+               
+                Color c = new Color(inImg.getRGB(width, height));
+                int r = c.getRed();
+                int g = c.getGreen();
+                int b = c.getBlue();
+                
+                if((r < 10) && (g < 10) && (b < 10)){
+                	reqX = width;
+                	reqY = height;
+                    
+                    break;
+                }else {
+                	continue;
+                }
+            }
+		}
+		int[] coor = {reqX, reqY};
+		
+		return coor;
+		
+		
+	}
+	
+	public static void getHitBox(String inImgPath) throws IOException {
+		
+		File inFile = new File(inImgPath);
+		BufferedImage inImg = ImageIO.read(inFile);
+		int x = 0;
+		int y = 0;
+		int h = inImg.getHeight();
+		int w  = inImg.getWidth();
+		int [] coordinates;
+		coordinates = imgScanTopToBot(inImgPath, x, y, h, w);
+		reqX1 = coordinates[0];
+		reqY1 = coordinates[1];
+		
+		coordinates = imgScanBotToTop(inImgPath, x, y, h, w);
+		reqX2 = coordinates[0];
+		reqY2 = coordinates[1];
+		
+		
+		
+	}
+	public static void cropImg(String inImgPath, String outImgPath, int x1, int x2, int y1, int y2 ) throws IOException {
+		File inFile = new File(inImgPath);
+		BufferedImage inImg = ImageIO.read(inFile);
+		inImg = inImg.getSubimage(x1,y1,x2,y2);
+		BufferedImage newImg = new BufferedImage(inImg.getWidth(), inImg.getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D cropper = newImg.createGraphics();
+		cropper.drawImage(inImg, 0, 0, null);
+	    cropper.dispose();
+	      
+	       String fileType = outImgPath.substring(outImgPath.lastIndexOf(".") + 1);
+	       ImageIO.write(newImg, fileType, new File(outImgPath));
+		
+		
+		
+	}
+		
+       
         
         
 		
@@ -111,9 +207,8 @@ public class ImgResize {
  * Also YAY it works.
  */
 	public static void resize(String inImgPath, String outImgPath, int reqWidth, int reqHeight) throws IOException {
-        
-        File inFile = new File(inImgPath);
-        BufferedImage inImg = ImageIO.read(inFile);
+		File inFile = new File(inImgPath);
+		BufferedImage inImg = ImageIO.read(inFile);
         BufferedImage outImg = new BufferedImage(reqWidth, reqHeight, inImg.getType());
  
         
@@ -157,15 +252,17 @@ public class ImgResize {
 	  * @param args
 	  */
 	 public static void main(String[] args) {
-	        String inImgPath = "C:\\Users\\owahe\\eclipse-workspace\\ImgProcessing\\src\\Untitled.png";
-	        String outImgPath1 = "C:\\Users\\owahe\\eclipse-workspace\\ImgProcessing\\src\\UntitledResize.png";
+	        
 	       
 	 
 	        try {
+	        	System.out.println(reqX1);
+	    		System.out.println(reqX2);
+	    		System.out.println(reqY1);
+	    		System.out.println(reqY2);
 	            
-	            int reqWidth = 28;
-	            int reqHeight = 28;
 	            ImgResize.resize(inImgPath, outImgPath1, reqWidth, reqHeight);
+	            ImgResize.cropImg(inImgPath,outImgPath2, reqX1,reqX2, reqY1, reqY2);
 	 
 	          
 	        } catch (IOException ex) {
