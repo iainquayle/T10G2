@@ -96,9 +96,7 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 							int indClose = indexOfClose;
 							int indOpen = indexOfOpen;
 							System.out.println("sibling--: " + sibling);
-//							System.out.println("indOpen: " + indOpen);
-//							System.out.println("indClose: " + indClose);
-							
+
 							formulaSplitInBrack.subList(indOpen + 1, indClose).clear();
 							System.out.println("new formula: " + formulaSplitInBrack);
 							formulaSplitInBrack.addAll(indOpen + 1, sibling);
@@ -123,6 +121,10 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 									formulaSplitInBrack.add(indexOfOpen - 1, changes);
 								
 									
+								}
+								else {
+									formulaSplitInBrack.remove(indexOfOpen);
+									formulaSplitInBrack.remove(indexOfClose - 1);
 								}
 								
 								}
