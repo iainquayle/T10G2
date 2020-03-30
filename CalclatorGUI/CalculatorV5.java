@@ -123,8 +123,9 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 									
 								}
 								else {
-									formulaSplitInBrack.remove(indexOfOpen);
-									formulaSplitInBrack.remove(indexOfClose - 1);
+									formulaSplitInBrack.remove("(");
+									formulaSplitInBrack.remove(")");
+									
 								}
 								
 								}
