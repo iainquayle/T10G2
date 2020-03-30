@@ -14,16 +14,19 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.imageio.*;
 
+
 /**
- * stupid dumb class work you stupid idiot.
- * work in progress
  * 
- * The current state of this code is similar to a dysfuctional alien family trying to pretend to be humans.
+ * 
+ * 
+ * Currently this is just one big single class, however it will be broken down into multiple classes to reduce
+ * the redunnant use of some of the code.
  * @author Osama Bamatraf
  *
  */
 public class ImgResize {
-	
+	//will get rid of of the static refrences for the final version of this
+	// this was made in order to easily test and make it work
 	static String inImgPath = "C:\\Users\\owahe\\eclipse-workspace\\ImgProcessing\\src\\Untitled.png";
    static  String outImgPath1 = "C:\\Users\\owahe\\eclipse-workspace\\ImgProcessing\\src\\UntitledCrop.png";
   static   String outImgPath2 = "C:\\Users\\owahe\\eclipse-workspace\\ImgProcessing\\src\\UntitledResize.png";
@@ -37,30 +40,13 @@ public class ImgResize {
    static int reqY2;
    static int reqY3;
    static int reqY4;
-    /**
-    static BufferedImage inImg;
-    public ImgResize() throws IOException {
-    	
-        
-		
-    	
-    }
-    */
-    
-    /**
-	 * 
-	 * @param inImgPath
-	 * @return
-	 * @throws IOException
-	 */
-	
-	// this is a mess that is still under construction
+
 	/**
-	 * I don't even know at this point but this apparentltly scans the image from left to right 
-	 * in order to find the first black pixel
-	 * @param inImgPath
-	 * @param h
-	 * @param w
+	 *Scans the image from left to right 
+	 * in order to find the first black pixel that appears on the right side of the image.
+	 * @param inImgPath path of original image
+	 * @param h height of the image
+	 * @param w width of the image
 	 * @return
 	 * @throws IOException
 	 */
@@ -69,20 +55,19 @@ public class ImgResize {
 		
 		File inFile = new File(inImgPath);
 		BufferedImage inImg = ImageIO.read(inFile);
-		int reqX=0;
-		int reqY=0;
+		int reqX=0; //required x coordinate
+		int reqY=0; //required y coordinate
 		
 		
-		
+		//loops through 
 		
 		for(int x = 0; x < w; x++)	{
 			for(int y= 0; y < h; y++){
 				
                 Color c = new Color (inImg.getRGB(x,y));
-                int check = c.getRed();
-               // System.out.println(x);
-              //  System.out.println(y);
-                if(check ==0){
+                int check = c.getRed();  
+         
+                if(check ==0){    // checks for the brightness of the red color, if it's 0 then it's a black pixel
                 	reqX = x;
                 	reqY = y;
                     
@@ -97,35 +82,13 @@ public class ImgResize {
 		
 		
 		
-		
-               /**
-        		 for(int y2 = inImg.getHeight(); y2 >0 ; y2--){
-        			 for(int x2 = inImg.getWidth(); x2 >0 ; x2--)  {
-                       
-                        Color c2 = new Color(inImg.getRGB(x2, y2));
-                        int r2 = c2.getRed();
-                        int g2 = c2.getGreen();
-                        int b2 = c2.getBlue();
-                        
-                        if((r2 == 0) && (g2 == 0) && (b2 == 0)){
-                        	reqX2 = x2;
-                        	reqY2 = y2;
-                            
-                            break;
-                        }else {
-                        	continue;
-                        }
-                       
-                }
-		} */
-       
-	}
+   }
 	/**
 	 * 
-	 * IT WORKS I DON'T KNOW HOW BUT IT DOES
+	 * Scans from bottom to top
 	 * @param inImgPath
-	 * @param h
-	 * @param w
+	 * @param h height
+	 * @param w width
 	 * @return
 	 * @throws IOException
 	 */
@@ -144,9 +107,8 @@ public class ImgResize {
  				
                  Color c = new Color (inImg.getRGB(x,y));
                  int check = c.getRed();
-                // System.out.println(x);
-               //  System.out.println(y);
-                 if(check ==0){
+             
+                 if(check ==0){   // checks for the brightness of the red color, if it's 0 then it's a black pixel
                  	reqX = x;
                  	reqY = y;
                      
@@ -159,6 +121,16 @@ public class ImgResize {
  		
  		return coor;
    }
+   
+   /**
+	 * 
+	 * Scans from top to bottom
+	 * @param inImgPath
+	 * @param h height
+	 * @param w width
+	 * @return
+	 * @throws IOException
+	 */
    
    public static  int[] imgScanTopToBot(String inImgPath, int h, int w) throws IOException {
 		
@@ -175,9 +147,8 @@ public class ImgResize {
  				
                  Color c = new Color (inImg.getRGB(x,y));
                  int check = c.getRed();
-                // System.out.println(x);
-               //  System.out.println(y);
-                 if(check ==0){
+             
+                 if(check ==0){      // checks for the brightness of the red color, if it's 0 then it's a black pixel
                  	reqX = x;
                  	reqY = y;
                      
@@ -212,12 +183,10 @@ public class ImgResize {
 		
 		for(int width = w; width> 0; width =width -1){
 			for(int height= h; height > 0; height= height -1)  {
-           //    System.out.println(height);
-           //    System.out.println(width);
             	Color c = new Color (inImg.getRGB(width,height));
-                int check = c.getBlue();
+                int check = c.getRed();
                 
-                if(check <100){
+                if(check <100){     // checks for the brightness of the red color, if it's 0 then it's a black pixel
                 	reqX = width;
                 	reqY = height;
                     
@@ -234,7 +203,7 @@ public class ImgResize {
 		
 	}
 	/**
-	 * Don't even question this
+	 * The following methods get x and y coordinates from the scanners
 	 * @param inImgPath
 	 * @return
 	 * @throws IOException
@@ -256,7 +225,7 @@ public class ImgResize {
 		
 		
 	}
-	//don't question
+	
 public static int getreqY1(String inImgPath) throws IOException {
 		
 		File inFile = new File(inImgPath);
@@ -272,7 +241,7 @@ public static int getreqY1(String inImgPath) throws IOException {
 		
 		
 	}
-//don't question
+
 public static int getreqX2(String inImgPath) throws IOException {
 	
 	File inFile = new File(inImgPath);
@@ -288,7 +257,7 @@ public static int getreqX2(String inImgPath) throws IOException {
 	
 }
 
-// I said don't question this will all be gone by the time this is all fully functional
+
 public static int getreqY2(String inImgPath) throws IOException {
 	
 	File inFile = new File(inImgPath);
@@ -360,7 +329,16 @@ public static int getreqY4(String inImgPath) throws IOException {
 	
 }
 
-	//hahahahahahaha *cries*
+/**
+ * 
+ * @param inImgPath the original image path
+ * @param outImgPath path of cropped image
+ * @param x1 beginning of x coordinate of the crop
+ * @param y1 beginning of y coordinate of the crop
+ * @param x2 width of crop
+ * @param y2 height of crop
+ * @throws IOException
+ */
 	public static void cropImg(String inImgPath, String outImgPath, int x1, int y1, int x2, int y2 ) throws IOException {
 		File inFile = new File(inImgPath);
 		BufferedImage inImg = ImageIO.read(inFile);
@@ -377,13 +355,7 @@ public static int getreqY4(String inImgPath) throws IOException {
 		
 	}
 		
-       
-        
-        
-		
-		
-		
-	
+    
 	
 	
 	
@@ -399,10 +371,10 @@ public static int getreqY4(String inImgPath) throws IOException {
  * @param reqHeight this should the height required for the data
  * @throws IOException
  * 
- * This method takes in an image file which contains the already cropped (hopefully that works) image and will resize it into a size that
+ * This method takes in an image file which contains the already cropped  image and will resize it into a size that
  * the neural net will be able  to process.
  * 
- * Also YAY it works.
+ *
  */
 	
 	public static void resize(String inImgPath, String outImgPath, int reqWidth, int reqHeight) throws IOException {
