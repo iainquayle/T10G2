@@ -22,7 +22,7 @@ public class Brackets extends Equation {
 		return Brackets.formulaSplitInBrackets;
 	}
 	
-public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplitInBrack) {
+public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplitInBrack) throws Exception{
 		
 		int count = 0 ;
 		int indexOfOpen= 0;
@@ -108,6 +108,8 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 		if (!formulaSplitInBrack.contains("(")) {
 			Run.run(formulaSplitInBrack.toString(), formulaSplitInBrack);
 		}
+		
+		
 		
 
 		return formulaSplitInBrack;

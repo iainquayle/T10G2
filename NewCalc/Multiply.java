@@ -2,10 +2,7 @@ import java.util.ArrayList;
 
 public class Multiply extends Operators{
 
-	public Multiply(String testCase) {
-		super(testCase);
-		// TODO Auto-generated constructor stub
-	}
+
 
 	public ArrayList<String> operation(ArrayList<String> m) {
 

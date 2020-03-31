@@ -1,13 +1,10 @@
-import java.util.Scanner;
+
 
 public class Main {
 	
 	
-	public String run(String testCase) {
-		@SuppressWarnings("resource")
-//		Scanner inputFromUser = new Scanner(System.in);
-//		System.out.print("Enter a string with spaces in between operators: ");
-//		String testCase = inputFromUser.nextLine();
+	public String run(String testCase) throws Exception {
+		try {
 		Equation A = new Equation(testCase);
 		Brackets conv = new Brackets(testCase);
 		
@@ -26,6 +23,11 @@ public class Main {
 		
 		
 	}
-		return "Inval";
+		}
+		catch(Exception e) {
+			return "Inval";
+		}
+		return null;
+		
 	}
 }

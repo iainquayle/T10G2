@@ -1,44 +1,28 @@
 import java.util.ArrayList;
 
-public class Run extends Operators {
+public class Run {
 	
-	static double finalAnswer = 0;
 
-	public Run(String testCase) {
-		super(testCase);
-		// TODO Auto-generated constructor stub
-	}
-
-
-	@Override
-	public ArrayList<String> operation(ArrayList<String> m) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
  
-	public static String run(String test1, ArrayList<String> l ) {
+	public static String run(String test1, ArrayList<String> l ) throws Exception {
 		
 		try {
 		double finalAnswer = 0.0;
 		
-		Operators firstOperator = new Power(test1);
-		firstOperator.calculate();
+		Operators firstOperator = new Power();
+		firstOperator.operation(l);
 		
+		Operators secondOperator = new Divide();
+		secondOperator.operation(l);
 		
-		Operators secondOperator = new Divide(test1);
-		secondOperator.calculate();
+		Operators thirdOperator = new Multiply();
+		thirdOperator.operation(l);
 		
-		Operators thirdOperator = new Multiply(test1);
-		thirdOperator.calculate();
-		
-		Operators fourthOperator = new Plus(test1);
-		fourthOperator.calculate();
+		Operators fourthOperator = new Plus();
+		fourthOperator.operation(l);
 
-		
-		
-		Operators fifthOperator = new Minus(test1);
-		fifthOperator.calculate();
+		Operators fifthOperator = new Minus();
+		fifthOperator.operation(l);
 		
 		if(firstOperator.operation(l).size() == 1){
 			for(String b : firstOperator.operation(l)) {
@@ -88,7 +72,7 @@ public class Run extends Operators {
 		}
 		}
 		catch(Exception e) {
-			return "Invalid";
+			return "Invalid_Run";
 		}
 					
 		

@@ -2,10 +2,6 @@ import java.util.ArrayList;
 
 public class Plus extends Operators {
 
-	public Plus(String testCase) {
-		super(testCase);
-		// TODO Auto-generated constructor stub
-	}
 
 	public ArrayList<String> operation(ArrayList<String> m ) {
 

@@ -2,11 +2,6 @@ import java.util.ArrayList;
 
 public class Divide extends Operators{
 
-	public Divide(String testCase) {
-		super(testCase);
-		// TODO Auto-generated constructor stub
-	}
-
 	public ArrayList<String> operation(ArrayList<String> m) {
 
 		while(m.contains("/")) {

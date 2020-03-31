@@ -2,10 +2,6 @@ import java.util.ArrayList;
 
 public class Power extends Operators{
 
-	public Power(String testCase) {
-		super(testCase);
-		// TODO Auto-generated constructor stub
-	}
 
 	
 	public ArrayList<String> operation(ArrayList<String> m) {
