@@ -25,10 +25,25 @@ public class MaxPool extends Layer
 	private int jumpValsVisXY = 0; //moves down all rows on one img
 	private int jumpValsVisBack = 0; //moves back to start of ker + stride
 	private int jumpValsVisStride = 0; //moves vertical stride length
-	
+	/**
+	 * empty contructor
+	 */
 	public MaxPool()
 	{
 	}
+	
+	/**
+	 * 
+	 * This method initializes the maxpool layer and the kernel
+	 * 
+	 * @param l - layer array
+	 * @param loc - not used here - location path
+	 * @param in - Data input object used for the data
+	 * @param io - not used here
+	 * @param num - layer reference
+	 * @throws IOException
+	 */
+	
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num; //(layer reference, width, height, depth, vis wid, vis hei, vis dep, kernel width/height, stride)
@@ -63,10 +78,20 @@ public class MaxPool extends Layer
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
 	}
+	
+	/**
+	 * virtual method
+	 * @param loc - location save path
+	 * @throws IOException
+	 */
 	public void save(String loc) throws IOException
 	{
 	}
-	
+	/**
+	 * This method evaluates the image and calclulates the maximum value in each area of the image in order to get
+	 * the most present features of the image
+	 * @param threadNum
+	 */
 	public void eval(int threadNum)
 	{
 		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsZ + (float)0.5) * lenValsXY;
@@ -103,9 +128,20 @@ public class MaxPool extends Layer
 			valsVisPos += jumpValsVisStride;
 		}
 	}
+	
+	/**
+	 * virtual method
+	 * @param threadNum
+	 */
 	public void error(int threadNum)
 	{
 	}
+	
+	/**
+	 * trains the network and backpropgated for error
+	 * @param threadNum
+	 */
+	
 	public void train(int threadNum)
 	{
 		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsZ + (float)0.5) * lenValsXY; //these can be changed to a more accurate split later
@@ -126,86 +162,171 @@ public class MaxPool extends Layer
 			valsVisPos++;
 		}
 	}
-	
+	/**
+	 * gets the layer type for the net architecture
+	 * @return 7 which should not be changed because that's the reference number for the maxpool layer
+	 */
 	public int getLayerType()
 	{
 		return 7;
 	}
+	/**
+	 * converts the important numbers to a string
+	 * @return
+	 */
 	public String toString()
 	{
 		return layerNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + begValsVis + ", " + endValsVis + ", " +
 				lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + 
 				lenKerX + "\n";
 	}
-
+	/**
+	 * gets the stride
+	 * @return the stride
+	 */
 	public int getStride() 
 	{
 		return stride;
 	}
+	/**
+	 * sets the stride
+	 * @param stride
+	 */
 	public void setStride(int stride) 
 	{
 		this.stride = stride;
 	}
+	/**
+	 * gets the x and y dimensions of the kernel
+	 * @return x and y diemsions of the kernel
+	 */
 	public int getlenKerX() 
 	{
 		return lenKerX;
 	}
+	/**
+	 * sets the x and y dimension of the kernel
+	 * @param lenKerX
+	 */
 	public void setlenKerX(int lenKerX) 
 	{
 		this.lenKerX = lenKerX;
 	}
+	/**
+	 * gets width of the vals
+	 * @return
+	 */
+	
 	public int getLenValsX() 
 	{
 		return lenValsX;
 	}
+	
+	/**
+	 * sets width of the vals
+	 * @param lenValsX
+	 */
 	public void setLenValsX(int lenValsX) 
 	{
 		this.lenValsX = lenValsX;
 	}
+	/**
+	 * gets height of the vals
+	 * @return
+	 */
+	
 	public int getLenValsY() 
 	{
 		return lenValsY;
 	}
+	/**
+	 * sets height of the vals
+	 * @param lenValsY
+	 */
+	
 	public void setLenValsY(int lenValsY) 
 	{
 		this.lenValsY = lenValsY;
 	}
+	/**
+	 *  gets depth of vals
+	 * @return
+	 */
 	public int getLenValsZ() 
 	{
 		return lenValsZ;
 	}
+	/**
+	 * sets depth of vals
+	 * @param lenValsZ
+	 */
 	public void setLenValsZ(int lenValsZ) 
 	{
 		this.lenValsZ = lenValsZ;
 	}
+	
+	/**
+	 * gets x length of visible layer
+	 * @return
+	 */
 	public int getLenValsVisX() 
 	{
 		return lenValsVisX;
 	}
+	/**
+	 * sets x length of visible layer
+	 * @param lenValsVisX
+	 */
 	public void setLenValsVisX(int lenValsVisX) 
 	{
 		this.lenValsVisX = lenValsVisX;
 	}
+	/**
+	 * gets y length of visible layer
+	 * @return
+	 */
+	
 	public int getLenValsVisY() 
 	{
 		return lenValsVisY;
 	}
+	/**
+	 * sets y length of visible layer
+	 * @param lenValsVisY
+	 */
 	public void setLenValsVisY(int lenValsVisY) 
 	{
 		this.lenValsVisY = lenValsVisY;
 	}
+	
+	/**
+	 * gets z length of visible layer 
+	 * @return
+	 */
 	public int getLenValsVisZ() 
 	{
 		return lenValsVisZ;
 	}
+	/**
+	 * sets z length of visible layer
+	 * @param lenValsVisZ
+	 */
 	public void setLenValsVisZ(int lenValsVisZ) 
 	{
 		this.lenValsVisZ = lenValsVisZ;
 	}
+	/**
+	 * gets image length in visible layer
+	 * @return
+	 */
 	public int getLenValsVisXY() 
 	{
 		return lenValsVisXY;
 	}
+	/**
+	 * sets image length in visible layer
+	 * @param lenValsVisXY
+	 */
 	public void setLenValsVisXY(int lenValsVisXY) 
 	{
 		this.lenValsVisXY = lenValsVisXY;
