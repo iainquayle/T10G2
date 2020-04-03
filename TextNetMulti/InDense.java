@@ -12,6 +12,16 @@ public class InDense extends Layer
 	public InDense()
 	{
 	}
+	
+	/**
+	 * initializes the inDense layer
+	 * @param l - layer array
+	 * @param loc - location of data
+	 * @param in - input data object
+	 * @param io - float array of imaga data inputs and labels
+	 * @param num - layer reference number
+	 * @throws IOException
+	 */
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;
@@ -26,7 +36,11 @@ public class InDense extends Layer
 		}
 		data = io[dataNum];
 	}
-	
+	 /**
+	  * evalutated the begginging and ending values for the data
+	  * then goes through the visible layer and provides the dot products of the weight and values
+	  * Then goes through the relu
+	  */
 	public void eval(int threadNum)
 	{
 		begValsVis = rndIndex * lenValsVis;  //sets the beg and end vals for the data
@@ -47,6 +61,12 @@ public class InDense extends Layer
 			valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]);  //sigmoid activation on value achieve
 		}
 	}
+	/**
+	 * This method trains the layer
+	 * Adjusts the weights
+	 * Does not backpropagate for error
+	 * @param threadNum
+	 */
 	public void train(int threadNum)
 	{
 		int begValsVisTemp = begValsVis + (int)(threadSplits * threadNum * lenValsVis);
@@ -65,10 +85,18 @@ public class InDense extends Layer
 		}
 	}
 	
+	/**
+	 * gets the layer type
+	 * @return 3 do not change
+	 */
 	public int getLayerType()
 	{
 		return 3;
 	}
+	/**
+	 * converts the important numbers to string
+	 * @return
+	 */
 	public String toString()
 	{
 		return dataNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";
