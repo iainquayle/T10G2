@@ -34,7 +34,10 @@ public class TextNet
 	
 	private static float[][] ioPuts = null;
 	private static int lenIoPuts = 0;
-	
+	/**
+	 * Main method which runs the whole neural net
+	 * @param args
+	 */
 	public static void main(String[] args) 
 	{
 		try 
@@ -53,7 +56,18 @@ public class TextNet
 
 		command();
 	}
-	
+	/**
+	 * Ininitilizes the neural network
+	 * Loads up the data
+	 * Data is loaded up from a .csv file which contains the pixel values of the images
+	 * Loads up the net architetcure
+	 * The network architecture is loaded up so that the network would know which layers to run and how to run them
+	 * Initializes the individual layers
+	 * Configures the layers and number of threads to be used
+	 * System.gc is used to help with memory management and optimization
+	 * 
+	 * @throws IOException
+	 */
 	private static void init() throws IOException
 	{
 		int temp = 0; //use can be for anything, be careful
@@ -134,7 +148,10 @@ public class TextNet
 			threads[i] = mainNetThread; //the new object is set to main thread so when the last one is created, the zeroth object is referenced
 		}
 	}
-	
+	/**
+	 * 
+	 * This method starts up the threads
+	 */
 	private static void run()
 	{
 		for(int i = 0; i < lenThreads; i++)
@@ -142,6 +159,13 @@ public class TextNet
 			threads[i].start();
 		}
 	}
+	
+	/**
+	 * 
+	 * This method provides user commands to allow the user to interact with the net more easily
+	 * 
+	 */
+	
 	private static void command()
 	{
 		String command = null;
@@ -187,7 +211,10 @@ public class TextNet
 			}
 		}
 	}
-	
+	/**
+	 * prints out the current configuration of the net
+	 * 
+	 */
 	public static void print()
 	{
 		String str = "";

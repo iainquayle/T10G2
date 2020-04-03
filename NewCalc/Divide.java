@@ -2,6 +2,11 @@ import java.util.ArrayList;
 
 public class Divide extends Operators{
 
+	/**
+	 * This method checks if the formula has a division symbol
+	 * It divides what's before and after the division symbol and replaces them with the quotient
+	 * @return the updated arraylist
+	 */
 	public ArrayList<String> operation(ArrayList<String> m) {
 
 		while(m.contains("/")) {

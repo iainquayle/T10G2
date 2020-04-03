@@ -9,6 +9,12 @@ public class Dense extends Layer
 	public Dense()
 	{
 	}
+	
+	/**
+	 * Initializes the dense layer
+	 * 
+	 */
+	
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;          //(vis layer num, len vals, lenvisvals)
@@ -25,7 +31,10 @@ public class Dense extends Layer
 		endVals = begVals + lenVals;
 		endValsVis = begValsVis + lenValsVis;
 	}
-	
+	 /**
+	  * This method goes through the visible layer and provides the dot products of the weight and values
+	  * Then goes through the relu
+	  */
 	public void eval(int threadNum)
 	{
 		int begValsTemp = begVals + (int)(threadSplits * threadNum * lenVals + (float)0.5);
@@ -45,7 +54,12 @@ public class Dense extends Layer
 			valsAch[valsPos] = Functions.leakyRelu(valsAch[valsPos]);  //sigmoid activation on value achieve
 		}
 	}
-	public void train(int threadNum) //back pass and train
+	
+	/**
+	 * This method trains the layer  and backpropagates the error
+	 * Adjusts the weights
+	 */
+	public void train(int threadNum) 
 	{
 		int begValsVisTemp = begValsVis + (int)(threadSplits * threadNum * lenValsVis + (float)0.5);
 		int endValsVisTemp = begValsVis + (int)(threadSplits * (threadNum + 1) * lenValsVis + (float)0.5);
@@ -64,11 +78,19 @@ public class Dense extends Layer
 			weiPos += jumpWei;
 		}
 	}
-	
+	/**
+	 * gets the layer type
+	 * @return 0 should not be changed
+	 */
 	public int getLayerType()
 	{
 		return 0;
 	}
+	
+	/**
+	 * converts all the important values to a string
+	 * @return
+	 */
 	public String toString()
 	{
 		return layerNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + begValsVis + ", " + endValsVis + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";

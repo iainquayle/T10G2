@@ -2,7 +2,13 @@ import java.util.ArrayList;
 
 public class Run {
 	
-
+/**
+ * runs the calculation processes
+ * @param test1 string with equation
+ * @param l list containing the equation
+ * @return the answer to the equation
+ * @throws Exception
+ */
  
 	public static String run(String test1, ArrayList<String> l ) throws Exception {
 		

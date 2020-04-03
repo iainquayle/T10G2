@@ -12,6 +12,17 @@ public class OutDense extends Layer
 	public OutDense()
 	{
 	}
+	
+	/**
+	 * initializes the outDense layer
+	 * @param l - layer array
+	 * @param loc - location of data
+	 * @param in - input data object
+	 * @param io - float array of imaga data inputs and labels
+	 * @param num - layer reference number
+	 * @throws IOException
+	 */
+	
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num;    //(vis layernum, datanum, len vals, lenvisvals)
@@ -30,7 +41,10 @@ public class OutDense extends Layer
 		endValsVis = begValsVis + lenValsVis;
 		data = io[dataNum];
 	}
-	
+	 /**
+	  * This method goes through the visible layer and provides the dot products of the weight and values
+	  * Then goes through the relu
+	  */
 	public void eval(int threadNum)
 	{
 		int begValsTemp = begVals + (int)(threadSplits * threadNum * lenVals);
@@ -49,6 +63,11 @@ public class OutDense extends Layer
 			valsAch[valsPos] = Functions.sigmoidZer(valsAch[valsPos]);  //sigmoid activation on value achieve
 		}
 	}
+	
+	/**
+	 * this method does error calculations
+	 * @param threadNum
+	 */
 	public void error(int threadNum)
 	{
 		if(threadNum == 0)
@@ -84,7 +103,13 @@ public class OutDense extends Layer
 			}
 		}
 	}
-	public void train(int threadNum) //back pass and train
+	
+	/**
+	 * This method trains the layer  and backpropagates the error
+	 * Adjusts the weights
+	 */
+	
+	public void train(int threadNum) 
 	{
 		int begValsVisTemp = begValsVis + (int)(threadSplits * threadNum * lenValsVis);
 		int endValsVisTemp = begValsVis + (int)(threadSplits * (threadNum + 1) * lenValsVis);
@@ -102,11 +127,20 @@ public class OutDense extends Layer
 			weiPos += jumpWei;
 		}
 	}
-	
+	/**
+	 * gets layer type
+	 * @return 6 do not change
+	 */
 	public int getLayerType()
 	{
 		return 6;
 	}
+	
+	/**
+	 * converts the important numbers to string
+	 * @return
+	 */
+	
 	public String toString()
 	{
 		return dataNum + ", " + layerVisNum + ", " + lenVals + ", " + lenValsVis + ", " + lenWeis + "\n";

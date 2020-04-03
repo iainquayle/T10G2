@@ -2,8 +2,11 @@ import java.util.ArrayList;
 
 public class Power extends Operators{
 
-
-	
+	/**
+	 * This method checks if the formula has an exponent symbol
+	 * It exponentiates the number before the symbol to the number after and replaces that with the result.
+	 * @return the updated arraylist
+	 */
 	public ArrayList<String> operation(ArrayList<String> m) {
 
 		while(m.contains("^")) {

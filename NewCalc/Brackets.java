@@ -6,22 +6,35 @@ public class Brackets extends Equation {
 //	protected static ArrayList<String> sibling = new ArrayList<String>();
  	int indexOfOpen= 0;
 	int indexOfClose = 0;
-
+	/**
+	 * constructor
+	 * @param testCase
+	 */
 	public Brackets(String testCase) {
 		super(testCase);
 	}
-	
+	/**
+	 * Sets formulaSplitInBrackets
+	 */
 	public void setFormulaSplitInBrackets() {
 		for(String b : super.getFormulaSplitAll()) {
 			formulaSplitInBrackets.add(b);
 		}
 
 	}
-	
+	/**
+	 * gets formulaSplitInBrackets
+	 * @return 
+	 */
 	public ArrayList<String> getFormulaSplitInBrackets() { 
 		return Brackets.formulaSplitInBrackets;
 	}
-	
+	/**
+	 * 
+	 * @param formulaSplitInBrack
+	 * @return
+	 * @throws Exception
+	 */
 public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplitInBrack) throws Exception{
 		
 		int count = 0 ;
