@@ -2,7 +2,7 @@
 CalcNet
 Currently CalcNet is composed of TextNet and CalculatorGUI which are going to be connected to each other and the work-in-progress image processing.
 
-The following are insturctions on how to run the calculator and how train the neural network:
+The following are insturctions on how to run the calculator and how train the neural network and run the image processing:
 
 
 How to run the calculator using an IDE:
