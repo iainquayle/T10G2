@@ -2,7 +2,11 @@ import java.util.ArrayList;
 
 public class Plus extends Operators {
 
-
+	/**
+	 * This method checks if the formula has a plus symbol
+	 * It sums what's before and after the plus symbol and replaces them with the sum
+	 * @return the updated arraylist
+	 */
 	public ArrayList<String> operation(ArrayList<String> m ) {
 
 		while(m.contains("+")) {
