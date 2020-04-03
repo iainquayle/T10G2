@@ -6,21 +6,38 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
+/**
+ * 
+ * @author Osama Bamatraf
+ * @documenter Osama Bamatraf
+ * @reviewer Iain Quayle
+ *
+ */
 public class InputData
 {
-	/**
-	 * @param file is a string indicating the file path for FileReader
-	 * @return a single float array containing all the data for the images
-	 * @throws IOException 
-	 */
+
 	InputStream file = null;
 	BufferedInputStream reader = null;
+
+	/**
+	 * initializes the file and the reader
+	 * 
+	 * @param loc - location of data file
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public InputData(String loc) throws IOException, FileNotFoundException
 	{
 		file = new FileInputStream(loc);
 		reader = new BufferedInputStream(file);
 	}
+	
+	/**
+	 * reads the data file looking for the next float number
+	 * @return the float value it encounters
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public float nextFloat() throws IOException, FileNotFoundException
 	{
 		String hold = "";
@@ -82,6 +99,13 @@ public class InputData
 		}
 		return Float.parseFloat(hold);
 	}
+	
+	/**
+	 * reads the data file looking for the next int number
+	 * @return the int value it encounters
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public int nextInt() throws IOException, FileNotFoundException
 	{
 		String hold = "";
@@ -121,6 +145,12 @@ public class InputData
 		}
 		return Integer.parseInt(hold);
 	}
+	/**
+	 * check whether the file has the next number or not
+	 * @return true or false depending on whether there is a num or not
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public boolean hasNextNum() throws IOException, FileNotFoundException
 	{
 		reader.mark(10000);
@@ -137,6 +167,13 @@ public class InputData
 		reader.reset();
 		return false;
 	}
+	
+	/**
+	 * converts data to an int array
+	 * @return int array of data
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public int[] toIntArray() throws IOException, FileNotFoundException
 	{
 		ArrayList<Integer> list = new ArrayList<Integer>();
@@ -151,6 +188,13 @@ public class InputData
 		}
 		return arr;
 	}
+	
+	/**
+	 * converts data to a float array
+	 * @return float array
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public float[] toFloatArray() throws IOException, FileNotFoundException
 	{
 		ArrayList<Float> list = new ArrayList<Float>();
@@ -165,6 +209,14 @@ public class InputData
 		}
 		return arr;
 	}
+	
+	/**
+	 * converts a 1 dimensional float array into a 2 dimensional float array
+	 * @param splits 
+	 * @return 2 dimensional float array
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public float[][] toFloatArray2D(int[] splits) throws IOException, FileNotFoundException
 	{
 		int total = 0;
@@ -193,6 +245,12 @@ public class InputData
 		}
 		return arr;
 	}
+	
+	/**
+	 * normalizes the array
+	 * @param arr array to be normalized
+	 * @return the normalized float array
+	 */
 	public float[] normalizeFloatArray(float[] arr)
 	{
 		float larVal = 0;
@@ -210,6 +268,12 @@ public class InputData
 		}
 		return arr;
 	}
+	/**
+	 * 
+	 * @param loc
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public void setFile(String loc) throws IOException, FileNotFoundException
 	{
 		reader.close();
@@ -217,11 +281,22 @@ public class InputData
 		file = new FileInputStream(loc);
 		reader = new BufferedInputStream(file);
 	}
+	
+	/**
+	 * closes the reader and file
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
 	public void close() throws IOException, FileNotFoundException
 	{
 		reader.close();
 		file.close();
 	}
+	/**
+	 * prints the values of the array
+	 * mostly for debugging purposes
+	 * @param arr array to be printed
+	 */
 	public void printArr(float[] arr)
 	{
 		for(int i = 0; i < arr.length; i++)
