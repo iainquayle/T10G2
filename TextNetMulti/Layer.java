@@ -48,13 +48,31 @@ public abstract class Layer
 	
 	protected static float threadSplits = 1; //value for fraction of layer a thread has command of
 	protected static int lenThreads = 1; //number of threads working on layers
-	
+	/**
+	 * empty constructor
+	 */
 	public Layer()
 	{
 	}
+	/**
+	 * virtual initilization method to be used by the other layers
+	 * @param l
+	 * @param loc
+	 * @param in
+	 * @param io
+	 * @param num
+	 * @throws IOException
+	 */
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 	}
+	
+	/**
+	 * Saves the weights of individual layer
+	 * @param loc  String location of weights
+	 * @throws IOException
+	 */
+	
 	public void save(String loc) throws IOException
 	{
 		if(weights != null)
@@ -69,6 +87,13 @@ public abstract class Layer
 			file.close();
 		}
 	}
+	
+	/**
+	 * This methods check if there is an existing weight file to use
+	 * If there isn't it'll generate a new weight
+	 * @param loc String location of the weights
+	 * @throws IOException
+	 */
 	public void loadWeights(String loc) throws IOException
 	{
 		File file = new File(loc + "Weights" + layerNum + ".csv");
@@ -88,15 +113,27 @@ public abstract class Layer
 			}
 		}
 	}
-	
-	public void eval(int threadNum) //virtual method
+	/**
+	 * virtual method
+	 * @param threadNum
+	 */
+	public void eval(int threadNum) 
 	{
 	}
-	public void norm(int threadNum) //can be over ridden
+	
+	/**
+	 * method can be over ridden
+	 */
+	public void norm(int threadNum) 
 	{
 		
 	}
-	public void error(int threadNum) //can be over ridden
+	/**
+	 *error calcultion
+	 * method can be over ridden
+	 * @param threadNum
+	 */
+	public void error(int threadNum) 
 	{
 		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenVals);
 		
@@ -106,11 +143,18 @@ public abstract class Layer
 			valsErr[valsPos] = Functions.stepZer(valsErr[valsPos]) - valsAch[valsPos]; //step applied to Err vals
 		}
 	}
-	public void train(int threadNum) //virtual method
+	
+	/**
+	 * virtual method
+	 * @param threadNum
+	 */
+	public void train(int threadNum) 
 	{
 	}
-	
-	public void printLargest() //for the purpose of debugging stability of net
+	/**
+	 * method for the purpose of debugging stability of net
+	 */
+	public void printLargest() 
 	{
 		int larPos = 0;
 		for(int i = 0; i < lenVals; i++)
@@ -123,6 +167,12 @@ public abstract class Layer
 		System.out.println("(" + valsAch[larPos] + ", " + valsErr[larPos] + ")   ");
 	}
 	
+	/**
+	 * Sets the static vars
+	 * @param a
+	 * @param r
+	 * @param n
+	 */
 	public void setStatics(float[] a, float[] r, int n)
 	{
 		valsAch = a;
@@ -130,39 +180,81 @@ public abstract class Layer
 		lenThreads = n;
 		threadSplits = (float)1 / n;
 	}
+	
+	/**
+	 * sets weights refrence
+	 * @param w
+	 */
 	public void setWeightsRef(float[] w)
 	{
 		weights = w;
 	}
+	
+	/**
+	 * sets the random index
+	 * @param i
+	 */
 	public void setRndIndex(int i)
 	{
 		rndIndex = i;
 	}
+	/**
+	 * sets the learn rate
+	 * @param n
+	 */
 	public void setLearnRate(float n)
 	{
 		learnRate = n;
 	}
+	
+	/**
+	 * gets the layer type
+	 * @return -1 should not be changed
+	 */
 	public int getLayerType()
 	{
 		return -1;
 	}
+	
+	/**
+	 * gets total length of values ach/err
+	 * @return
+	 */
 	public int getLenVals()
 	{
 		return lenVals;
 	}
+	/**
+	 * gets beginning index of vals
+	 * @return
+	 */
 	public int getBegVals()
 	{
 		return begVals;
 	}
+	
+	/**
+	 * gets learn rate
+	 * @return
+	 */
 	public float getLearnRate()
 	{
 		return learnRate;
 	}
-	
+	/**
+	 * to string method virtual method
+	 */
 	public String toString()
 	{
 		return null;
 	}
+	
+	/**
+	 * 	
+	 * prints a weighted average of the net error and accuracy calculated by output layers
+	 * @return error and accuracy rates of the net
+	 */
+	
 	public String errString()
 	{
 		return "Error: " + netErr + "   Accuracy:" + netAcc; 
