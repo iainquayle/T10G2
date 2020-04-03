@@ -33,6 +33,16 @@ public class Conv2D extends Layer
 	public Conv2D()
 	{
 	}
+	
+	/**
+	 * initialization method
+	 * @param l
+	 * @param loc - location of data
+	 * @param in - input data parser object
+	 * @param io
+	 * @param num
+	 * @throws IOException
+	 */
 	public void init(Layer[] l, String loc, InputData in, float[][] io, int num) throws IOException
 	{
 		layerNum = num; //(layer reference, width, height, depth, vis wid, vis hei, vis dep, kernel width/height, stride)
@@ -74,7 +84,10 @@ public class Conv2D extends Layer
 			aveWei = new float[lenKer];
 		}
 	}
-	
+	/**
+	 * This method is used to evalaute the weights of the different features of the images
+	 * @param threadNum
+	 */
 	public void eval(int threadNum)
 	{
 		int endValsTemp = begVals + (int)(threadSplits * (threadNum + 1) * lenValsZ + (float)0.5) * lenValsXY;
@@ -120,6 +133,11 @@ public class Conv2D extends Layer
 			weiPos += lenKer; //moving to new kernel
 		}
 	}
+	
+	/**
+	 * Trains on each image
+	 * @param threadNum
+	 */
 	public void train(int threadNum)
 	{
 		int begValsVisTemp = (int)(threadSplits * threadNum * lenValsVisZ + (float)0.5);
@@ -180,92 +198,183 @@ public class Conv2D extends Layer
 			valsVisPos = begValsVisTemp;
 		}
 	}
-	
+	/**
+	 * gets layer type
+	 * @return 1 should not be changed
+	 */
 	public int getLayerType()
 	{
 		return 1;
 	}
+	
+	/**
+	 * converts all the important values to a string
+	 * @return
+	 */
 	public String toString()
 	{
 		return layerNum + ", " + layerVisNum + ", " + begVals + ", " + endVals + ", " + begValsVis + ", " + endValsVis + ", " + lenValsX + ", " + lenValsY + ", " + lenValsZ + ", " + lenValsVisX + ", " + lenValsVisY + ", " + lenValsVisZ + ", " + lenKerX + ", " + lenWeis + "\n";
 	}
-
+	/**
+	 * gets the stride
+	 * @return the stride
+	 */
 	public int getStride() 
 	{
 		return stride;
 	}
+	/**
+	 * sets the stride
+	 * @param stride
+	 */
+	
 	public void setStride(int stride) 
 	{
 		this.stride = stride;
 	}
+	/**
+	 * gets kernel length
+	 * @return
+	 */
 	public int getLenKer() 
 	{
 		return lenKer;
 	}
+	/**
+	 * sets kernel length
+	 * @param lenKer
+	 */
 	public void setLenKer(int lenKer) 
 	{
 		this.lenKer = lenKer;
 	}
+	/**
+	 * gets kernel dimensions
+	 * @return
+	 */
 	public int getlenKerX() 
 	{
 		return lenKerX;
 	}
+	/**
+	 * sets kernel dimensions
+	 * @param lenKerX
+	 */
 	public void setlenKerX(int lenKerX) 
 	{
 		this.lenKerX = lenKerX;
 	}
+	/**
+	 * gets width of vals
+	 * @return
+	 */
 	public int getLenValsX() 
 	{
 		return lenValsX;
 	}
+	
+	/**
+	 * sets width of vals
+	 * @param lenValsX
+	 */
 	public void setLenValsX(int lenValsX) 
 	{
 		this.lenValsX = lenValsX;
 	}
+	/**
+	 * gets height of vals
+	 * @return
+	 */
 	public int getLenValsY() 
 	{
 		return lenValsY;
 	}
+	/**
+	 * sets height of vals
+	 * @param lenValsY
+	 */
 	public void setLenValsY(int lenValsY) 
 	{
 		this.lenValsY = lenValsY;
 	}
+	
+	/**
+	 * gets depth of vals
+	 * @return
+	 */
 	public int getLenValsZ() 
 	{
 		return lenValsZ;
 	}
+	/**
+	 * sets depth of vals
+	 * @param lenValsZ
+	 */
 	public void setLenValsZ(int lenValsZ) 
 	{
 		this.lenValsZ = lenValsZ;
 	}
+	/**
+	 * gets x length of visible layer
+	 * @param lenValsVisX
+	 */
 	public int getLenValsVisX() 
 	{
 		return lenValsVisX;
 	}
+	/**
+	 * sets x length of visible layer
+	 * @return
+	 */
 	public void setLenValsVisX(int lenValsVisX) 
 	{
 		this.lenValsVisX = lenValsVisX;
 	}
+	/**
+	 * gets y length of visible layer
+	 * @return
+	 */
 	public int getLenValsVisY() 
 	{
 		return lenValsVisY;
 	}
+	/**
+	 * sets y of visible layer
+	 * @param lenValsVisY
+	 */
 	public void setLenValsVisY(int lenValsVisY) 
 	{
 		this.lenValsVisY = lenValsVisY;
 	}
+	/**
+	 * gets z length of visible layer
+	 * @return
+	 */
 	public int getLenValsVisZ() 
 	{
 		return lenValsVisZ;
 	}
+	/**
+	 * sets z length of visible layer
+	 * @param lenValsVisZ
+	 */
 	public void setLenValsVisZ(int lenValsVisZ) 
 	{
 		this.lenValsVisZ = lenValsVisZ;
 	}
+	
+	/**
+	 * gets img length in visible layer
+	 * @return
+	 */
 	public int getLenValsVisXY() 
 	{
 		return lenValsVisXY;
 	}
+	/**
+	 * sets img length in visible layer
+	 * @param lenValsVisXY
+	 */
 	public void setLenValsVisXY(int lenValsVisXY) 
 	{
 		this.lenValsVisXY = lenValsVisXY;
