@@ -1,4 +1,4 @@
-package ImgProcessing;
+package ImgProcess;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
