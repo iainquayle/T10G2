@@ -37,8 +37,8 @@ public class Conv2D extends Layer
 	/**
 	 * initialization method
 	 * @param l
-	 * @param loc
-	 * @param in
+	 * @param loc - location of data
+	 * @param in - input data parser object
 	 * @param io
 	 * @param num
 	 * @throws IOException
