@@ -29,7 +29,17 @@ public class NetThread extends Thread
 	
 	private static long interTime = 0;
 	private static long preTime = 0;
-	
+	/**
+	 * Construction for initializing instance variables
+	 * @param locIn - inputted save path location
+	 * @param net - net name
+	 * @param n - number of threads
+	 * @param l - layers array
+	 * @param c - consesnus array
+	 * @param lenl - length of layer
+	 * @param lent - length of threads
+	 * @param lenio -length of io
+	 */
 	public NetThread(String locIn, String net, int n, Layer[] l, int[] c, int lenl, int lent, int lenio)
 	{
 		loc = locIn;
@@ -43,6 +53,15 @@ public class NetThread extends Thread
 	}
 	
 	@Override
+	
+	/**
+	 * This method is used to run the neural network's layers and puts it in its training mode
+	 * It causes each layer to evaluate the images
+	 * Backpropagates for error in each layer and adjusts the weights (importance of different feautures within the image)
+	 * Multiple threads are used to make the process faster and more effecient
+	 * The original thread is used to take in user commands
+	 * 
+	 */
 	public void run() 
 	{
 		while(run)
@@ -96,7 +115,11 @@ public class NetThread extends Thread
 			}
 		}
 	}
-	
+	/**
+	 * The consensus method is used to ensure that each thread knows what the other threads have finished a section
+	 * This is done to ensure that each thread is working on something
+	 * 
+	 */
 	private void cons()
 	{
 		int i = 0;
@@ -110,7 +133,9 @@ public class NetThread extends Thread
 			}
 		}
 	}
-	
+	/**
+	 * Saves layers current weights
+	 */
 	private void save()
 	{
 		for(int i = threadNum; i < lenLayers; i += lenThreads)
@@ -126,28 +151,48 @@ public class NetThread extends Thread
 			System.out.println("Layer " + i + " saved");
 		}
 	}
-	
+	/**
+	 * sets the exit state
+	 */
 	public void setExit()
 	{
 		exit = true;
 	}
+	/**
+	 * sets the save state
+	 */
 	public void setSave()
 	{
 		save = true;
 	}
+	/**
+	 * gets the epoch number
+	 * @return epoch number
+	 */
+	
 	public int getEpoch()
 	{
 		return epoch;
 	}
+	/**
+	 * gets the current index that a thread points to in the consensus index
+	 * @return the current index at that point
+	 */
 	public int getConsIndex()
 	{
 		return consIndex[threadNum];
 	}
+	/**
+	 *  gets the time
+	 * @return the time
+	 */
 	public long getInterTime()
 	{
 		return interTime;
 	}
-	
+	/**
+	 * virtual method
+	 */
 	public void debug()
 	{
 		
