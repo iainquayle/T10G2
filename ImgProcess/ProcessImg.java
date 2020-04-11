@@ -1,4 +1,6 @@
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,12 +25,20 @@ public class ProcessImg {
 	public static void main(String[] args) throws IOException{
 		 
         ProcessImg p = new ProcessImg();
+        
+        
   	      p.run();
+  	      
+  	   
+  	    
+  	      
+  	      
         
     }
 	public void run() throws IOException {
     	ImgScanner scan = new ImgScanner();
-		ImgOperations operate = new ImgOperations();
+    	ImgOperations operate = new ImgOperations();
+		
 		reqX1 = scan.getreqX1(inImgPath);
     	reqX2 = scan.getreqX2(inImgPath);
     	reqX3 = scan.getreqX3(inImgPath);
@@ -49,15 +59,15 @@ public class ProcessImg {
 		} else if (width < 50) {
 			width = height;
 		}
-    	
-		File inFile = new File(inImgPath);
-		BufferedImage inImg = ImageIO.read(inFile);
-		//System.out.println(inImg.getHeight());
+		
+		
         
 		operate.cropImg(inImgPath,outImgPath1, reqX2,reqY3, width, height);
         operate.resize(outImgPath1, outImgPath2, reqWidth, reqHeight);
+ 
     	
     }
+
 
 	
 }
