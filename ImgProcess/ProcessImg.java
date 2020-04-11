@@ -1,6 +1,4 @@
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -20,25 +18,17 @@ public class ProcessImg {
     private int reqY2;
     private int reqY3;
     private int reqY4;
-	
-	
+
+
 	public static void main(String[] args) throws IOException{
-		 
+
         ProcessImg p = new ProcessImg();
-        
-        
   	      p.run();
-  	      
-  	   
-  	    
-  	      
-  	      
-        
+
     }
 	public void run() throws IOException {
     	ImgScanner scan = new ImgScanner();
-    	ImgOperations operate = new ImgOperations();
-		
+		ImgOperations operate = new ImgOperations();
 		reqX1 = scan.getreqX1(inImgPath);
     	reqX2 = scan.getreqX2(inImgPath);
     	reqX3 = scan.getreqX3(inImgPath);
@@ -47,7 +37,7 @@ public class ProcessImg {
     	reqY2 = scan.getreqY2(inImgPath);
     	reqY3 = scan.getreqY3(inImgPath);
     	reqY4 = scan.getreqY4(inImgPath);
-		
+
     	int width = reqX1-reqX2;
     	int height = reqY4-reqY3;
     	if (width< 50 && height < 50) {
@@ -55,19 +45,18 @@ public class ProcessImg {
     		height = 50;
     	} else if (height < 50) {
     		height = width;
-			
+
 		} else if (width < 50) {
 			width = height;
 		}
-		
-		
-        
+
+	
+		//System.out.println(inImg.getHeight());
+
 		operate.cropImg(inImgPath,outImgPath1, reqX2,reqY3, width, height);
         operate.resize(outImgPath1, outImgPath2, reqWidth, reqHeight);
- 
-    	
+
     }
 
 
-	
 }
