@@ -36,7 +36,7 @@ public class Brackets extends Equation {
 	 * @throws Exception
 	 */
 public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplitInBrack) throws Exception{
-		
+		try {
 		int count = 0 ;
 		int indexOfOpen= 0;
 		int indexOfClose = 0;
@@ -57,13 +57,20 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 
 
 						ArrayList<String> sibling = new ArrayList<String>(formulaSplitInBrack.subList(indexOfOpen + 1 , indexOfClose));
+						if(sibling.size() == 0 ) {
+							throw new Exception();
+						}
 						
 						if(sibling.contains("(")) {
 							converStrToListWithBrack(sibling);	
 						}
 						
 						
-							Run.run(sibling.toString(), sibling);
+							try {
+								Run.run(sibling);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 							int indClose = indexOfClose;
 							int indOpen = indexOfOpen;
 							
@@ -84,10 +91,18 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 									double numInBrack = Double.parseDouble(formulaSplitInBrack.get(indOpen - 1));
 									double numOutBrack = Double.parseDouble(formulaSplitInBrack.get(indOpen + 1));
 									numOutBrack = numInBrack * numOutBrack;
-									String changes = Double.toString(numOutBrack);
+									if(numOutBrack % 1 == 0) {
+										int numOut = (int) numOutBrack;
+										String changes = Integer.toString(numOut);
+										formulaSplitInBrack.subList(indOpen - 1, indOpen + 3).clear();
+										formulaSplitInBrack.add(indexOfOpen - 1, changes);
+									}
+									else {
+									String changes = String.format("%.3f", numOutBrack);
+								
 									formulaSplitInBrack.subList(indOpen - 1, indOpen + 3).clear();
 									formulaSplitInBrack.add(indexOfOpen - 1, changes);
-								
+									}
 									
 								}
 								else {
@@ -105,28 +120,37 @@ public ArrayList<String> converStrToListWithBrack(ArrayList<String> formulaSplit
 							}
 							
 							if(formulaSplitInBrack.contains("(")) {
-								 converStrToListWithBrack(formulaSplitInBrack);
+								try {
+									 converStrToListWithBrack(formulaSplitInBrack);
+								}
+								catch (Exception e) {
+									throw new Exception();
+								}
+								
 							}
 
 						}
-	
+					
 				}
-				}
-			
-	
-
 				}
 		
-
+			if (count > 0 || count < 0) {
+				
+				throw new Exception();
+				
+			}
+		
 		if (!formulaSplitInBrack.contains("(")) {
-			Run.run(formulaSplitInBrack.toString(), formulaSplitInBrack);
+				Run.run(formulaSplitInBrack);
 		}
 		
-		
-		
-
-		return formulaSplitInBrack;
 	}
+		return formulaSplitInBrack;
 
 
+}catch (Exception e) {
+		throw new Exception();
+	}
+}
+	
 }

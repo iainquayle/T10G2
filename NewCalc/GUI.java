@@ -61,7 +61,6 @@ public class GUI extends JFrame {
 		contentPane.add(Display2);
 		Display2.setColumns(10); 
 		
-		
 		JButton btn_0 = new JButton("0");
 		btn_0.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_0.addActionListener(new ActionListener() {
@@ -380,17 +379,14 @@ public class GUI extends JFrame {
 				draw.main(null);
 			}
 		});
+		
 		btn_DrawingPad.setFont(new Font("Arial", Font.BOLD, 12));
 		btn_DrawingPad.setBounds(193, 100, 111, 42);
 		contentPane.add(btn_DrawingPad);
 		
-	
 		
 		
 	}
 }
-
-
-
 
 

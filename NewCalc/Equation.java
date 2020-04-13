@@ -17,8 +17,10 @@ public class Equation {
 		setArrayForm();
 		setFormulaSplitAll();
 		checkForBrack();
-	
 	}
+	
+	
+	
 	/**
 	 * gets equation
 	 * @return
@@ -26,6 +28,9 @@ public class Equation {
 	public String getEquation() {
 		return this.equation;
 	}
+	
+	
+	
 	/**
 	 * sets the value of equation
 	 * @param equation - the equation
@@ -34,6 +39,8 @@ public class Equation {
 		this.equation = equation;
 	}
 	
+	
+	
 	/**
 	 * gets ArrayForm
 	 * @return ArrayForm
@@ -41,6 +48,9 @@ public class Equation {
 	public String[] getArrayForm() {
 		return ArrayForm;
 	}
+	
+	
+	
 	/**
 	 * Sets ArrayForm
 	 * splits the original equation string and places it into an array
@@ -48,6 +58,9 @@ public class Equation {
 	public void setArrayForm() {
 		ArrayForm = getEquation().split(" ");
 	}
+	
+	
+	
 	/**
 	 * gets formulaSplitAll
 	 * @return
@@ -55,17 +68,23 @@ public class Equation {
 	public ArrayList<String> getFormulaSplitAll() {
 		return formulaSplitAll;
 	}
+	
+	
+	
 	/**
 	 * Sets formulaSplitAll
 	 * Splits every element in the formula into a seperate index
 	 */
 	public void setFormulaSplitAll() {
+		
 		for(int i = 0; i < getArrayForm().length ; i++) {
 			formulaSplitAll.add(getArrayForm()[i]);
 		}
+		
 		formulaSplitAll.removeAll(Arrays.asList("", null));
 	}
 		
+	
 	
 	/**
 	 * Checks if the equations has a bracket
@@ -73,12 +92,15 @@ public class Equation {
 	 * @return the counts of how many brackets there are
 	 */
 	public int checkForBrack() {
+		
 		for (int i = 0; i < getArrayForm().length; i++) {
+			
 			if(getArrayForm()[i].equals("(")) {
 				counter ++;
 			}
 				
 		}
+		
 		return counter;
 	}
 

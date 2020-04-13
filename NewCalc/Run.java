@@ -5,61 +5,68 @@ public class Run {
 /**
  * runs the calculation processes
  * @param test1 string with equation
- * @param l list containing the equation
+ * @param equation list containing the equation
  * @return the answer to the equation
  * @throws Exception
  */
  
-	public static String run(String test1, ArrayList<String> l ) throws Exception {
+public static String run( ArrayList<String> equation ) throws Exception {
 		
 		try {
 		double finalAnswer = 0.0;
 		
+		if(equation == null)
+		{
+			System.out.println("pop");
+			return "Invalid";
+		
+		}
+		else {
 		Operators firstOperator = new Power();
-		firstOperator.operation(l);
+		firstOperator.operation(equation);
 		
 		Operators secondOperator = new Divide();
-		secondOperator.operation(l);
+		secondOperator.operation(equation);
 		
 		Operators thirdOperator = new Multiply();
-		thirdOperator.operation(l);
+		thirdOperator.operation(equation);
 		
 		Operators fourthOperator = new Plus();
-		fourthOperator.operation(l);
+		fourthOperator.operation(equation);
 
 		Operators fifthOperator = new Minus();
-		fifthOperator.operation(l);
+		fifthOperator.operation(equation);
 		
-		if(firstOperator.operation(l).size() == 1){
-			for(String b : firstOperator.operation(l)) {
+		if(firstOperator.operation(equation).size() == 1){
+			for(String b : firstOperator.operation(equation)) {
 				finalAnswer = Double.parseDouble(b);
 
 			}
 	}
 		
-		else if(secondOperator.operation(l).size() == 1 ) {
-			for(String b : secondOperator.operation(l)) {
+		else if(secondOperator.operation(equation).size() == 1 ) {
+			for(String b : secondOperator.operation(equation)) {
 				finalAnswer = Double.parseDouble(b);
 
 			}
 		}
 		
-		else if(thirdOperator.operation(l).size() == 1 ) {
-			for(String b : thirdOperator.operation(l)) {
+		else if(thirdOperator.operation(equation).size() == 1 ) {
+			for(String b : thirdOperator.operation(equation)) {
 				finalAnswer = Double.parseDouble(b);
 
 			}
 		}
 		
-		else if(fourthOperator.operation(l).size() == 1 ) {
-			for(String b : fourthOperator.operation(l)) {
+		else if(fourthOperator.operation(equation).size() == 1 ) {
+			for(String b : fourthOperator.operation(equation)) {
 				finalAnswer = Double.parseDouble(b);
 
 			}
 		}
 		
-		else if(fifthOperator.operation(l).size() == 1 ) {
-			for(String b : fifthOperator.operation(l)) {
+		else if(fifthOperator.operation(equation).size() == 1 ) {
+			for(String b : fifthOperator.operation(equation)) {
 				finalAnswer = Double.parseDouble(b);
 
 			}
@@ -77,8 +84,10 @@ public class Run {
 		
 		}
 		}
+		}
+		
 		catch(Exception e) {
-			return "Invalid_Run";
+			throw new Exception("Invalid");
 		}
 					
 		
