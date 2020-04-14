@@ -26,6 +26,11 @@ public class ProcessImg {
   	      p.run();
 
     }
+	
+	/**
+	 * this method runs the image processing and gets all the values to be used
+	 * @throws IOException
+	 */
 	public void run() throws IOException {
     	ImgScanner scan = new ImgScanner();
 		ImgOperations operate = new ImgOperations();
@@ -40,7 +45,7 @@ public class ProcessImg {
 
     	int width = reqX1-reqX2;
     	int height = reqY4-reqY3;
-    	if (width< 50 && height < 50) {
+    	if (width< 50 && height < 50) {  // this is done in case the the cropped image is too this in case of someone drawing 1
     		width = 50;
     		height = 50;
     	} else if (height < 50) {
@@ -51,7 +56,7 @@ public class ProcessImg {
 		}
 
 	
-		//System.out.println(inImg.getHeight());
+		
 
 		operate.cropImg(inImgPath,outImgPath1, reqX2,reqY3, width, height);
         operate.resize(outImgPath1, outImgPath2, reqWidth, reqHeight);
