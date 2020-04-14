@@ -1,5 +1,4 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -18,13 +17,16 @@ import java.awt.Color;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+
 public class GUI extends JFrame {
 
+	
 	private JPanel contentPane;
 	private JTextField Display;
 	public String testCase;
 	private JTextField Display2;
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -36,11 +38,15 @@ public class GUI extends JFrame {
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
+			
 				}
+			
 			}
+		
 		});
 	}
 
+	
 	/**
 	 * Create the frame.
 	 * @return 
@@ -52,6 +58,7 @@ public class GUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
+		//creating the 2nd display
 		Display2 = new JTextField();
 		Display2.setBackground(Color.WHITE);
 		Display2.setEditable(false);
@@ -61,6 +68,7 @@ public class GUI extends JFrame {
 		contentPane.add(Display2);
 		Display2.setColumns(10); 
 		
+		//creating and adding actions to buttons
 		JButton btn_0 = new JButton("0");
 		btn_0.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_0.addActionListener(new ActionListener() {
@@ -68,6 +76,7 @@ public class GUI extends JFrame {
 				Display.setText(Display.getText() + "0");
 			}
 		});
+		
 		
 		JButton btn_1 = new JButton("1");
 		btn_1.setFont(new Font("Arial", Font.BOLD, 18));
@@ -77,6 +86,7 @@ public class GUI extends JFrame {
 			}
 		});
 		
+		
 		JButton btn_2 = new JButton("2");
 		btn_2.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_2.addActionListener(new ActionListener() {
@@ -84,6 +94,7 @@ public class GUI extends JFrame {
 				Display.setText(Display.getText() + "2");
 			}
 		});
+		
 		
 		JButton btn_3 = new JButton("3");
 		btn_3.setFont(new Font("Arial", Font.BOLD, 18));
@@ -103,6 +114,7 @@ public class GUI extends JFrame {
 			}
 		});
 		
+	
 		JButton btn_5 = new JButton("5");
 		btn_5.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_5.addActionListener(new ActionListener() {
@@ -121,6 +133,7 @@ public class GUI extends JFrame {
 			}
 		});
 		
+		
 		JButton btn_7 = new JButton("7");
 		btn_7.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_7.addActionListener(new ActionListener() {
@@ -130,6 +143,8 @@ public class GUI extends JFrame {
 			
 		});
 		
+		
+		
 		JButton btn_8 = new JButton("8");
 		btn_8.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_8.addActionListener(new ActionListener() {
@@ -138,6 +153,8 @@ public class GUI extends JFrame {
 			}
 		});
 		
+	
+		
 		JButton btn_9 = new JButton("9");
 		btn_9.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_9.addActionListener(new ActionListener() {
@@ -145,6 +162,25 @@ public class GUI extends JFrame {
 				Display.setText(Display.getText() + "9");
 			}
 		});
+		
+		
+		//Drawing pad button that opens up the drawing pad 
+		JButton btn_DrawingPad = new JButton("Drawing Pad");
+		btn_DrawingPad.setFont(new Font("Arial", Font.BOLD, 12));
+		btn_DrawingPad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(btn_DrawingPad, "Please write one digit at a time");
+				DrawingPad draw = new DrawingPad();
+				draw.main(null);
+			}
+		});
+		
+		
+		
+		//setting the buttons at locations on the calculator GUI
+		btn_DrawingPad.setBounds(193, 100, 111, 42);
+		contentPane.add(btn_DrawingPad);
+		
 		
 		btn_1.setBounds(15, 100, 50, 42);
 		
@@ -184,6 +220,8 @@ public class GUI extends JFrame {
 		btn_0.setBounds(74, 261, 50, 42);
 		contentPane.add(btn_0);
 		
+		
+		//creating and adding actions to the Operator buttons 
 		JButton btn_Multiply = new JButton("X");
 		btn_Multiply.setForeground(Color.RED);
 		btn_Multiply.setFont(new Font("Arial", Font.BOLD, 18));
@@ -194,6 +232,7 @@ public class GUI extends JFrame {
 		});
 		btn_Multiply.setBounds(194, 153, 50, 42);
 		contentPane.add(btn_Multiply);
+		
 		
 		JButton btn_Division = new JButton("/");
 		btn_Division.setForeground(Color.RED);
@@ -206,6 +245,7 @@ public class GUI extends JFrame {
 		btn_Division.setBounds(254, 153, 50, 42);
 		contentPane.add(btn_Division);
 		
+		
 		JButton btn_Addition = new JButton("+");
 		btn_Addition.setForeground(Color.RED);
 		btn_Addition.setFont(new Font("Arial", Font.BOLD, 18));
@@ -217,6 +257,7 @@ public class GUI extends JFrame {
 		btn_Addition.setBounds(194, 206, 50, 48);
 		contentPane.add(btn_Addition);
 		
+		
 		JButton btn_Dot = new JButton(".");
 		btn_Dot.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_Dot.addActionListener(new ActionListener() {
@@ -226,6 +267,8 @@ public class GUI extends JFrame {
 		});
 		btn_Dot.setBounds(15, 261, 50, 42);
 		contentPane.add(btn_Dot);
+		
+		
 		
 		JButton btn_Subtraction = new JButton("-");
 		btn_Subtraction.setForeground(Color.RED);
@@ -239,7 +282,7 @@ public class GUI extends JFrame {
 		contentPane.add(btn_Subtraction);
 		
 		
-		
+		//Main display
 		Display = new JTextField();
 		Display.setBackground(Color.WHITE);
 		Display.setCaretColor(Color.WHITE);
@@ -251,6 +294,7 @@ public class GUI extends JFrame {
 		Display.setColumns(10);
 		
 	
+		
 		JButton btn_OpenBrack = new JButton("(");
 		btn_OpenBrack.setForeground(Color.RED);
 		btn_OpenBrack.setFont(new Font("Arial", Font.BOLD, 18));
@@ -261,6 +305,8 @@ public class GUI extends JFrame {
 		});
 		btn_OpenBrack.setBounds(15, 315, 50, 42);
 		contentPane.add(btn_OpenBrack);
+		
+		
 		
 		JButton btn_CloseBrack = new JButton(")");
 		btn_CloseBrack.setForeground(Color.RED);
@@ -273,6 +319,7 @@ public class GUI extends JFrame {
 		btn_CloseBrack.setBounds(74, 315, 50, 42);
 		contentPane.add(btn_CloseBrack);
 		
+		
 		JButton btn_Power = new JButton("^");
 		btn_Power.setForeground(Color.RED);
 		btn_Power.setFont(new Font("Arial", Font.BOLD, 18));
@@ -283,6 +330,7 @@ public class GUI extends JFrame {
 		});
 		btn_Power.setBounds(134, 315, 50, 42);
 		contentPane.add(btn_Power);
+		
 		
 		JButton btn_Equal = new JButton("=");
 		btn_Equal.setForeground(Color.RED);
@@ -302,6 +350,8 @@ public class GUI extends JFrame {
 						Display.remove(btn_Equal);
 						String message = Display.getText();
 						System.out.println(message);
+					
+						//if message is invalid it disables the buttons to avoid the user from clicking on them apart from the clear button
 						if(message.equals("Invalid"))
 						{
 							btn_1.setEnabled(false);
@@ -328,7 +378,9 @@ public class GUI extends JFrame {
 						}
 						
 					} catch (Exception e1) {
+						
 						e1.printStackTrace();
+					
 					}
 			
 			}
@@ -341,6 +393,8 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				Brackets runEquation = new Brackets(testCase);
 				runEquation.getFormulaSplitInBrackets().clear();
+				
+				//enables all the buttons back 
 				Display.setEnabled(true);
 				Display.setText(null);
 				Display2.setText(null);
@@ -367,22 +421,14 @@ public class GUI extends JFrame {
 				
 			}
 		});
+		
+		
 		btn_Clear.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 18));
 		btn_Clear.setBounds(134, 262, 50, 42);
 		contentPane.add(btn_Clear);
 		
-		JButton btn_DrawingPad = new JButton("Drawing Pad");
-		btn_DrawingPad.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(btn_DrawingPad, "Please write one digit at a time");
-				DrawingPad draw = new DrawingPad();
-				draw.main(null);
-			}
-		});
-		
-		btn_DrawingPad.setFont(new Font("Arial", Font.BOLD, 12));
-		btn_DrawingPad.setBounds(193, 100, 111, 42);
-		contentPane.add(btn_DrawingPad);
+
+
 		
 		
 		

@@ -12,7 +12,9 @@ public class Equation {
 	 * constructor initializes the instance variables through the setters in order to prevent privacy leaks
 	 * @param testCase
 	 */
-	public Equation(String testCase) {
+	public Equation(String testCase) 
+	{
+		
 		setEquation(testCase);
 		setArrayForm();
 		setFormulaSplitAll();
@@ -36,6 +38,7 @@ public class Equation {
 	 * @param equation - the equation
 	 */
 	public void setEquation(String equation) {
+	
 		this.equation = equation;
 	}
 	
@@ -77,7 +80,8 @@ public class Equation {
 	 */
 	public void setFormulaSplitAll() {
 		
-		for(int i = 0; i < getArrayForm().length ; i++) {
+		for(int i = 0; i < getArrayForm().length ; i++) 
+		{
 			formulaSplitAll.add(getArrayForm()[i]);
 		}
 		
@@ -93,9 +97,11 @@ public class Equation {
 	 */
 	public int checkForBrack() {
 		
-		for (int i = 0; i < getArrayForm().length; i++) {
+		for (int i = 0; i < getArrayForm().length; i++)
+		{
 			
-			if(getArrayForm()[i].equals("(")) {
+			if(getArrayForm()[i].equals("(")) 
+			{
 				counter ++;
 			}
 				
