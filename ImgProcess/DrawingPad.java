@@ -20,9 +20,20 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-
+/**
+ * 
+ * @author Osama Bamatraf
+ * 
+ * This is the drawing pad class
+ *
+ */
 
 public class DrawingPad {
+	
+	/**
+	 * main method to run the drawing pad
+	 * @param args
+	 */
   public static void main(String[] args) {
     JFrame frame = new JFrame();
     final DrawPad drawPad = new DrawPad();
@@ -45,6 +56,12 @@ public class DrawingPad {
   }
 
 }
+
+/**
+ * drawpad object
+ * 
+ *
+ */
 class DrawPad extends JComponent {
   Image image;
   Graphics2D g2D;
@@ -71,7 +88,12 @@ class DrawPad extends JComponent {
   }
   
   
-  
+  /**
+   * 
+   * create the stroke lines for drawing
+   * and sets the width
+   * 
+   */
 
   public void paintComponent(Graphics g) {
      if (image == null) {
@@ -91,6 +113,10 @@ class DrawPad extends JComponent {
      
     g.drawImage(image, 0, 0, null);
   }
+  
+  /**
+   * this method saves the image into a png file
+   */
   public void save(){
 	    try {
 	        BufferedImage newImg = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -105,7 +131,11 @@ class DrawPad extends JComponent {
 	    }
 	}
   
-  
+  /**
+   * this method calls the save method and runs the image processing part 
+   * in order to crop and rezise the saved image
+   * @throws IOException
+   */
   public void done() throws IOException {
 	save();
 	ProcessImg p = new ProcessImg();
