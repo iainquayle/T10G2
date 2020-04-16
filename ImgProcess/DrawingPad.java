@@ -51,7 +51,7 @@ public class DrawingPad {
     });
     frame.add(button, BorderLayout.SOUTH);
     frame.setSize(512, 512);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setVisible(true);
   }
 
