@@ -4,6 +4,14 @@ Currently CalcNet is composed of TextNet and CalculatorGUI which are going to be
 
 The machine learning is still not hooked up to the calculator and drawingpad however this will be implemented soon.
 
+*IMPORTANT PLEASE READ:
+ In the CalcNet folder there is a zip file called "src.zip" it contains that code that we currently have which is
+a work-in-progress for hooking up the neural net with the the calculator and drawing pad; it's out final code currently.
+However, it's currently not fuctional which is why we decided to keep the code that runs the calculator and drawing pad and provided
+instructions for running that so you could see the drawing pad and calculator in action. 
+
+*If you'd like to run the CalcNet code simply compile all the classes and then run the Main.java class withing the folder CalcNet.
+
 
 The following are insturctions on how to run the calculator and how train the neural network and run the image processing:
 
@@ -17,12 +25,11 @@ How to run the calculator using an IDE:
 
 How to run the calculator using the command line:
 1- Open your command line
-2- Use the command "cd location directory"* to move to the directory of needed folder
+2- Use the command "cd location of directory"* to move to the directory of needed folder
 3- Compile the code in every folder using the command "javac *.java"
 4- Then use the command "cd location of newCalc"* to move to the directory newCalc
-4- Run the code by using the command "java GUI"
-5- Follow on-screen instructions
-
+5- Run the code by using the command "java GUI"
+6- Follow on-screen instructions
 *Do not simply write "location of newCalc", write the directory of your GUI.java file.
 
 
