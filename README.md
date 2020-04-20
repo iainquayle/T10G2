@@ -17,8 +17,9 @@ How to run the calculator using an IDE:
 
 How to run the calculator using the command line:
 1- Open your command line
-2- Use the command "cd location of newCalc"* to move to the directory newCalc
-3- Compile the code using the command "javac *.java"
+2- Use the command "cd location directory"* to move to the directory of needed folder
+3- Compile the code in every folder using the command "javac *.java"
+4- Then use the command "cd location of newCalc"* to move to the directory newCalc
 4- Run the code by using the command "java GUI"
 5- Follow on-screen instructions
 
