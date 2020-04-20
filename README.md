@@ -1,6 +1,16 @@
-# T10G2
 CalcNet
 Currently CalcNet is composed of TextNet and CalculatorGUI which are going to be connected to each other and the work-in-progress image processing.
+
+The machine learning is still not hooked up to the calculator and drawingpad however this will be implemented soon.
+
+*IMPORTANT PLEASE READ:
+ In the CalcNet folder there is a zip file called "src.zip" it contains that code that we currently have which is
+a work-in-progress for hooking up the neural net with the the calculator and drawing pad; it's out final code currently.
+However, it's currently not fuctional which is why we decided to keep the code that runs the calculator and drawing pad and provided
+instructions for running that so you could see the drawing pad and calculator in action. 
+
+*If you'd like to run the CalcNet code simply compile all the classes and then run the Main.java class withing the folder CalcNet.
+
 
 The following are insturctions on how to run the calculator and how train the neural network and run the image processing:
 
@@ -14,12 +24,11 @@ How to run the calculator using an IDE:
 
 How to run the calculator using the command line:
 1- Open your command line
-2- Use the command "cd location directory"* to move to the directory of needed folder
+2- Use the command "cd location of directory"* to move to the directory of needed folder
 3- Compile the code in every folder using the command "javac *.java"
 4- Then use the command "cd location of newCalc"* to move to the directory newCalc
 5- Run the code by using the command "java GUI"
 6- Follow on-screen instructions
-
 *Do not simply write "location of newCalc", write the directory of your GUI.java file.
 
 
@@ -49,22 +58,4 @@ How to train the Neural Netwrok using the command line:
 
 *Do not simply write location, write the directory that will put you inside the folder TextNet
 
-How to run the image processing portion using an IDE:
-1- Open ImgResize.java in your preferred IDE (Example: Eclipse)*
-1.25- You will need to edit the string variable inImgPath to match the path of the image you want the code to work on
-1.5- You will need to edit string variables outImgPath1, outImgPath2 to match the paths where you want the new processed images to be saved
-2- Compile and run the code on your preferred IDE*
-3- Follow on-screen instructions
-
-*If you're not sure how to run code on your IDE you can use the following google search "How to run and compile java code using PreferredIDE" replace PreferredIDE with the name of your IDE.
-
-How to run the image processing portion using the command line:
-0- You will need to edit the string variable inImgPath to match the path of the image you want the code to work on
-0.5- You will need to edit string variables outImgPath1, outImgPath2 to match the paths where you want the new processed images to be saved
-1- Open your command line
-2- Use the command "cd location of ImgProcess"* to move to the directory ImgProcess
-3- Compile the code using the command "javac ImgResize.java"
-4- Run the code by using the command "java ImgResize"
-
-*Do not simply write "location of ImgProcess", write the directory of your ImgResize.java file.
 
